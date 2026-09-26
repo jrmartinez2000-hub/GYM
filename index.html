@@ -620,6 +620,22 @@
     .toast.show {
       transform: translateX(-50%) translateY(0);
     }
+
+    :root{--fs-app:16px;--fs-machine:21px;--fs-values:18px;--fs-buttons:16px;--fs-history:15px;--fs-profiles:16px;--fs-dates:13px}
+    body{font-size:var(--fs-app)} .card h3{font-size:var(--fs-machine)}
+    .register-inputs input,.register-inputs label,.info-row,.edit-input-card{font-size:var(--fs-values)}
+    button,.btn-main,.btn-export,.btn-import,.btn-backup,.btn-submit,.btn-register,.btn-clear-reg,.btn-card,.btn-delete,.btn-profile-action{font-size:var(--fs-buttons)}
+    .history-details,.history-details .history-machine-title,.history-group-header,.history-group-header span.badge-count{font-size:var(--fs-history)}
+    .btn-profile,.profiles-header label{font-size:var(--fs-profiles)} .fecha-badge,.history-date{font-size:var(--fs-dates)}
+    .view-settings{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;margin-bottom:12px;overflow:hidden}
+    .view-settings-toggle{width:100%;padding:12px;border:0;background:var(--card-bg);color:var(--accent);font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .view-settings-panel{display:none;padding:0 12px 12px}.view-settings-panel.visible{display:block}
+    .size-control{display:grid;grid-template-columns:minmax(110px,1fr) 46px 58px 46px;gap:6px;align-items:center;padding:8px 0;border-top:1px solid #334155}
+    .size-control label{margin:0;color:var(--text);font-size:.95rem}.size-value{text-align:center;color:var(--accent);font-weight:700}
+    .size-btn{min-height:44px;border:1.5px solid var(--accent);border-radius:8px;background:var(--input-bg);color:var(--accent);font-weight:800;cursor:pointer}
+    .reset-view-btn{width:100%;margin-top:9px;padding:11px;border-radius:8px;border:1.5px solid var(--text-muted);background:transparent;color:var(--text-muted);font-weight:700}
+    .view-note{color:var(--text-muted);font-size:.82rem;margin:5px 0 8px}
+    @media(max-width:480px){body{padding:8px}.size-control{grid-template-columns:minmax(100px,1fr) 44px 52px 44px;gap:4px}.register-inputs input{min-height:46px}.btn-register,.btn-main,.btn-export,.btn-import{min-height:52px}}
   </style>
 </head>
 <body>
@@ -642,6 +658,10 @@
     <div class="profile-tabs" id="profile-tabs"></div>
   </div>
 
+  <section class="view-settings" aria-label="Personalizar vista">
+    <button type="button" class="view-settings-toggle" id="view-settings-toggle" aria-expanded="false" onclick="togglePersonalizacion()"><span>⚙️ Personalizar tamaños</span><span id="view-settings-arrow">▼</span></button>
+    <div class="view-settings-panel" id="view-settings-panel"><p class="view-note">Los tamaños se guardan para el perfil activo.</p><div id="size-controls"></div><button type="button" class="reset-view-btn" onclick="restablecerTamanos()">↺ Restablecer tamaños</button></div>
+  </section>
   <!-- Panel: Crear Perfil -->
   <div class="panel" id="panel-nuevo-perfil">
     <h2>Crear nuevo perfil</h2>
@@ -780,6 +800,18 @@
     /* ========================================================
        LOGICA PRINCIPAL DE LA APLICACION
        ======================================================== */
+    const TAMANOS_DEFECTO={app:16,maquina:21,valores:18,botones:16,historial:15,perfiles:16,fechas:13};
+    const LIMITES_TAMANO={app:[12,26],maquina:[16,40],valores:[14,36],botones:[12,30],historial:[12,30],perfiles:[12,28],fechas:[10,24]};
+    const ETIQUETAS_TAMANO={app:'Texto general',maquina:'Nombre máquina',valores:'Series / Reps / Peso',botones:'Botones',historial:'Historial',perfiles:'Perfiles',fechas:'Fechas y horas'};
+    const VARIABLES_TAMANO={app:'--fs-app',maquina:'--fs-machine',valores:'--fs-values',botones:'--fs-buttons',historial:'--fs-history',perfiles:'--fs-profiles',fechas:'--fs-dates'};
+    function claveTamanosPerfil(){return `tamanos_vista_${perfilActual}`}
+    function cargarTamanosPerfil(){try{return {...TAMANOS_DEFECTO,...(JSON.parse(localStorage.getItem(claveTamanosPerfil()))||{})}}catch(e){return {...TAMANOS_DEFECTO}}}
+    function aplicarTamanosPerfil(){const t=cargarTamanosPerfil();Object.keys(VARIABLES_TAMANO).forEach(c=>document.documentElement.style.setProperty(VARIABLES_TAMANO[c],`${t[c]}px`));renderizarControlesTamano(t)}
+    function renderizarControlesTamano(t=cargarTamanosPerfil()){const x=document.getElementById('size-controls');if(!x)return;x.innerHTML='';Object.keys(ETIQUETAS_TAMANO).forEach(c=>{const f=document.createElement('div');f.className='size-control';f.innerHTML=`<label>${ETIQUETAS_TAMANO[c]}</label><button type="button" class="size-btn" onclick="cambiarTamano('${c}',-1)">A−</button><span class="size-value" id="size-value-${c}">${t[c]} px</span><button type="button" class="size-btn" onclick="cambiarTamano('${c}',1)">A+</button>`;x.appendChild(f)})}
+    function cambiarTamano(c,d){const t=cargarTamanosPerfil(),[mn,mx]=LIMITES_TAMANO[c];t[c]=Math.min(mx,Math.max(mn,Number(t[c])+d));localStorage.setItem(claveTamanosPerfil(),JSON.stringify(t));document.documentElement.style.setProperty(VARIABLES_TAMANO[c],`${t[c]}px`);document.getElementById(`size-value-${c}`).textContent=`${t[c]} px`}
+    function restablecerTamanos(){localStorage.removeItem(claveTamanosPerfil());aplicarTamanosPerfil();mostrarToast('↺ Tamaños restablecidos')}
+    function togglePersonalizacion(){const p=document.getElementById('view-settings-panel'),b=document.getElementById('view-settings-toggle'),a=document.getElementById('view-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼'}
+
     function cargarPerfiles() {
       try {
         const perfilesGuardados = localStorage.getItem('lista_perfiles');
@@ -881,6 +913,7 @@
       historialSesiones = cargarHistorial();
       maquinaEditandoId = null;
       renderizarPerfiles();
+      aplicarTamanosPerfil();
       renderizarLista();
       renderizarHistorial();
     }
@@ -1670,11 +1703,13 @@
     }
 
     abrirDB().then(() => {
+      aplicarTamanosPerfil();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
     }).catch(err => {
       console.error(err);
+      aplicarTamanosPerfil();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();

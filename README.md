@@ -1,3 +1,3 @@
-# Registro Gimnasio PWA v2
+# Registro Gimnasio PWA v3
 
-Actualización de importación y fusión Excel sin duplicados.
+Controles independientes de tamaño por perfil más fusión Excel sin duplicados.
