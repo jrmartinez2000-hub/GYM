@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mi Gimnasio</title>
+  
+  <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- Configuración App / PWA -->
+  <meta name="theme-color" content="#0b1120">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Gimnasio">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --accent: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --input-bg: #334155;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      padding: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent);
+      margin: 4px 0 12px 0;
+      font-size: 1.5rem;
+    }
+
+    /* Sección de Perfiles */
+    .profiles-section {
+      background-color: var(--card-bg);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1.5px solid #334155;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .profiles-header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .profiles-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .profiles-header label {
+      font-weight: bold;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .btn-profile-action {
+      flex: 1;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      padding: 6px 4px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .btn-profile-action.delete {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .profile-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      width: 100%;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .profile-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .btn-profile {
+      background-color: var(--input-bg);
+      color: var(--text-muted);
+      border: 1.5px solid #475569;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-profile.active {
+      background-color: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+    }
+
+    /* Botones principales */
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .btn-main {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--accent);
+      background-color: var(--card-bg);
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-export {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background-color: var(--success);
+      color: #0f172a;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-import {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--accent);
+      background-color: var(--input-bg);
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-backup {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1.5px solid #64748b;
+      background-color: transparent;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Paneles Formulario */
+    .panel {
+      display: none;
+      background-color: var(--card-bg);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1.5px solid #334155;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .panel.visible {
+      display: block;
+    }
+
+    .panel h2 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1.5px solid #475569;
+      background-color: var(--input-bg);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--accent);
+      color: #0f172a;
+      font-size: 1.05rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    /* Tarjetas de Máquinas */
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 12px;
+      border: 1.5px solid #334155;
+      width: 100%;
+    }
+
+    .card.editing {
+      border-color: var(--accent);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .card-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      background-color: var(--input-bg);
+      border: 1.5px solid var(--accent);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .card-thumb-placeholder {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      border: 1.5px dashed #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--accent);
+      font-size: 1.3rem;
+      line-height: 1.2;
+      word-break: break-word;
+      flex-grow: 1;
+    }
+
+    .editable {
+      cursor: pointer;
+      border-bottom: 1px dashed var(--text-muted);
+    }
+
+    .edit-input-card {
+      padding: 6px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1.5px solid var(--accent);
+      background-color: var(--input-bg);
+      color: var(--text);
+      width: 100%;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 1rem;
+    }
+
+    .info-row span:first-child {
+      color: var(--text-muted);
+    }
+
+    /* Caja de Registro Compacta */
+    .register-box {
+      background-color: var(--input-bg);
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-top: 4px;
+    }
+
+    .register-inputs {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .register-inputs div {
+      flex: 1;
+    }
+
+    .register-inputs label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+      text-align: center;
+    }
+
+    .register-inputs input {
+      padding: 5px;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .register-actions-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-register {
+      flex: 1;
+      background-color: var(--accent);
+      color: #0f172a;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn-clear-reg {
+      background-color: transparent;
+      border: 1.5px solid var(--danger);
+      color: var(--danger);
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed #334155;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .fecha-badge {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .fecha-badge strong {
+      color: var(--accent);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .btn-card {
+      background: var(--input-bg);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-edit-toggle.save {
+      background-color: var(--success);
+      border-color: var(--success);
+      color: #0f172a;
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: 1.5px solid var(--danger);
+      color: var(--danger);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Historial Agrupado Desplegable */
+    .history-section {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 12px;
+      border: 1.5px solid #334155;
+    }
+
+    .history-section h2 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .history-group {
+      margin-bottom: 8px;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: var(--input-bg);
+    }
+
+    .history-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background-color: #334155;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    .history-group-header span.badge-count {
+      background-color: var(--bg);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+
+    .history-group-content {
+      display: none;
+      padding: 8px;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .history-group-content.collapsed {
+      display: none;
+    }
+
+    .history-group-content.expanded {
+      display: flex;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background-color: var(--card-bg);
+      border-radius: 6px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .history-details {
+      font-size: 0.85rem;
+    }
+
+    .history-details .history-machine-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .history-details span {
+      display: block;
+      color: var(--text);
+    }
+
+    .history-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .file-input-hidden {
+      display: none;
+    }
+
+    /* Modal Foto Fullscreen */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-img {
+      max-width: 95%;
+      max-height: 80vh;
+      border-radius: 12px;
+      border: 2px solid var(--accent);
+      object-fit: contain;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px; height: 40px;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--success);
+      color: #0f172a;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+      z-index: 2000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏋️ Registro de Gimnasio</h1>
+
+  <!-- Perfiles -->
+  <div class="profiles-section">
+    <div class="profiles-header">
+      <div class="profiles-title-row">
+        <label>👤 Perfil activo</label>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-profile-action" onclick="mostrarPanelNuevoPerfil()">➕ Nuevo</button>
+        <button class="btn-profile-action" onclick="editarPerfilActual()">✏️ Renombrar</button>
+        <button class="btn-profile-action delete" onclick="eliminarPerfilActual()">🗑️ Borrar</button>
+      </div>
+    </div>
+    
+    <div class="profile-tabs" id="profile-tabs"></div>
+  </div>
+
+  <!-- Panel: Crear Perfil -->
+  <div class="panel" id="panel-nuevo-perfil">
+    <h2>Crear nuevo perfil</h2>
+    <form id="form-nuevo-perfil">
+      <div class="form-group">
+        <label for="nombre-perfil-nuevo">Nombre de la persona:</label>
+        <input type="text" id="nombre-perfil-nuevo" placeholder="Ej: Maria" required>
+      </div>
+      <button type="submit" class="btn-submit">Crear Perfil</button>
+    </form>
+  </div>
+
+  <!-- Botones de Acción -->
+  <div class="action-buttons">
+    <button class="btn-main" onclick="togglePanelNueva()">➕ Añadir Nueva Máquina</button>
+    <button class="btn-export" onclick="exportarExcelMultiPestana()">📊 Exportar Informe a Excel (.XLSX)</button>
+    <button class="btn-import" onclick="document.getElementById('input-excel-file').click()">📥 Cargar / Fusionar Excel (.XLSX)</button>
+    
+    <!-- Opciones de Backup Completo -->
+    <button class="btn-backup" onclick="exportarBackupJSON()">💾 Guardar Copia Completa (JSON)</button>
+    <button class="btn-backup" onclick="document.getElementById('input-json-file').click()">📂 Restaurar Copia Completa (JSON)</button>
+  </div>
+
+  <!-- Panel: Nueva Máquina -->
+  <div class="panel" id="panel-nueva">
+    <h2>Añadir nueva máquina</h2>
+    <form id="form-nueva">
+      <div class="form-group">
+        <label for="nombre-nuevo">Nombre de la máquina:</label>
+        <input type="text" id="nombre-nuevo" placeholder="Ej: Prensa de piernas" required>
+      </div>
+      <button type="submit" class="btn-submit">Añadir a la Lista</button>
+    </form>
+  </div>
+
+  <!-- Lista de Máquinas -->
+  <div class="grid" id="lista-maquinas"></div>
+
+  <!-- Historial Agrupado Desplegable -->
+  <div class="history-section">
+    <h2>📋 Historial de Sesiones Realizadas</h2>
+    <div class="history-list" id="lista-historial"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">✅ Ejercicio registrado con éxito</div>
+
+  <!-- Inputs Ocultos -->
+  <input type="file" id="input-camara" class="file-input-hidden" accept="image/*" capture="user">
+  <input type="file" id="input-excel-file" class="file-input-hidden" accept=".xlsx, .xls">
+  <input type="file" id="input-json-file" class="file-input-hidden" accept=".json">
+
+  <!-- Modal Foto -->
+  <div class="modal-overlay" id="modal-foto" onclick="cerrarFotoModal()">
+    <button class="modal-close-btn" onclick="cerrarFotoModal()">✕</button>
+    <img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada">
+  </div>
+
+  <script>
+    /* ========================================================
+       SISTEMA INDEXEDDB PARA GUARDAR FOTOS DE FORMA EFICIENTE
+       ======================================================== */
+    const DB_NAME = 'GymAppDB';
+    const DB_VERSION = 1;
+    let db = null;
+
+    function abrirDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const dbInstance = e.target.result;
+          if (!dbInstance.objectStoreNames.contains('fotos')) {
+            dbInstance.createObjectStore('fotos');
+          }
+        };
+        req.onsuccess = (e) => {
+          db = e.target.result;
+          resolve(db);
+        };
+        req.onerror = (e) => reject('Error abriendo IndexedDB: ' + e);
+      });
+    }
+
+    function guardarFotoDB(id, base64) {
+      return new Promise((resolve, reject) => {
+        if (!db) return reject('DB no lista');
+        const tx = db.transaction('fotos', 'readwrite');
+        const store = tx.objectStore('fotos');
+        store.put(base64, String(id));
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject('Error guardando foto');
+      });
+    }
+
+    function obtenerFotoDB(id) {
+      return new Promise((resolve) => {
+        if (!db) return resolve(null);
+        const tx = db.transaction('fotos', 'readonly');
+        const store = tx.objectStore('fotos');
+        const req = store.get(String(id));
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    function eliminarFotoDB(id) {
+      return new Promise((resolve) => {
+        if (!db) return resolve();
+        const tx = db.transaction('fotos', 'readwrite');
+        const store = tx.objectStore('fotos');
+        store.delete(String(id));
+        tx.oncomplete = () => resolve();
+      });
+    }
+
+    function obtenerTodasFotosDB() {
+      return new Promise((resolve) => {
+        if (!db) return resolve({});
+        const tx = db.transaction('fotos', 'readonly');
+        const store = tx.objectStore('fotos');
+        const fotosMap = {};
+        const req = store.openCursor();
+        req.onsuccess = (e) => {
+          const cursor = e.target.result;
+          if (cursor) {
+            fotosMap[cursor.key] = cursor.value;
+            cursor.continue();
+          } else {
+            resolve(fotosMap);
+          }
+        };
+        req.onerror = () => resolve({});
+      });
+    }
+
+    /* ========================================================
+       LOGICA PRINCIPAL DE LA APLICACION
+       ======================================================== */
+    function cargarPerfiles() {
+      try {
+        const perfilesGuardados = localStorage.getItem('lista_perfiles');
+        if (perfilesGuardados) return JSON.parse(perfilesGuardados);
+      } catch(e) {}
+      return ['jr', 'Esther', 'Paola', 'Dani'];
+    }
+
+    let perfiles = cargarPerfiles();
+    let perfilActual = localStorage.getItem('perfil_activo') || perfiles[0];
+
+    if (!perfiles.includes(perfilActual)) {
+      perfilActual = perfiles[0];
+    }
+
+    let maquinaParaFotoId = null;
+    let maquinaEditandoId = null;
+    let gruposExpandidos = {};
+
+    function guardarPerfiles() {
+      localStorage.setItem('lista_perfiles', JSON.stringify(perfiles));
+    }
+
+    function obtenerFechaHoraActual() {
+      const hoy = new Date();
+      return hoy.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+             ' ' + hoy.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function cargarDatos() {
+      try {
+        const datos = localStorage.getItem(`mis_maquinas_${perfilActual}`);
+        if (datos) return JSON.parse(datos);
+      } catch (e) {}
+
+      const fechaHoy = obtenerFechaHoraActual().split(' ')[0];
+
+      if (perfilActual === 'jr') {
+        return [
+          { id: 1, nombre: "Prensa de piernas", series: "", peso: "", reps: "", fecha: fechaHoy }
+        ];
+      }
+      return [];
+    }
+
+    function cargarHistorial(perfil = perfilActual) {
+      try {
+        const historial = localStorage.getItem(`historial_sesiones_${perfil}`);
+        if (historial) return JSON.parse(historial);
+      } catch (e) {}
+      return [];
+    }
+
+    let maquinas = cargarDatos();
+    let historialSesiones = cargarHistorial();
+
+    function guardarDatos() {
+      localStorage.setItem(`mis_maquinas_${perfilActual}`, JSON.stringify(maquinas));
+    }
+
+    function guardarHistorial(perfil = perfilActual) {
+      if (perfil === perfilActual) {
+        localStorage.setItem(`historial_sesiones_${perfilActual}`, JSON.stringify(historialSesiones));
+        renderizarHistorial();
+      } else {
+        const hist = cargarHistorial(perfil);
+        localStorage.setItem(`historial_sesiones_${perfil}`, JSON.stringify(hist));
+      }
+    }
+
+    function mostrarToast(mensaje = '✅ Ejercicio registrado con éxito') {
+      const toast = document.getElementById('toast');
+      toast.textContent = mensaje;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    function renderizarPerfiles() {
+      const contenedor = document.getElementById('profile-tabs');
+      contenedor.innerHTML = '';
+
+      perfiles.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = `btn-profile ${p === perfilActual ? 'active' : ''}`;
+        btn.textContent = p;
+        btn.onclick = () => cambiarPerfil(p);
+        contenedor.appendChild(btn);
+      });
+    }
+
+    function cambiarPerfil(nuevoPerfil) {
+      perfilActual = nuevoPerfil;
+      localStorage.setItem('perfil_activo', perfilActual);
+      document.getElementById('panel-nueva').classList.remove('visible');
+      document.getElementById('panel-nuevo-perfil').classList.remove('visible');
+      maquinas = cargarDatos();
+      historialSesiones = cargarHistorial();
+      maquinaEditandoId = null;
+      renderizarPerfiles();
+      renderizarLista();
+      renderizarHistorial();
+    }
+
+    function mostrarPanelNuevoPerfil() {
+      document.getElementById('panel-nueva').classList.remove('visible');
+      document.getElementById('panel-nuevo-perfil').classList.toggle('visible');
+      document.getElementById('nombre-perfil-nuevo').focus();
+    }
+
+    document.getElementById('form-nuevo-perfil').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('nombre-perfil-nuevo');
+      const nombreNuevo = input.value.trim();
+
+      if (!nombreNuevo) return;
+
+      if (perfiles.some(p => p.toLowerCase() === nombreNuevo.toLowerCase())) {
+        alert('Ya existe un perfil con ese nombre.');
+        return;
+      }
+
+      perfiles.push(nombreNuevo);
+      guardarPerfiles();
+      input.value = '';
+      document.getElementById('panel-nuevo-perfil').classList.remove('visible');
+      cambiarPerfil(nombreNuevo);
+    });
+
+    function editarPerfilActual() {
+      const perfilAnterior = perfilActual;
+      const nuevoNombre = prompt(`Editar el nombre del perfil "${perfilAnterior}":`, perfilAnterior);
+      
+      if (nuevoNombre === null) return;
+      
+      const nombreLimpio = nuevoNombre.trim();
+      if (!nombreLimpio || nombreLimpio === perfilAnterior) return;
+
+      if (perfiles.some(p => p.toLowerCase() === nombreLimpio.toLowerCase())) {
+        alert('Ya existe otro perfil con ese nombre.');
+        return;
+      }
+
+      guardarDatos();
+      guardarHistorial();
+
+      const datosAnteriores = localStorage.getItem(`mis_maquinas_${perfilAnterior}`);
+      if (datosAnteriores) {
+        localStorage.setItem(`mis_maquinas_${nombreLimpio}`, datosAnteriores);
+        localStorage.removeItem(`mis_maquinas_${perfilAnterior}`);
+      }
+
+      const histAnterior = localStorage.getItem(`historial_sesiones_${perfilAnterior}`);
+      if (histAnterior) {
+        localStorage.setItem(`historial_sesiones_${nombreLimpio}`, histAnterior);
+        localStorage.removeItem(`historial_sesiones_${perfilAnterior}`);
+      }
+
+      const index = perfiles.indexOf(perfilAnterior);
+      if (index !== -1) perfiles[index] = nombreLimpio;
+
+      guardarPerfiles();
+      cambiarPerfil(nombreLimpio);
+    }
+
+    function eliminarPerfilActual() {
+      if (perfiles.length <= 1) {
+        alert('Debes tener al menos un perfil registrado.');
+        return;
+      }
+
+      if (confirm(`¿Eliminar el perfil "${perfilActual}"?`)) {
+        localStorage.removeItem(`mis_maquinas_${perfilActual}`);
+        localStorage.removeItem(`historial_sesiones_${perfilActual}`);
+        perfiles = perfiles.filter(p => p !== perfilActual);
+        guardarPerfiles();
+        cambiarPerfil(perfiles[0]);
+      }
+    }
+
+    function togglePanelNueva() {
+      document.getElementById('panel-nuevo-perfil').classList.remove('visible');
+      const panel = document.getElementById('panel-nueva');
+      panel.classList.toggle('visible');
+    }
+
+    function registrarSerieDirecta(id) {
+      const maquina = maquinas.find(m => m.id === id);
+      if (!maquina) return;
+
+      const inputSeries = document.getElementById(`reg-series-${id}`);
+      const inputReps = document.getElementById(`reg-reps-${id}`);
+      const inputPeso = document.getElementById(`reg-peso-${id}`);
+
+      const seriesVal = inputSeries ? inputSeries.value.trim() : (maquina.series || '-');
+      const repsVal = inputReps ? inputReps.value.trim() : (maquina.reps || '-');
+      const pesoVal = inputPeso ? inputPeso.value.trim() : (maquina.peso || '-');
+
+      const fechaHora = obtenerFechaHoraActual();
+
+      const nuevaSesion = {
+        id: Date.now(),
+        fecha: fechaHora,
+        maquina: maquina.nombre,
+        series: seriesVal || '-',
+        reps: repsVal || '-',
+        peso: pesoVal || '-'
+      };
+
+      maquina.series = seriesVal;
+      maquina.reps = repsVal;
+      maquina.peso = pesoVal;
+      maquina.fecha = fechaHora.split(' ')[0];
+
+      historialSesiones.unshift(nuevaSesion);
+      guardarDatos();
+      guardarHistorial();
+      renderizarLista();
+      mostrarToast('✅ Serie registrada con éxito');
+    }
+
+    function borrarRegistroMaquina(id) {
+      const maquina = maquinas.find(m => m.id === id);
+      if (!maquina) return;
+
+      maquina.series = "";
+      maquina.reps = "";
+      maquina.peso = "";
+      maquina.fecha = "-";
+
+      guardarDatos();
+      renderizarLista();
+      mostrarToast('🧹 Registro limpiado');
+    }
+
+    async function renderizarLista() {
+      const contenedor = document.getElementById('lista-maquinas');
+      contenedor.innerHTML = '';
+
+      if (maquinas.length === 0) {
+        contenedor.innerHTML = `<p style="text-align:center; color: var(--text-muted); font-size: 1rem; margin: 16px 0;">No hay máquinas para ${escaparHTML(perfilActual)}. ¡Añade una!</p>`;
+        return;
+      }
+
+      for (const m of maquinas) {
+        const card = document.createElement('div');
+        const esEditando = (maquinaEditandoId === m.id);
+        card.className = `card ${esEditando ? 'editing' : ''}`;
+
+        const fotoData = await obtenerFotoDB(m.id);
+
+        const thumbContainer = document.createElement('div');
+        if (fotoData) {
+          const img = document.createElement('img');
+          img.src = fotoData;
+          img.className = 'card-thumb';
+          img.alt = 'Foto';
+          img.title = 'Ampliar';
+          img.onclick = () => abrirFotoModal(fotoData);
+          thumbContainer.appendChild(img);
+        } else {
+          thumbContainer.innerHTML = `<div class="card-thumb-placeholder">🏋️</div>`;
+        }
+
+        if (esEditando) {
+          card.innerHTML = `
+            <div class="card-header">
+              <div class="thumb-slot"></div>
+              <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
+            </div>
+            <div class="info-row">
+              <span>Series:</span>
+              <input type="text" inputmode="decimal" id="edit-series-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.series || '')}" placeholder="Series">
+            </div>
+            <div class="info-row">
+              <span>Repeticiones:</span>
+              <input type="text" inputmode="decimal" id="edit-reps-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.reps || '')}" placeholder="Reps">
+            </div>
+            <div class="info-row">
+              <span>Peso:</span>
+              <input type="text" inputmode="decimal" id="edit-peso-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.peso || '')}" placeholder="Peso">
+            </div>
+            <div class="card-footer">
+              <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
+              <div class="card-actions">
+                <button class="btn-card btn-edit-toggle save" id="btn-save-${m.id}">✓ Guardar</button>
+                <button class="btn-card" id="btn-foto-${m.id}">📷 Foto</button>
+                <button class="btn-delete" id="btn-del-${m.id}">🗑️ Máquina</button>
+              </div>
+            </div>
+          `;
+
+          card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
+          contenedor.appendChild(card);
+
+          document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
+          document.getElementById(`btn-foto-${m.id}`).addEventListener('click', () => tomarFoto(m.id));
+          document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
+
+        } else {
+          card.innerHTML = `
+            <div class="card-header">
+              <div class="thumb-slot"></div>
+              <h3 class="editable" id="title-edit-${m.id}" title="Toca para editar">${escaparHTML(m.nombre)}</h3>
+            </div>
+
+            <div class="register-box">
+              <div class="register-inputs">
+                <div>
+                  <label>Series</label>
+                  <input type="text" inputmode="decimal" id="reg-series-${m.id}" value="${escaparHTML(m.series || '')}" placeholder="-">
+                </div>
+                <div>
+                  <label>Reps</label>
+                  <input type="text" inputmode="decimal" id="reg-reps-${m.id}" value="${escaparHTML(m.reps || '')}" placeholder="-">
+                </div>
+                <div>
+                  <label>Peso</label>
+                  <input type="text" inputmode="decimal" id="reg-peso-${m.id}" value="${escaparHTML(m.peso || '')}" placeholder="-">
+                </div>
+              </div>
+              <div class="register-actions-row">
+                <button class="btn-register" id="btn-reg-${m.id}">✅ Registrar Ejercicio</button>
+                <button class="btn-clear-reg" id="btn-clear-${m.id}">🗑️ Borrar registro</button>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
+              <div class="card-actions">
+                <button class="btn-card btn-edit-toggle" id="btn-edit-${m.id}">✏️ Editar</button>
+                <button class="btn-card" id="btn-foto-${m.id}">📷 Foto</button>
+                <button class="btn-delete" id="btn-del-${m.id}">🗑️ Borrar máquina</button>
+              </div>
+            </div>
+          `;
+
+          card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
+          contenedor.appendChild(card);
+
+          document.getElementById(`title-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
+          document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));
+          document.getElementById(`btn-clear-${m.id}`).addEventListener('click', () => borrarRegistroMaquina(m.id));
+          document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
+          document.getElementById(`btn-foto-${m.id}`).addEventListener('click', () => tomarFoto(m.id));
+          document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
+        }
+      }
+    }
+
+    /* HISTORIAL AGRUPADO POR FECHA */
+    function renderizarHistorial() {
+      const contenedor = document.getElementById('lista-historial');
+      contenedor.innerHTML = '';
+
+      if (historialSesiones.length === 0) {
+        contenedor.innerHTML = '<p style="text-align:center; color: var(--text-muted); font-size: 0.9rem;">No hay ejecuciones registradas aún.</p>';
+        return;
+      }
+
+      const grupos = {};
+      historialSesiones.forEach(s => {
+        const fechaSolo = s.fecha ? s.fecha.split(' ')[0] : 'Sin fecha';
+        if (!grupos[fechaSolo]) {
+          grupos[fechaSolo] = [];
+        }
+        grupos[fechaSolo].push(s);
+      });
+
+      const fechasOrdenadas = Object.keys(grupos).sort((a, b) => {
+        const partesA = a.split('/');
+        const partesB = b.split('/');
+        if (partesA.length === 3 && partesB.length === 3) {
+          const dateA = new Date(partesA[2], partesA[1] - 1, partesA[0]);
+          const dateB = new Date(partesB[2], partesB[1] - 1, partesB[0]);
+          return dateB - dateA;
+        }
+        return b.localeCompare(a);
+      });
+
+      fechasOrdenadas.forEach(fechaClave => {
+        const elementos = grupos[fechaClave];
+        const estaExpandido = !!gruposExpandidos[fechaClave];
+
+        const grupoElem = document.createElement('div');
+        grupoElem.className = 'history-group';
+
+        const flecha = estaExpandido ? '▼' : '▶';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'history-group-header';
+        headerDiv.innerHTML = `
+          <div>${flecha} 📅 ${escaparHTML(fechaClave)}</div>
+          <span class="badge-count">${elementos.length} ${elementos.length === 1 ? 'ejercicio' : 'ejercicios'}</span>
+        `;
+        headerDiv.addEventListener('click', () => toggleGrupoHistorial(fechaClave));
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = `history-group-content ${estaExpandido ? 'expanded' : 'collapsed'}`;
+
+        elementos.forEach(s => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'history-item';
+          
+          const horaPart = s.fecha.includes(' ') ? s.fecha.split(' ')[1] : '';
+
+          itemDiv.innerHTML = `
+            <div class="history-details">
+              <div class="history-machine-title">🏋️ ${escaparHTML(s.maquina || 'Máquina')}</div>
+              <span>Series: <strong>${escaparHTML(s.series || '-')}</strong> | Reps: <strong>${escaparHTML(s.reps || '-')}</strong> | Peso: <strong>${escaparHTML(s.peso || '-')}</strong></span>
+              ${horaPart ? `<div class="history-date">🕒 ${escaparHTML(horaPart)}</div>` : ''}
+            </div>
+            <button class="btn-delete" id="del-hist-${s.id}">🗑️ Borrar</button>
+          `;
+          contentDiv.appendChild(itemDiv);
+        });
+
+        grupoElem.appendChild(headerDiv);
+        grupoElem.appendChild(contentDiv);
+        contenedor.appendChild(grupoElem);
+
+        elementos.forEach(s => {
+          const btnDel = document.getElementById(`del-hist-${s.id}`);
+          if (btnDel) {
+            btnDel.addEventListener('click', () => eliminarSesionHistorial(s.id));
+          }
+        });
+      });
+    }
+
+    function toggleGrupoHistorial(fechaClave) {
+      gruposExpandidos[fechaClave] = !gruposExpandidos[fechaClave];
+      renderizarHistorial();
+    }
+
+    function eliminarSesionHistorial(id) {
+      if (confirm('¿Quieres borrar esta sesión? No aparecerá en el informe Excel.')) {
+        historialSesiones = historialSesiones.filter(s => s.id !== id);
+        guardarHistorial();
+      }
+    }
+
+    /* EXPORTACIÓN MULTI-PESTAÑA A EXCEL (.XLSX) */
+    function exportarExcelMultiPestana() {
+      if (typeof XLSX === 'undefined') {
+        alert('Cargando librería Excel, por favor intenta en unos segundos o conéctate a internet.');
+        return;
+      }
+
+      const libro = XLSX.utils.book_new();
+      let hayDatos = false;
+
+      perfiles.forEach(perfil => {
+        const historialPerfil = cargarHistorial(perfil);
+        
+        const datosHoja = [
+          ['Fecha y Hora', 'Máquina', 'Series', 'Repeticiones', 'Peso']
+        ];
+
+        if (historialPerfil.length > 0) {
+          hayDatos = true;
+          historialPerfil.forEach(s => {
+            datosHoja.push([s.fecha, s.maquina, s.series || '-', s.reps || '-', s.peso || '-']);
+          });
+        } else {
+          datosHoja.push(['Sin registros', '-', '-', '-', '-']);
+        }
+
+        const hoja = XLSX.utils.aoa_to_sheet(datosHoja);
+        const nombrePestana = perfil.substring(0, 30).replace(/[:\\/?*\[\]]/g, '');
+        XLSX.utils.book_append_sheet(libro, hoja, nombrePestana);
+      });
+
+      if (!hayDatos) {
+        alert('No hay registros guardados en ningún perfil para exportar.');
+        return;
+      }
+
+      const fechaHoy = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(libro, `Informe_Gimnasio_${fechaHoy}.xlsx`);
+    }
+
+    /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
+    document.getElementById('input-excel-file').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (typeof XLSX === 'undefined') {
+        alert('Librería Excel no lista. Comprueba tu conexión a internet.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+
+          let totalImportados = 0;
+          let totalOmitidos = 0;
+
+          workbook.SheetNames.forEach(sheetName => {
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonSheet = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+            if (jsonSheet.length <= 1) return;
+
+            let perfilPestana = sheetName.trim();
+            
+            if (!perfiles.some(p => p.toLowerCase() === perfilPestana.toLowerCase())) {
+              perfiles.push(perfilPestana);
+              guardarPerfiles();
+            } else {
+              const pExistente = perfiles.find(p => p.toLowerCase() === perfilPestana.toLowerCase());
+              if (pExistente) perfilPestana = pExistente;
+            }
+
+            const historialExistente = cargarHistorial(perfilPestana);
+
+            for (let i = 1; i < jsonSheet.length; i++) {
+              const fila = jsonSheet[i];
+              if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
+
+              const fechaRaw = String(fila[0] || '').trim();
+              const maquina = String(fila[1] || '').trim();
+              const series = String(fila[2] || '-').trim();
+              const reps = String(fila[3] || '-').trim();
+              const peso = String(fila[4] || '-').trim();
+
+              if (!fechaRaw || !maquina) continue;
+
+              const fechaSolo = fechaRaw.split(' ')[0];
+
+              // EVITAR DUPLICADOS: Comprueba si ya existe un registro con la misma fecha y mismo ejercicio
+              const yaExiste = historialExistente.some(h => {
+                const hFechaSolo = h.fecha ? h.fecha.split(' ')[0] : '';
+                return hFechaSolo === fechaSolo && 
+                       h.maquina.toLowerCase() === maquina.toLowerCase();
+              });
+
+              if (!yaExiste) {
+                historialExistente.unshift({
+                  id: Date.now() + Math.random() + i,
+                  fecha: fechaRaw,
+                  maquina: maquina,
+                  series: series,
+                  reps: reps,
+                  peso: peso
+                });
+                totalImportados++;
+              } else {
+                totalOmitidos++;
+              }
+            }
+
+            // Ordenar el historial de más reciente a más antiguo
+            historialExistente.sort((a, b) => {
+              const parseDate = (dStr) => {
+                const parts = dStr.split(' ')[0].split('/');
+                if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
+                return new Date(0);
+              };
+              return parseDate(b.fecha) - parseDate(a.fecha);
+            });
+
+            localStorage.setItem(`historial_sesiones_${perfilPestana}`, JSON.stringify(historialExistente));
+
+            // Sincronizar las máquinas activas de este perfil con los últimos valores registrados si corresponde
+            let maquinasPerfil = [];
+            try {
+              const mData = localStorage.getItem(`mis_maquinas_${perfilPestana}`);
+              if (mData) maquinasPerfil = JSON.parse(mData);
+            } catch(err) {}
+
+            historialExistente.forEach(sesion => {
+              let maq = maquinasPerfil.find(m => m.nombre.toLowerCase() === sesion.maquina.toLowerCase());
+              if (!maq) {
+                // Si la máquina no existía en la lista activa del perfil, se añade automáticamente
+                maq = {
+                  id: Date.now() + Math.random(),
+                  nombre: sesion.maquina,
+                  series: "",
+                  peso: "",
+                  reps: "",
+                  fecha: "-"
+                };
+                maquinasPerfil.push(maq);
+              }
+              // Si la fecha de la sesión es más reciente o igual a la actual guardada en la máquina, actualizar vista rápida
+              const fechaMaq = maq.fecha ? maq.fecha.split(' ')[0] : '';
+              const fechaSes = sesion.fecha ? sesion.fecha.split(' ')[0] : '';
+              if (!maq.fecha || maq.fecha === '-' || fechaSes >= fechaMaq) {
+                maq.series = sesion.series;
+                maq.reps = sesion.reps;
+                maq.peso = sesion.peso;
+                maq.fecha = fechaSes;
+              }
+            });
+
+            localStorage.setItem(`mis_maquinas_${perfilPestana}`, JSON.stringify(maquinasPerfil));
+          });
+
+          // Actualizar variables y pantalla actual
+          perfiles = cargarPerfiles();
+          maquinas = cargarDatos();
+          historialSesiones = cargarHistorial(perfilActual);
+          renderizarPerfiles();
+          renderizarLista();
+          renderizarHistorial();
+
+          alert(`✅ Importación completada:\n\n• Nuevos registros añadidos: ${totalImportados}\n• Registros omitidos (duplicados): ${totalOmitidos}`);
+
+        } catch (err) {
+          console.error(err);
+          alert('Error procesando el archivo Excel.');
+        }
+      };
+
+      reader.readAsBuffer(file);
+      e.target.value = '';
+    });
+
+    /* BACKUP Y RESTAURACIÓN EN JSON */
+    async function exportarBackupJSON() {
+      const backupData = {
+        perfiles: perfiles,
+        perfilActual: perfilActual,
+        maquinasPorPerfil: {},
+        historialPorPerfil: {},
+        fotos: await obtenerTodasFotosDB()
+      };
+
+      perfiles.forEach(p => {
+        try {
+          backupData.maquinasPorPerfil[p] = JSON.parse(localStorage.getItem(`mis_maquinas_${p}`)) || [];
+        } catch(e) { backupData.maquinasPorPerfil[p] = []; }
+
+        backupData.historialPorPerfil[p] = cargarHistorial(p);
+      });
+
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Backup_Gimnasio_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('input-json-file').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(evt) {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (!data.perfiles || !data.maquinasPorPerfil) {
+            alert('El archivo JSON no contiene una estructura de copia válida.');
+            return;
+          }
+
+          if (confirm('¿Restaurar esta copia de seguridad? Sobrescribirá los datos actuales.')) {
+            perfiles = data.perfiles;
+            guardarPerfiles();
+
+            perfiles.forEach(p => {
+              if (data.maquinasPorPerfil[p]) {
+                localStorage.setItem(`mis_maquinas_${p}`, JSON.stringify(data.maquinasPorPerfil[p]));
+              }
+              if (data.historialPorPerfil[p]) {
+                localStorage.setItem(`historial_sesiones_${p}`, JSON.stringify(data.historialPorPerfil[p]));
+              }
+            });
+
+            if (data.fotos) {
+              for (const [id, base64] of Object.entries(data.fotos)) {
+                await guardarFotoDB(id, base64);
+              }
+            }
+
+            cambiarPerfil(data.perfilActual || perfiles[0]);
+            alert('✅ Copia de seguridad restaurada correctamente.');
+          }
+        } catch (err) {
+          alert('Error al leer el archivo JSON.');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    function activarEdicion(id) {
+      maquinaEditandoId = id;
+      renderizarLista();
+      setTimeout(() => {
+        const inputNombre = document.getElementById(`edit-nombre-${id}`);
+        if (inputNombre) inputNombre.focus();
+      }, 50);
+    }
+
+    function guardarEdicionDirecta(id) {
+      const inputNombre = document.getElementById(`edit-nombre-${id}`);
+      const inputSeries = document.getElementById(`edit-series-${id}`);
+      const inputPeso = document.getElementById(`edit-peso-${id}`);
+      const inputReps = document.getElementById(`edit-reps-${id}`);
+
+      if (!inputNombre) return;
+
+      const nuevoNombre = inputNombre.value.trim();
+      const nuevasSeries = inputSeries ? inputSeries.value.trim() : '';
+      const nuevoPeso = inputPeso ? inputPeso.value.trim() : '';
+      const nuevasReps = inputReps ? inputReps.value.trim() : '';
+
+      if (!nuevoNombre) {
+        alert('El nombre no puede estar vacío');
+        return;
+      }
+
+      const maquina = maquinas.find(m => m.id === id);
+      if (maquina) {
+        maquina.nombre = nuevoNombre;
+        maquina.series = nuevasSeries;
+        maquina.peso = nuevoPeso;
+        maquina.reps = nuevasReps;
+        guardarDatos();
+      }
+
+      maquinaEditandoId = null;
+      renderizarLista();
+      mostrarToast('✓ Cambios guardados');
+    }
+
+    function escaparHTML(str) {
+      return String(str || '').replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    }
+
+    function abrirFotoModal(src) {
+      const modal = document.getElementById('modal-foto');
+      document.getElementById('img-modal-fullscreen').src = src;
+      modal.classList.add('active');
+    }
+
+    function cerrarFotoModal() {
+      document.getElementById('modal-foto').classList.remove('active');
+    }
+
+    function tomarFoto(id) {
+      maquinaParaFotoId = id;
+      document.getElementById('input-camara').click();
+    }
+
+    document.getElementById('input-camara').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file || !maquinaParaFotoId) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = async function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 800;
+          let w = img.width, h = img.height;
+
+          if (w > h) {
+            if (w > maxDim) { h *= maxDim / w; w = maxDim; }
+          } else {
+            if (h > maxDim) { w *= maxDim / h; h = maxDim; }
+          }
+
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          const fotoComprimida = canvas.toDataURL('image/jpeg', 0.8);
+          
+          await guardarFotoDB(maquinaParaFotoId, fotoComprimida);
+          renderizarLista();
+          mostrarToast('📷 Foto guardada');
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
+
+    document.getElementById('form-nueva').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre-nuevo').value.trim();
+
+      if (!nombre) return;
+
+      maquinas.push({
+        id: Date.now(),
+        nombre: nombre,
+        series: "",
+        peso: "",
+        reps: "",
+        fecha: obtenerFechaHoraActual().split(' ')[0]
+      });
+
+      guardarDatos();
+      renderizarLista();
+      document.getElementById('form-nueva').reset();
+      document.getElementById('panel-nueva').classList.remove('visible');
+      mostrarToast('✅ Máquina agregada');
+    });
+
+    async function eliminarMaquina(id) {
+      if (confirm('¿Eliminar esta máquina por completo?')) {
+        maquinas = maquinas.filter(m => m.id !== id);
+        guardarDatos();
+        await eliminarFotoDB(id);
+        renderizarLista();
+      }
+    }
+
+    abrirDB().then(() => {
+      renderizarPerfiles();
+      renderizarLista();
+      renderizarHistorial();
+    }).catch(err => {
+      console.error(err);
+      renderizarPerfiles();
+      renderizarLista();
+      renderizarHistorial();
+    });
+  </script>
+
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .catch(error => console.error('Error al registrar el Service Worker:', error));
+      });
+    }
+  </script>
+</body>
+</html>
