@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Gimnasio">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2548/2548537.png">
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Registro Gimnasio","short_name":"Gimnasio","start_url":".","display":"standalone","background_color":"#0b1120","theme_color":"#0b1120","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2548/2548537.png","sizes":"512x512","type":"image/png"}]}'>
 
   <style>
     *, *::before, *::after {
@@ -1263,13 +1263,83 @@
       XLSX.writeFile(libro, `Informe_Gimnasio_${fechaHoy}.xlsx`);
     }
 
-    /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
+    /* LECTURA Y FUSIÓN DE EXCEL SIN DUPLICADOS */
+    function normalizarTexto(valor) {
+      return String(valor ?? '')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ');
+    }
+
+    function normalizarValor(valor, defecto = '-') {
+      const texto = String(valor ?? '').trim();
+      return texto || defecto;
+    }
+
+    function normalizarFechaExcel(valor) {
+      if (valor === null || valor === undefined || valor === '') return '';
+
+      // Excel puede entregar fechas como número de serie.
+      if (typeof valor === 'number' && typeof XLSX !== 'undefined' && XLSX.SSF) {
+        const partes = XLSX.SSF.parse_date_code(valor);
+        if (partes) {
+          const dd = String(partes.d).padStart(2, '0');
+          const mm = String(partes.m).padStart(2, '0');
+          const yyyy = String(partes.y);
+          const hh = String(partes.H || 0).padStart(2, '0');
+          const min = String(partes.M || 0).padStart(2, '0');
+          return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+        }
+      }
+
+      if (valor instanceof Date && !isNaN(valor)) {
+        const dd = String(valor.getDate()).padStart(2, '0');
+        const mm = String(valor.getMonth() + 1).padStart(2, '0');
+        const yyyy = valor.getFullYear();
+        const hh = String(valor.getHours()).padStart(2, '0');
+        const min = String(valor.getMinutes()).padStart(2, '0');
+        return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+      }
+
+      const texto = String(valor).trim();
+      const coincidencia = texto.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+      if (coincidencia) {
+        const dd = coincidencia[1].padStart(2, '0');
+        const mm = coincidencia[2].padStart(2, '0');
+        const yyyy = coincidencia[3];
+        const hh = (coincidencia[4] || '00').padStart(2, '0');
+        const min = coincidencia[5] || '00';
+        return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+      }
+      return texto;
+    }
+
+    function claveRegistro(registro) {
+      // Un registro solo se considera duplicado si coinciden todos estos campos.
+      return [
+        normalizarFechaExcel(registro.fecha),
+        normalizarTexto(registro.maquina),
+        normalizarTexto(registro.series),
+        normalizarTexto(registro.reps),
+        normalizarTexto(registro.peso)
+      ].join('|');
+    }
+
+    function fechaAOrden(fecha) {
+      const m = String(fecha || '').match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
+      if (!m) return 0;
+      return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4] || 0), Number(m[5] || 0)).getTime();
+    }
+
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
 
       if (typeof XLSX === 'undefined') {
-        alert('Librería Excel no lista. Comprueba tu conexión a internet.');
+        alert('La librería Excel todavía no está disponible. Comprueba la conexión y vuelve a intentarlo.');
+        e.target.value = '';
         return;
       }
 
@@ -1277,130 +1347,127 @@
       reader.onload = function(evt) {
         try {
           const data = new Uint8Array(evt.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-
+          const workbook = XLSX.read(data, { type: 'array', cellDates: true });
           let totalImportados = 0;
-          let totalOmitidos = 0;
+          let totalDuplicados = 0;
+          let totalInvalidos = 0;
+          const perfilesActualizados = [];
 
           workbook.SheetNames.forEach(sheetName => {
             const worksheet = workbook.Sheets[sheetName];
-            const jsonSheet = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            const filas = XLSX.utils.sheet_to_json(worksheet, {
+              header: 1,
+              raw: true,
+              defval: ''
+            });
+            if (filas.length <= 1) return;
 
-            if (jsonSheet.length <= 1) return;
-
-            let perfilPestana = sheetName.trim();
-            
-            if (!perfiles.some(p => p.toLowerCase() === perfilPestana.toLowerCase())) {
-              perfiles.push(perfilPestana);
-              guardarPerfiles();
+            let perfilPestana = String(sheetName).trim() || 'Importado';
+            const existente = perfiles.find(p => normalizarTexto(p) === normalizarTexto(perfilPestana));
+            if (existente) {
+              perfilPestana = existente;
             } else {
-              const pExistente = perfiles.find(p => p.toLowerCase() === perfilPestana.toLowerCase());
-              if (pExistente) perfilPestana = pExistente;
+              perfiles.push(perfilPestana);
+              perfilesActualizados.push(perfilPestana);
             }
 
             const historialExistente = cargarHistorial(perfilPestana);
+            const clavesExistentes = new Set(historialExistente.map(claveRegistro));
 
-            for (let i = 1; i < jsonSheet.length; i++) {
-              const fila = jsonSheet[i];
-              if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
+            for (let i = 1; i < filas.length; i++) {
+              const fila = filas[i] || [];
+              if (!fila.some(celda => String(celda ?? '').trim() !== '')) continue;
+              if (normalizarTexto(fila[0]) === 'sin registros') continue;
 
-              const fechaRaw = String(fila[0] || '').trim();
-              const maquina = String(fila[1] || '').trim();
-              const series = String(fila[2] || '-').trim();
-              const reps = String(fila[3] || '-').trim();
-              const peso = String(fila[4] || '-').trim();
+              const registro = {
+                id: Date.now() + i + Math.random(),
+                fecha: normalizarFechaExcel(fila[0]),
+                maquina: String(fila[1] ?? '').trim(),
+                series: normalizarValor(fila[2]),
+                reps: normalizarValor(fila[3]),
+                peso: normalizarValor(fila[4])
+              };
 
-              if (!fechaRaw || !maquina) continue;
-
-              const fechaSolo = fechaRaw.split(' ')[0];
-
-              // EVITAR DUPLICADOS: Comprueba si ya existe un registro con la misma fecha y mismo ejercicio
-              const yaExiste = historialExistente.some(h => {
-                const hFechaSolo = h.fecha ? h.fecha.split(' ')[0] : '';
-                return hFechaSolo === fechaSolo && 
-                       h.maquina.toLowerCase() === maquina.toLowerCase();
-              });
-
-              if (!yaExiste) {
-                historialExistente.unshift({
-                  id: Date.now() + Math.random() + i,
-                  fecha: fechaRaw,
-                  maquina: maquina,
-                  series: series,
-                  reps: reps,
-                  peso: peso
-                });
-                totalImportados++;
-              } else {
-                totalOmitidos++;
+              if (!registro.fecha || !registro.maquina) {
+                totalInvalidos++;
+                continue;
               }
+
+              const clave = claveRegistro(registro);
+              if (clavesExistentes.has(clave)) {
+                totalDuplicados++;
+                continue;
+              }
+
+              historialExistente.push(registro);
+              clavesExistentes.add(clave);
+              totalImportados++;
             }
 
-            // Ordenar el historial de más reciente a más antiguo
-            historialExistente.sort((a, b) => {
-              const parseDate = (dStr) => {
-                const parts = dStr.split(' ')[0].split('/');
-                if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
-                return new Date(0);
-              };
-              return parseDate(b.fecha) - parseDate(a.fecha);
-            });
-
+            historialExistente.sort((a, b) => fechaAOrden(b.fecha) - fechaAOrden(a.fecha));
             localStorage.setItem(`historial_sesiones_${perfilPestana}`, JSON.stringify(historialExistente));
 
-            // Sincronizar las máquinas activas de este perfil con los últimos valores registrados si corresponde
+            // Añadir máquinas desconocidas y mostrar en cada una su registro más reciente.
             let maquinasPerfil = [];
             try {
-              const mData = localStorage.getItem(`mis_maquinas_${perfilPestana}`);
-              if (mData) maquinasPerfil = JSON.parse(mData);
-            } catch(err) {}
+              maquinasPerfil = JSON.parse(localStorage.getItem(`mis_maquinas_${perfilPestana}`)) || [];
+            } catch (err) {
+              maquinasPerfil = [];
+            }
 
             historialExistente.forEach(sesion => {
-              let maq = maquinasPerfil.find(m => m.nombre.toLowerCase() === sesion.maquina.toLowerCase());
-              if (!maq) {
-                // Si la máquina no existía en la lista activa del perfil, se añade automáticamente
-                maq = {
+              let maquina = maquinasPerfil.find(m => normalizarTexto(m.nombre) === normalizarTexto(sesion.maquina));
+              if (!maquina) {
+                maquina = {
                   id: Date.now() + Math.random(),
                   nombre: sesion.maquina,
-                  series: "",
-                  peso: "",
-                  reps: "",
-                  fecha: "-"
+                  series: '',
+                  reps: '',
+                  peso: '',
+                  fecha: '-'
                 };
-                maquinasPerfil.push(maq);
+                maquinasPerfil.push(maquina);
               }
-              // Si la fecha de la sesión es más reciente o igual a la actual guardada en la máquina, actualizar vista rápida
-              const fechaMaq = maq.fecha ? maq.fecha.split(' ')[0] : '';
-              const fechaSes = sesion.fecha ? sesion.fecha.split(' ')[0] : '';
-              if (!maq.fecha || maq.fecha === '-' || fechaSes >= fechaMaq) {
-                maq.series = sesion.series;
-                maq.reps = sesion.reps;
-                maq.peso = sesion.peso;
-                maq.fecha = fechaSes;
+
+              if (maquina.fecha === '-' || fechaAOrden(sesion.fecha) >= fechaAOrden(maquina.fecha)) {
+                maquina.series = sesion.series;
+                maquina.reps = sesion.reps;
+                maquina.peso = sesion.peso;
+                maquina.fecha = sesion.fecha;
               }
             });
 
             localStorage.setItem(`mis_maquinas_${perfilPestana}`, JSON.stringify(maquinasPerfil));
           });
 
-          // Actualizar variables y pantalla actual
-          perfiles = cargarPerfiles();
+          guardarPerfiles();
           maquinas = cargarDatos();
           historialSesiones = cargarHistorial(perfilActual);
+          maquinaEditandoId = null;
           renderizarPerfiles();
           renderizarLista();
           renderizarHistorial();
 
-          alert(`✅ Importación completada:\n\n• Nuevos registros añadidos: ${totalImportados}\n• Registros omitidos (duplicados): ${totalOmitidos}`);
-
+          alert(
+            `✅ Fusión terminada\n\n` +
+            `• Registros nuevos: ${totalImportados}\n` +
+            `• Duplicados omitidos: ${totalDuplicados}\n` +
+            `• Filas inválidas: ${totalInvalidos}`
+          );
         } catch (err) {
-          console.error(err);
-          alert('Error procesando el archivo Excel.');
+          console.error('Error al importar Excel:', err);
+          alert(`No se pudo cargar el Excel. Detalle: ${err.message || err}`);
+        } finally {
+          e.target.value = '';
         }
       };
 
-      reader.readAsBuffer(file);
-      e.target.value = '';
+      reader.onerror = function() {
+        alert('No se pudo leer el archivo seleccionado.');
+        e.target.value = '';
+      };
+
+      reader.readAsArrayBuffer(file);
     });
 
     /* BACKUP Y RESTAURACIÓN EN JSON */
@@ -1614,14 +1681,5 @@
     });
   </script>
 
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .catch(error => console.error('Error al registrar el Service Worker:', error));
-      });
-    }
-  </script>
 </body>
 </html>
