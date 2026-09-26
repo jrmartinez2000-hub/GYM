@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Mi Gimnasio</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
@@ -636,6 +636,239 @@
     .reset-view-btn{width:100%;margin-top:9px;padding:11px;border-radius:8px;border:1.5px solid var(--text-muted);background:transparent;color:var(--text-muted);font-weight:700}
     .view-note{color:var(--text-muted);font-size:.82rem;margin:5px 0 8px}
     @media(max-width:480px){body{padding:8px}.size-control{grid-template-columns:minmax(100px,1fr) 44px 52px 44px;gap:4px}.register-inputs input{min-height:46px}.btn-register,.btn-main,.btn-export,.btn-import{min-height:52px}}
+
+
+    /* VERSION 4.0: ADAPTACION COMPLETA PARA MOVIL */
+    html, body {
+      min-width: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+    body, main, section, div, form, header, footer {
+      min-width: 0;
+    }
+    img, canvas, svg, video {
+      max-width: 100%;
+      height: auto;
+    }
+    button, input, select, textarea {
+      max-width: 100%;
+      min-width: 0;
+    }
+    button {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      line-height: 1.25;
+    }
+    .card h3,
+    .history-machine-title,
+    .history-details,
+    .view-note,
+    .profiles-header label,
+    .size-control label {
+      overflow-wrap: anywhere;
+      word-break: normal;
+      min-width: 0;
+    }
+    .profile-actions,
+    .card-footer,
+    .card-actions,
+    .register-actions-row {
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .profile-actions > *,
+    .register-actions-row > * {
+      min-width: min(135px, 100%);
+    }
+    .card-actions {
+      flex: 1 1 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
+      gap: 6px;
+      width: 100%;
+    }
+    .card-actions > * {
+      width: 100%;
+      min-height: 44px;
+    }
+    .fecha-badge {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      flex: 1 1 100%;
+    }
+    .history-item {
+      gap: 8px;
+      min-width: 0;
+    }
+    .history-details {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .history-item .btn-delete {
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 7px;
+      }
+      h1 {
+        font-size: clamp(1.25rem, 7vw, 1.8rem);
+        overflow-wrap: anywhere;
+      }
+      .profiles-section,
+      .panel,
+      .card,
+      .history-section,
+      .view-settings {
+        padding-left: 9px;
+        padding-right: 9px;
+      }
+      .view-settings {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .profile-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .profile-actions .delete {
+        grid-column: 1 / -1;
+      }
+      .btn-profile-action {
+        width: 100%;
+        min-width: 0;
+        min-height: 46px;
+        padding: 8px 5px;
+      }
+      .profile-tabs {
+        flex-wrap: wrap;
+        overflow-x: visible;
+      }
+      .btn-profile {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        flex: 1 1 min(140px, 100%);
+        min-width: 0;
+        min-height: 44px;
+      }
+      .action-buttons,
+      .grid {
+        width: 100%;
+      }
+      .btn-main,
+      .btn-export,
+      .btn-import,
+      .btn-backup,
+      .btn-submit {
+        min-height: 52px;
+        padding: 10px 8px;
+      }
+      .card-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .card-header h3,
+      .card-header .edit-input-card {
+        flex: 1 1 calc(100% - 62px);
+        min-width: 0;
+      }
+      .register-inputs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        width: 100%;
+      }
+      .register-inputs > div {
+        min-width: 0;
+      }
+      .register-inputs input {
+        width: 100%;
+        min-width: 0;
+        padding-left: 3px;
+        padding-right: 3px;
+      }
+      .register-actions-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .btn-register,
+      .btn-clear-reg {
+        width: 100%;
+        min-width: 0;
+        min-height: 50px;
+      }
+      .card-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .history-item {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .history-item .btn-delete {
+        width: 100%;
+        min-height: 44px;
+      }
+      .history-group-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 6px;
+        overflow-wrap: anywhere;
+      }
+      .history-group-header span.badge-count {
+        justify-self: start;
+      }
+      .size-control {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+      }
+      .size-control label {
+        grid-column: 1 / -1;
+        text-align: center;
+      }
+      .size-btn,
+      .size-value {
+        width: 100%;
+        min-width: 0;
+      }
+      .size-value {
+        align-self: center;
+      }
+      .view-settings-toggle {
+        gap: 8px;
+      }
+      .info-row {
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .info-row > span:first-child {
+        flex: 1 1 100%;
+      }
+      .info-row input {
+        width: 100% !important;
+        text-align: left !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .register-inputs {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .profile-actions {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .profile-actions .delete {
+        grid-column: auto;
+      }
+      .card-header h3,
+      .card-header .edit-input-card {
+        flex-basis: 100%;
+      }
+    }
+
   </style>
 </head>
 <body>
