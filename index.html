@@ -911,6 +911,20 @@
       body.training-mode .register-inputs input { min-height: 52px; font-weight: 800; }
     }
 
+
+
+    /* VERSION 6.0: PROGRESO LIMPIO */
+    .progress-button{width:100%;min-height:52px;padding:11px;margin-bottom:12px;border:1.5px solid var(--accent);border-radius:10px;background:var(--card-bg);color:var(--accent);font-weight:800;cursor:pointer}
+    .progress-panel{display:none;background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;padding:12px;margin-bottom:12px}
+    .progress-panel.visible{display:block}.progress-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.progress-head h2{font-size:1.15rem;color:var(--accent)}
+    .progress-close{border:0;background:transparent;color:var(--text-muted);font-size:1.35rem;cursor:pointer}
+    .progress-filter{margin-bottom:10px}.progress-filter input,.progress-filter select{width:100%;padding:11px;border-radius:8px;border:1.5px solid #475569;background:var(--input-bg);color:var(--text);font-size:1rem}
+    .progress-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.progress-kpi{background:var(--input-bg);border-radius:9px;padding:10px 6px;text-align:center;min-width:0}.progress-kpi strong{display:block;color:var(--accent);font-size:1.3rem;overflow-wrap:anywhere}.progress-kpi span{display:block;color:var(--text-muted);font-size:.75rem;margin-top:3px}
+    .progress-chart-wrap{background:var(--input-bg);border-radius:10px;padding:8px;margin-bottom:10px;overflow:hidden}.progress-chart-title{font-size:.85rem;color:var(--text-muted);margin:2px 0 8px}.progress-chart{width:100%;height:190px;display:block}.progress-empty{text-align:center;color:var(--text-muted);padding:22px 8px}
+    .progress-record{padding:9px;border-left:3px solid var(--success);background:rgba(34,197,94,.08);border-radius:7px;font-size:.9rem}.progress-record strong{color:var(--success)}
+    body.training-mode .progress-button,body.training-mode .progress-panel{display:none!important}
+    @media(max-width:420px){.progress-kpis{grid-template-columns:minmax(0,1fr)}.progress-chart{height:165px}}
+
   </style>
 </head>
 <body>
@@ -949,6 +963,13 @@
     </form>
   </div>
 
+  <button type="button" class="progress-button" onclick="togglePanelProgreso()">📈 Ver progreso</button>
+  <section class="progress-panel" id="progress-panel" aria-label="Progreso de entrenamiento">
+    <div class="progress-head"><h2>Progreso</h2><button type="button" class="progress-close" onclick="togglePanelProgreso(false)" aria-label="Cerrar">✕</button></div>
+    <div class="progress-filter"><input type="search" id="progress-search" placeholder="Buscar ejercicio..." oninput="actualizarSelectorProgreso()"></div>
+    <div class="progress-filter"><select id="progress-machine" onchange="renderizarProgreso()"></select></div>
+    <div id="progress-content"></div>
+  </section>
   <button type="button" class="training-mode-button" onclick="activarModoEntrenamiento()">🏋️ Iniciar modo entrenamiento</button>
   <button type="button" class="training-exit-button" onclick="desactivarModoEntrenamiento()">✕ Salir del modo entrenamiento</button>
   <!-- Botones de Acción -->
@@ -1112,6 +1133,44 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    /* PANEL DE PROGRESO LIMPIO */
+    function togglePanelProgreso(forzar) {
+      const panel=document.getElementById('progress-panel');
+      const mostrar=typeof forzar==='boolean'?forzar:!panel.classList.contains('visible');
+      panel.classList.toggle('visible',mostrar);
+      if(mostrar){actualizarSelectorProgreso();panel.scrollIntoView({behavior:'smooth',block:'start'});}
+    }
+    function registrosValidosProgreso(){
+      return cargarHistorial(perfilActual).filter(r=>r&&r.maquina);
+    }
+    function numeroProgreso(v){
+      const n=parseFloat(String(v??'').replace(',','.').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:null;
+    }
+    function actualizarSelectorProgreso(){
+      const select=document.getElementById('progress-machine');if(!select)return;
+      const antes=select.value;const q=(document.getElementById('progress-search')?.value||'').trim().toLowerCase();
+      const nombres=[...new Set(registrosValidosProgreso().map(r=>String(r.maquina).trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+      const filtrados=nombres.filter(n=>n.toLowerCase().includes(q));
+      select.innerHTML=filtrados.length?filtrados.map(n=>`<option value="${escaparHTML(n)}">${escaparHTML(n)}</option>`).join(''):'<option value="">Sin ejercicios</option>';
+      if(filtrados.includes(antes))select.value=antes;renderizarProgreso();
+    }
+    function renderizarProgreso(){
+      const destino=document.getElementById('progress-content'),nombre=document.getElementById('progress-machine')?.value;if(!destino)return;
+      if(!nombre){destino.innerHTML='<div class="progress-empty">No hay registros para mostrar.</div>';return;}
+      const regs=registrosValidosProgreso().filter(r=>r.maquina===nombre).sort((a,b)=>fechaAOrden(a.fecha)-fechaAOrden(b.fecha));
+      const pesos=regs.map(r=>numeroProgreso(r.peso)).filter(v=>v!==null);const maxPeso=pesos.length?Math.max(...pesos):null;
+      const volumen=regs.reduce((s,r)=>{const p=numeroProgreso(r.peso),re=numeroProgreso(r.reps),se=numeroProgreso(r.series);return s+(p!==null&&re!==null&&se!==null?p*re*se:0)},0);
+      const ultimo=regs[regs.length-1];
+      destino.innerHTML=`<div class="progress-kpis"><div class="progress-kpi"><strong>${regs.length}</strong><span>Registros</span></div><div class="progress-kpi"><strong>${maxPeso===null?'—':maxPeso}</strong><span>Récord de peso</span></div><div class="progress-kpi"><strong>${volumen?Math.round(volumen):'—'}</strong><span>Volumen total</span></div></div><div class="progress-chart-wrap"><div class="progress-chart-title">Evolución del peso</div><canvas id="progress-chart" class="progress-chart"></canvas></div><div class="progress-record"><strong>Último registro:</strong> ${escaparHTML(ultimo?.fecha||'—')} · ${escaparHTML(ultimo?.series||'—')} series · ${escaparHTML(ultimo?.reps||'—')} reps · ${escaparHTML(ultimo?.peso||'—')} peso</div>`;
+      dibujarGraficaProgreso(regs);
+    }
+    function dibujarGraficaProgreso(regs){
+      const canvas=document.getElementById('progress-chart');if(!canvas)return;const datos=regs.map(r=>({v:numeroProgreso(r.peso),f:r.fecha})).filter(x=>x.v!==null).slice(-20);const ratio=window.devicePixelRatio||1;const w=canvas.clientWidth||300,h=canvas.clientHeight||190;canvas.width=w*ratio;canvas.height=h*ratio;const c=canvas.getContext('2d');c.scale(ratio,ratio);c.clearRect(0,0,w,h);
+      if(datos.length<1){c.fillStyle='#94a3b8';c.font='14px system-ui';c.textAlign='center';c.fillText('Sin datos numéricos de peso',w/2,h/2);return;}
+      const pad={l:34,r:12,t:12,b:24},min=Math.min(...datos.map(x=>x.v)),max=Math.max(...datos.map(x=>x.v)),rango=max-min||1;c.strokeStyle='#475569';c.lineWidth=1;c.beginPath();c.moveTo(pad.l,pad.t);c.lineTo(pad.l,h-pad.b);c.lineTo(w-pad.r,h-pad.b);c.stroke();
+      c.strokeStyle='#38bdf8';c.lineWidth=3;c.lineJoin='round';c.beginPath();datos.forEach((x,i)=>{const px=pad.l+(datos.length===1?(w-pad.l-pad.r)/2:i*(w-pad.l-pad.r)/(datos.length-1));const py=pad.t+(max-x.v)*(h-pad.t-pad.b)/rango;i?c.lineTo(px,py):c.moveTo(px,py)});c.stroke();c.fillStyle='#38bdf8';datos.forEach((x,i)=>{const px=pad.l+(datos.length===1?(w-pad.l-pad.r)/2:i*(w-pad.l-pad.r)/(datos.length-1));const py=pad.t+(max-x.v)*(h-pad.t-pad.b)/rango;c.beginPath();c.arc(px,py,4,0,Math.PI*2);c.fill()});c.fillStyle='#94a3b8';c.font='11px system-ui';c.textAlign='right';c.fillText(String(max),pad.l-5,pad.t+4);c.fillText(String(min),pad.l-5,h-pad.b+4);
+    }
+
     function cargarPerfiles() {
       try {
         const perfilesGuardados = localStorage.getItem('lista_perfiles');
@@ -1176,6 +1235,7 @@
       if (perfil === perfilActual) {
         localStorage.setItem(`historial_sesiones_${perfilActual}`, JSON.stringify(historialSesiones));
         renderizarHistorial();
+        if(document.getElementById('progress-panel')?.classList.contains('visible')) actualizarSelectorProgreso();
       } else {
         const hist = cargarHistorial(perfil);
         localStorage.setItem(`historial_sesiones_${perfil}`, JSON.stringify(hist));
@@ -1217,6 +1277,7 @@
       aplicarModoEntrenamiento();
       renderizarLista();
       renderizarHistorial();
+      if(document.getElementById('progress-panel')?.classList.contains('visible')) actualizarSelectorProgreso();
     }
 
     function mostrarPanelNuevoPerfil() {

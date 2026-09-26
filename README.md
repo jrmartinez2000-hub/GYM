@@ -1,3 +1,3 @@
-# Registro Gimnasio PWA v5
+# Registro Gimnasio PWA v6
 
-Incluye modo entrenamiento, diseño móvil, tamaños por perfil y fusión Excel sin duplicados.
+Panel limpio de progreso, récords y evolución, manteniendo modo entrenamiento, móvil, tamaños por perfil y fusión Excel.
