@@ -1,9 +1,9 @@
-## Registro Gimnasio v10
+## Registro Gimnasio v11
 
-- Interfaz completamente adaptativa para móvil, tablet y escritorio.
-- Menú de Personalización visual dentro de Herramientas avanzadas.
-- Tamaño independiente para nombres de máquinas, datos de entrenamiento, historial, fechas y horas, botones y perfiles.
-- Controles sencillos A− y A+, con rango del 80% al 180%.
-- Preferencias guardadas de forma independiente para cada perfil.
-- Botón para restaurar todos los tamaños predeterminados.
-- Conserva las mejoras v9 de cambio/eliminación de fotos y renombrado sin perder registros.
+- Solo se muestra una miniatura por máquina, situada en la fila compacta.
+- Se elimina la miniatura duplicada del recuadro desplegado.
+- Los botones de fotografía desaparecen del recuadro de la máquina.
+- Al ampliar una foto aparecen las opciones Cambiar foto y Eliminar foto.
+- Cuando no hay foto, al pulsar el icono de la fila compacta se abre directamente la cámara o galería para añadirla.
+- Conserva la interfaz adaptativa y los tamaños selectivos de la v10.
+- Conserva el renombrado de máquinas sin perder registros, Excel ni JSON.

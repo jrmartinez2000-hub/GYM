@@ -683,7 +683,7 @@
     }
 
 
-    /* VERSION 10.0: INTERFAZ ADAPTATIVA Y TAMANOS SELECTIVOS */
+    /* VERSION 11.0: INTERFAZ ADAPTATIVA, FOTO LIMPIA Y MODAL DE GESTION */
     :root {
       --fs-machines: 1;
       --fs-data: 1;
@@ -719,6 +719,15 @@
       .visual-settings-panel { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .visual-reset { grid-column:1/-1; }
     }
+
+    /* VERSION 11.0: GESTION DE FOTO SOLO DESDE LA VISTA AMPLIADA */
+    .modal-photo-content { width:min(96vw,900px); max-height:94vh; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .modal-img { max-width:100%; max-height:calc(94vh - 90px); }
+    .modal-photo-actions { width:100%; display:flex; justify-content:center; gap:8px; flex-wrap:wrap; }
+    .modal-photo-actions button { min-height:44px; padding:9px 14px; border-radius:8px; font-weight:800; cursor:pointer; }
+    .modal-change-photo { background:var(--accent); color:#0f172a; border:0; }
+    .modal-delete-photo { background:transparent; color:#fca5a5; border:1.5px solid var(--danger); }
+    @media(max-width:480px){ .modal-overlay{padding:10px}.modal-photo-actions{display:grid;grid-template-columns:1fr 1fr}.modal-photo-actions button{width:100%;padding:8px 5px}.modal-img{max-height:calc(94vh - 105px)} }
   </style>
 </head>
 <body>
@@ -810,8 +819,14 @@
 
   <!-- Modal Foto -->
   <div class="modal-overlay" id="modal-foto" onclick="cerrarFotoModal()">
-    <button class="modal-close-btn" onclick="cerrarFotoModal()">✕</button>
-    <img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada">
+    <button class="modal-close-btn" type="button" onclick="cerrarFotoModal()" aria-label="Cerrar foto">✕</button>
+    <div class="modal-photo-content" onclick="event.stopPropagation()">
+      <img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada">
+      <div class="modal-photo-actions">
+        <button type="button" class="modal-change-photo" onclick="cambiarFotoDesdeModal()">📷 Cambiar foto</button>
+        <button type="button" class="modal-delete-photo" onclick="eliminarFotoDesdeModal()">🗑️ Eliminar foto</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1209,7 +1224,7 @@
         botonFoto.innerHTML = `<img class="machine-summary-photo" src="${fotoData}" alt="Foto de ${escaparHTML(m.nombre)}">`;
         botonFoto.addEventListener('click', e => {
           e.stopPropagation();
-          abrirFotoModal(fotoData);
+          abrirFotoModal(fotoData, m.id);
         });
       } else {
         botonFoto.innerHTML = '<span class="machine-summary-photo-placeholder">🏋️</span>';
@@ -1239,23 +1254,9 @@
 
         const fotoData = await obtenerFotoDB(m.id);
 
-        const thumbContainer = document.createElement('div');
-        if (fotoData) {
-          const img = document.createElement('img');
-          img.src = fotoData;
-          img.className = 'card-thumb';
-          img.alt = 'Foto';
-          img.title = 'Ampliar';
-          img.onclick = () => abrirFotoModal(fotoData);
-          thumbContainer.appendChild(img);
-        } else {
-          thumbContainer.innerHTML = `<div class="card-thumb-placeholder">🏋️</div>`;
-        }
-
         if (esEditando) {
           card.innerHTML = `
             <div class="card-header">
-              <div class="thumb-slot"></div>
               <div style="flex:1;min-width:0">
                 <label for="edit-nombre-${m.id}">Nombre de la máquina</label>
                 <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
@@ -1265,14 +1266,10 @@
             <div class="card-footer">
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
-                <button class="btn-card" id="btn-foto-${m.id}">${fotoData ? '📷 Cambiar foto' : '📷 Añadir foto'}</button>
-                ${fotoData ? `<button class="btn-card btn-photo-delete" id="btn-del-foto-${m.id}">🗑️ Eliminar foto</button>` : ''}
                 <button class="btn-delete" id="btn-del-${m.id}">🗑️ Máquina</button>
               </div>
             </div>
           `;
-
-          card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
@@ -1283,15 +1280,11 @@
             if (e.key === 'Enter') { e.preventDefault(); inputNombre.blur(); }
             if (e.key === 'Escape') { maquinaEditandoId = null; renderizarLista(); }
           });
-          document.getElementById(`btn-foto-${m.id}`).addEventListener('click', () => tomarFoto(m.id));
-          const btnDelFoto = document.getElementById(`btn-del-foto-${m.id}`);
-          if (btnDelFoto) btnDelFoto.addEventListener('click', () => eliminarFotoMaquina(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
 
         } else {
           card.innerHTML = `
             <div class="card-header">
-              <div class="thumb-slot"></div>
               <h3 class="editable" id="title-edit-${m.id}" title="Toca para editar">${escaparHTML(m.nombre)}</h3>
             </div>
 
@@ -1320,14 +1313,10 @@
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
                 <button class="btn-card btn-edit-toggle" id="btn-edit-${m.id}">✏️ Editar</button>
-                <button class="btn-card" id="btn-foto-${m.id}">${fotoData ? '📷 Cambiar foto' : '📷 Añadir foto'}</button>
-                ${fotoData ? `<button class="btn-card btn-photo-delete" id="btn-del-foto-${m.id}">🗑️ Eliminar foto</button>` : ''}
                 <button class="btn-delete" id="btn-del-${m.id}">🗑️ Borrar máquina</button>
               </div>
             </div>
           `;
-
-          card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
@@ -1336,9 +1325,6 @@
           document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));
           document.getElementById(`btn-clear-${m.id}`).addEventListener('click', () => borrarRegistroMaquina(m.id));
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
-          document.getElementById(`btn-foto-${m.id}`).addEventListener('click', () => tomarFoto(m.id));
-          const btnDelFoto = document.getElementById(`btn-del-foto-${m.id}`);
-          if (btnDelFoto) btnDelFoto.addEventListener('click', () => eliminarFotoMaquina(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
         }
       }
@@ -1735,7 +1721,9 @@
       });
     }
 
-    function abrirFotoModal(src) {
+    let maquinaFotoModalId = null;
+    function abrirFotoModal(src, id) {
+      maquinaFotoModalId = id;
       const modal = document.getElementById('modal-foto');
       document.getElementById('img-modal-fullscreen').src = src;
       modal.classList.add('active');
@@ -1743,6 +1731,25 @@
 
     function cerrarFotoModal() {
       document.getElementById('modal-foto').classList.remove('active');
+      document.getElementById('img-modal-fullscreen').src = '';
+      maquinaFotoModalId = null;
+    }
+
+    function cambiarFotoDesdeModal() {
+      if (!maquinaFotoModalId) return;
+      const id = maquinaFotoModalId;
+      cerrarFotoModal();
+      tomarFoto(id);
+    }
+
+    async function eliminarFotoDesdeModal() {
+      if (!maquinaFotoModalId) return;
+      const id = maquinaFotoModalId;
+      if (!confirm('¿Eliminar la foto de esta máquina? Los registros de ejercicios no se modificarán.')) return;
+      await eliminarFotoDB(id);
+      cerrarFotoModal();
+      renderizarLista();
+      mostrarToast('🗑️ Foto eliminada');
     }
 
     function tomarFoto(id) {
@@ -1750,12 +1757,6 @@
       document.getElementById('input-camara').click();
     }
 
-    async function eliminarFotoMaquina(id) {
-      if (!confirm('¿Eliminar la foto de esta máquina? Los registros de ejercicios no se modificarán.')) return;
-      await eliminarFotoDB(id);
-      renderizarLista();
-      mostrarToast('🗑️ Foto eliminada');
-    }
 
     document.getElementById('input-camara').addEventListener('change', function(e) {
       const file = e.target.files[0];
