@@ -1,9 +1,10 @@
-## Registro Gimnasio v11
+## Registro Gimnasio v13
 
-- Solo se muestra una miniatura por máquina, situada en la fila compacta.
-- Se elimina la miniatura duplicada del recuadro desplegado.
-- Los botones de fotografía desaparecen del recuadro de la máquina.
-- Al ampliar una foto aparecen las opciones Cambiar foto y Eliminar foto.
-- Cuando no hay foto, al pulsar el icono de la fila compacta se abre directamente la cámara o galería para añadirla.
-- Conserva la interfaz adaptativa y los tamaños selectivos de la v10.
-- Conserva el renombrado de máquinas sin perder registros, Excel ni JSON.
+- Edición de cada perfil con nombre, peso corporal y estatura.
+- Cálculo estimado de calorías mediante MET, peso corporal, intensidad y duración.
+- Calorías diarias visibles entre la fecha y el número de ejercicios.
+- Cinta: tiempo y velocidad.
+- Elíptica y sinónimos: pasos, tiempo y resistencia baja/media/alta.
+- Bicicleta estática y sinónimos: velocidad, tiempo y resistencia baja/media/alta.
+- Datos físicos incluidos en las copias JSON.
+- Las calorías son una estimación orientativa, no una medición clínica.

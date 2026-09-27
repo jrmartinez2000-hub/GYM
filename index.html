@@ -452,7 +452,6 @@
       white-space: nowrap;
     }
 
-    .btn-photo-delete { border-color: var(--danger); color: var(--danger); background: transparent; }
     .btn-edit-toggle.save {
       background-color: var(--success);
       border-color: var(--success);
@@ -628,7 +627,7 @@
     @media(max-width:600px){body{padding:7px}.profile-actions,.card-footer,.card-actions,.register-actions-row{flex-wrap:wrap}.card-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(110px,100%),1fr));width:100%}.register-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.register-inputs>div,.register-inputs input{min-width:0}.machine-details{padding:0 9px 10px}.advanced-tools-grid{grid-template-columns:1fr}.history-item{flex-direction:column;align-items:stretch;gap:8px}.history-item .btn-delete{width:100%}}@media(max-width:380px){.register-inputs{grid-template-columns:1fr}}
 
 
-    /* VERSION 9.0: FOTO, RENOMBRADO INSTANTANEO Y CONSERVACION DE HISTORIAL */
+    /* VERSION 8.0: FOTO Y RECORD EN LA FILA COMPACTA */
     .machine-summary { padding-right: 8px; }
     .machine-summary-record {
       flex: 0 0 auto;
@@ -683,51 +682,14 @@
     }
 
 
-    /* VERSION 11.0: INTERFAZ ADAPTATIVA, FOTO LIMPIA Y MODAL DE GESTION */
-    :root {
-      --fs-machines: 1;
-      --fs-data: 1;
-      --fs-history: 1;
-      --fs-datetime: 1;
-      --fs-buttons: 1;
-      --fs-profiles: 1;
-    }
-    .machine-summary-name, .card h3 { font-size: calc(clamp(1.05rem, 3.8vw, 1.35rem) * var(--fs-machines)); }
-    .register-box label, .register-box input, .info-row { font-size: calc(clamp(.86rem, 3vw, 1rem) * var(--fs-data)); }
-    .history-details, .history-machine-title, .history-details span { font-size: calc(clamp(.82rem, 2.8vw, 1rem) * var(--fs-history)); }
-    .fecha-badge, .history-date, .history-group-header { font-size: calc(clamp(.76rem, 2.7vw, .95rem) * var(--fs-datetime)); }
-    button, .btn-main, .btn-profile-action, .btn-card, .btn-delete, .btn-register, .btn-clear-reg,
-    .btn-export, .btn-import, .btn-backup { font-size: calc(clamp(.78rem, 2.8vw, 1rem) * var(--fs-buttons)); }
-    .btn-profile { font-size: calc(clamp(.9rem, 3vw, 1.08rem) * var(--fs-profiles)); }
-    .visual-settings { grid-column: 1 / -1; border:1px solid #475569; border-radius:10px; overflow:hidden; background:var(--input-bg); }
-    .visual-settings-toggle { width:100%; min-height:50px; padding:10px; border:0; background:#334155; color:var(--accent); font-weight:800; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
-    .visual-settings-panel { display:none; padding:10px; gap:8px; }
-    .visual-settings-panel.visible { display:grid; }
-    .font-control { display:grid; grid-template-columns:minmax(0,1fr) 42px 64px 42px; gap:6px; align-items:center; padding:8px; border-radius:8px; background:var(--card-bg); }
-    .font-control-label { color:var(--text); font-size:clamp(.82rem,2.8vw,.98rem); min-width:0; overflow-wrap:anywhere; }
-    .font-control button { min-height:38px; padding:5px; border:1px solid var(--accent); border-radius:7px; color:var(--accent); background:transparent; font-weight:900; }
-    .font-control-output { text-align:center; color:#fbbf24; font-weight:800; font-size:.84rem; }
-    .visual-reset { width:100%; min-height:44px; margin-top:2px; border:1px solid var(--danger); border-radius:8px; color:var(--danger); background:transparent; font-weight:800; }
-    @media(max-width:420px){
-      .font-control { grid-template-columns:minmax(0,1fr) 38px 58px 38px; padding:7px 5px; gap:4px; }
-      .machine-summary { flex-wrap:nowrap; }
-      .machine-summary-record { max-width:28vw; overflow:hidden; text-overflow:ellipsis; }
-    }
-    @media(min-width:700px){
-      body { max-width:900px; margin:0 auto; padding:18px; }
-      .advanced-tools-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .visual-settings-panel { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .visual-reset { grid-column:1/-1; }
-    }
+    /* VERSION 12 */
+    .treadmill-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}.treadmill-inputs label{font-size:.78rem;text-align:center}.treadmill-inputs input{text-align:center;padding:7px}
+    .modal-photo-content{width:min(96vw,900px);max-height:94vh;display:flex;flex-direction:column;align-items:center;gap:12px}.modal-photo-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}.modal-photo-actions button{min-height:44px;padding:9px 14px;border-radius:8px;font-weight:800}.modal-change-photo{background:var(--accent);color:#0f172a;border:0}.modal-delete-photo{background:transparent;color:#fca5a5;border:1.5px solid var(--danger)}
+    .machine-summary-name{font-size:clamp(1.05rem,3.8vw,1.35rem)} button,input,label,.history-details{font-size:clamp(.82rem,2.8vw,1rem)}
+    @media(min-width:700px){body{max-width:900px;margin:0 auto;padding:18px}}@media(max-width:420px){.modal-photo-actions{display:grid;grid-template-columns:1fr 1fr}.modal-photo-actions button{width:100%;padding:7px}.treadmill-inputs{grid-template-columns:1fr 1fr}}
 
-    /* VERSION 11.0: GESTION DE FOTO SOLO DESDE LA VISTA AMPLIADA */
-    .modal-photo-content { width:min(96vw,900px); max-height:94vh; display:flex; flex-direction:column; align-items:center; gap:12px; }
-    .modal-img { max-width:100%; max-height:calc(94vh - 90px); }
-    .modal-photo-actions { width:100%; display:flex; justify-content:center; gap:8px; flex-wrap:wrap; }
-    .modal-photo-actions button { min-height:44px; padding:9px 14px; border-radius:8px; font-weight:800; cursor:pointer; }
-    .modal-change-photo { background:var(--accent); color:#0f172a; border:0; }
-    .modal-delete-photo { background:transparent; color:#fca5a5; border:1.5px solid var(--danger); }
-    @media(max-width:480px){ .modal-overlay{padding:10px}.modal-photo-actions{display:grid;grid-template-columns:1fr 1fr}.modal-photo-actions button{width:100%;padding:8px 5px}.modal-img{max-height:calc(94vh - 105px)} }
+    /* VERSION 13 */
+    .profile-data-summary{margin-top:8px;color:var(--text-muted);font-size:.85rem;text-align:center}.cardio-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:7px}.cardio-inputs label{font-size:.74rem;text-align:center}.cardio-inputs input,.cardio-inputs select{width:100%;padding:7px;border-radius:7px;border:1px solid #475569;background:var(--input-bg);color:var(--text);text-align:center}.calorie-badge{color:#fb923c;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.35);border-radius:999px;padding:3px 9px;font-weight:800;font-size:.78rem;white-space:nowrap}.history-group-header{gap:7px;flex-wrap:wrap}.history-header-date{flex:1;min-width:130px}.history-header-metrics{display:flex;align-items:center;gap:7px}.profile-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}@media(max-width:420px){.cardio-inputs{grid-template-columns:1fr}.profile-edit-grid{grid-template-columns:1fr}.history-header-metrics{width:100%;justify-content:space-between}}
   </style>
 </head>
 <body>
@@ -742,12 +704,12 @@
       </div>
       <div class="profile-actions">
         <button class="btn-profile-action" onclick="mostrarPanelNuevoPerfil()">➕ Nuevo</button>
-        <button class="btn-profile-action" onclick="editarPerfilActual()">✏️ Renombrar</button>
+        <button class="btn-profile-action" onclick="mostrarPanelEditarPerfil()">✏️ Editar perfil</button>
         <button class="btn-profile-action delete" onclick="eliminarPerfilActual()">🗑️ Borrar</button>
       </div>
     </div>
     
-    <div class="profile-tabs" id="profile-tabs"></div>
+    <div class="profile-tabs" id="profile-tabs"></div><div class="profile-data-summary" id="profile-data-summary"></div>
   </div>
 
   <!-- Panel: Crear Perfil -->
@@ -759,6 +721,19 @@
         <input type="text" id="nombre-perfil-nuevo" placeholder="Ej: Maria" required>
       </div>
       <button type="submit" class="btn-submit">Crear Perfil</button>
+    </form>
+  </div>
+
+
+  <div class="panel" id="panel-editar-perfil">
+    <h2>Editar perfil</h2>
+    <form id="form-editar-perfil">
+      <div class="form-group"><label for="perfil-edit-nombre">Nombre</label><input id="perfil-edit-nombre" type="text" required></div>
+      <div class="profile-edit-grid">
+        <div class="form-group"><label for="perfil-edit-peso">Peso corporal (kg)</label><input id="perfil-edit-peso" type="number" inputmode="decimal" min="20" max="300" step="0.1" required></div>
+        <div class="form-group"><label for="perfil-edit-estatura">Estatura (cm)</label><input id="perfil-edit-estatura" type="number" inputmode="numeric" min="100" max="230" step="1" required></div>
+      </div>
+      <button type="submit" class="btn-submit">Guardar perfil</button>
     </form>
   </div>
 
@@ -791,18 +766,6 @@
   <section class="advanced-tools">
     <button type="button" class="advanced-tools-toggle" id="advanced-tools-toggle" aria-expanded="false" onclick="toggleHerramientasAvanzadas()"><span>⚙️ Herramientas avanzadas</span><span id="advanced-tools-arrow">▼</span></button>
     <div class="advanced-tools-panel" id="advanced-tools-panel"><div class="advanced-tools-grid">
-      <section class="visual-settings">
-        <button type="button" class="visual-settings-toggle" id="visual-settings-toggle" aria-expanded="false" onclick="togglePersonalizacionVisual()"><span>🔠 Personalización visual</span><span id="visual-settings-arrow">▼</span></button>
-        <div class="visual-settings-panel" id="visual-settings-panel">
-          <div class="font-control"><span class="font-control-label">🏋️ Nombres de máquinas</span><button type="button" onclick="ajustarFuente('machines',-0.1)">A−</button><output class="font-control-output" id="font-machines">100%</output><button type="button" onclick="ajustarFuente('machines',0.1)">A+</button></div>
-          <div class="font-control"><span class="font-control-label">📊 Series / reps / peso</span><button type="button" onclick="ajustarFuente('data',-0.1)">A−</button><output class="font-control-output" id="font-data">100%</output><button type="button" onclick="ajustarFuente('data',0.1)">A+</button></div>
-          <div class="font-control"><span class="font-control-label">📋 Historial</span><button type="button" onclick="ajustarFuente('history',-0.1)">A−</button><output class="font-control-output" id="font-history">100%</output><button type="button" onclick="ajustarFuente('history',0.1)">A+</button></div>
-          <div class="font-control"><span class="font-control-label">📅 Fechas y horas</span><button type="button" onclick="ajustarFuente('datetime',-0.1)">A−</button><output class="font-control-output" id="font-datetime">100%</output><button type="button" onclick="ajustarFuente('datetime',0.1)">A+</button></div>
-          <div class="font-control"><span class="font-control-label">🔘 Botones</span><button type="button" onclick="ajustarFuente('buttons',-0.1)">A−</button><output class="font-control-output" id="font-buttons">100%</output><button type="button" onclick="ajustarFuente('buttons',0.1)">A+</button></div>
-          <div class="font-control"><span class="font-control-label">👤 Perfiles</span><button type="button" onclick="ajustarFuente('profiles',-0.1)">A−</button><output class="font-control-output" id="font-profiles">100%</output><button type="button" onclick="ajustarFuente('profiles',0.1)">A+</button></div>
-          <button type="button" class="visual-reset" onclick="restaurarFuentes()">♻ Restaurar tamaños predeterminados</button>
-        </div>
-      </section>
       <button class="btn-export" onclick="exportarExcelMultiPestana()">📊 Exportar informe Excel</button>
       <button class="btn-import" onclick="document.getElementById('input-excel-file').click()">📥 Cargar / fusionar Excel</button>
       <button class="btn-backup" onclick="exportarBackupJSON()">💾 Guardar copia JSON</button>
@@ -819,7 +782,7 @@
 
   <!-- Modal Foto -->
   <div class="modal-overlay" id="modal-foto" onclick="cerrarFotoModal()">
-    <button class="modal-close-btn" type="button" onclick="cerrarFotoModal()" aria-label="Cerrar foto">✕</button>
+    <button class="modal-close-btn" type="button" onclick="cerrarFotoModal()">✕</button>
     <div class="modal-photo-content" onclick="event.stopPropagation()">
       <img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada">
       <div class="modal-photo-actions">
@@ -914,37 +877,6 @@
     function cargarMaquinaExpandida(){const v=localStorage.getItem(claveMaquinaExpandida());maquinaExpandidaId=v===null?null:Number(v);}
     function toggleMaquina(id){maquinaExpandidaId=maquinaExpandidaId===id?null:id;if(maquinaExpandidaId===null)localStorage.removeItem(claveMaquinaExpandida());else localStorage.setItem(claveMaquinaExpandida(),String(id));renderizarLista();}
     function toggleHerramientasAvanzadas(){const p=document.getElementById('advanced-tools-panel'),b=document.getElementById('advanced-tools-toggle'),a=document.getElementById('advanced-tools-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
-    const FUENTES_DEFECTO = { machines:1, data:1, history:1, datetime:1, buttons:1, profiles:1 };
-    let ajustesFuente = { ...FUENTES_DEFECTO };
-    function claveAjustesFuente(){ return `ajustes_fuente_${perfilActual}`; }
-    function cargarAjustesFuente(){
-      try { ajustesFuente = { ...FUENTES_DEFECTO, ...JSON.parse(localStorage.getItem(claveAjustesFuente()) || '{}') }; }
-      catch(e) { ajustesFuente = { ...FUENTES_DEFECTO }; }
-      aplicarAjustesFuente();
-    }
-    function aplicarAjustesFuente(){
-      Object.entries(ajustesFuente).forEach(([campo,valor]) => {
-        document.documentElement.style.setProperty(`--fs-${campo}`, String(valor));
-        const salida=document.getElementById(`font-${campo}`);
-        if(salida) salida.textContent=`${Math.round(valor*100)}%`;
-      });
-    }
-    function ajustarFuente(campo, cambio){
-      const actual=Number(ajustesFuente[campo] || 1);
-      ajustesFuente[campo]=Math.min(1.8,Math.max(0.8,Math.round((actual+cambio)*10)/10));
-      localStorage.setItem(claveAjustesFuente(),JSON.stringify(ajustesFuente));
-      aplicarAjustesFuente();
-    }
-    function restaurarFuentes(){
-      ajustesFuente={...FUENTES_DEFECTO};
-      localStorage.setItem(claveAjustesFuente(),JSON.stringify(ajustesFuente));
-      aplicarAjustesFuente();
-      mostrarToast('♻ Tamaños restaurados');
-    }
-    function togglePersonalizacionVisual(){
-      const p=document.getElementById('visual-settings-panel'),b=document.getElementById('visual-settings-toggle'),a=document.getElementById('visual-settings-arrow');
-      const visible=p.classList.toggle('visible'); b.setAttribute('aria-expanded',String(visible)); a.textContent=visible?'▲':'▼';
-    }
 
     function cargarPerfiles() {
       try {
@@ -1025,10 +957,26 @@
       }, 2000);
     }
 
+    function cargarDatosPerfil(nombre=perfilActual){
+      try{return JSON.parse(localStorage.getItem(`datos_perfil_${nombre}`))||{peso:'',estatura:''};}catch(e){return {peso:'',estatura:''};}
+    }
+    function guardarDatosPerfil(nombre,datos){localStorage.setItem(`datos_perfil_${nombre}`,JSON.stringify(datos));}
+    function actualizarResumenPerfil(){const d=cargarDatosPerfil();const e=document.getElementById('profile-data-summary');if(e)e.textContent=d.peso&&d.estatura?`⚖️ ${d.peso} kg · 📏 ${d.estatura} cm`:'Configura peso y estatura para calcular calorías';}
+    function mostrarPanelEditarPerfil(){
+      const d=cargarDatosPerfil(); document.getElementById('perfil-edit-nombre').value=perfilActual; document.getElementById('perfil-edit-peso').value=d.peso||''; document.getElementById('perfil-edit-estatura').value=d.estatura||''; document.getElementById('panel-editar-perfil').classList.toggle('visible');
+    }
+    document.getElementById('form-editar-perfil').addEventListener('submit',e=>{
+      e.preventDefault(); const anterior=perfilActual,nuevo=document.getElementById('perfil-edit-nombre').value.trim(),peso=Number(document.getElementById('perfil-edit-peso').value),estatura=Number(document.getElementById('perfil-edit-estatura').value);
+      if(!nuevo||!peso||!estatura)return; if(nuevo!==anterior&&perfiles.some(x=>x.toLowerCase()===nuevo.toLowerCase())){alert('Ya existe otro perfil con ese nombre.');return;}
+      if(nuevo!==anterior){const dm=localStorage.getItem(`mis_maquinas_${anterior}`),dh=localStorage.getItem(`historial_sesiones_${anterior}`);if(dm)localStorage.setItem(`mis_maquinas_${nuevo}`,dm);if(dh)localStorage.setItem(`historial_sesiones_${nuevo}`,dh);localStorage.removeItem(`mis_maquinas_${anterior}`);localStorage.removeItem(`historial_sesiones_${anterior}`);localStorage.removeItem(`datos_perfil_${anterior}`);perfiles[perfiles.indexOf(anterior)]=nuevo;guardarPerfiles();perfilActual=nuevo;localStorage.setItem('perfil_activo',nuevo);}
+      guardarDatosPerfil(nuevo,{peso,estatura});document.getElementById('panel-editar-perfil').classList.remove('visible');maquinas=cargarDatos();historialSesiones=cargarHistorial();renderizarPerfiles();renderizarLista();renderizarHistorial();mostrarToast('✓ Perfil actualizado');
+    });
+
     function renderizarPerfiles() {
       const contenedor = document.getElementById('profile-tabs');
       contenedor.innerHTML = '';
 
+      actualizarResumenPerfil();
       perfiles.forEach(p => {
         const btn = document.createElement('button');
         btn.className = `btn-profile ${p === perfilActual ? 'active' : ''}`;
@@ -1047,7 +995,6 @@
       historialSesiones = cargarHistorial();
       maquinaEditandoId = null;
       cargarMaquinaExpandida();
-      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
@@ -1135,41 +1082,22 @@
       panel.classList.toggle('visible');
     }
 
+    function normalizarNombre(n){return String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+    function esCintaDeCorrer(nombre){const n=normalizarNombre(nombre);return n.includes('cinta')||n.includes('treadmill');}
+    function esEliptica(nombre){const n=normalizarNombre(nombre);return n.includes('eliptica')||n.includes('cross trainer')||n.includes('orbitrek');}
+    function esBiciEstatica(nombre){const n=normalizarNombre(nombre);return n.includes('bici estatica')||n.includes('bicicleta estatica')||n.includes('spinning')||n.includes('ciclo indoor')||n.includes('stationary bike');}
+    function metCinta(v){v=Number(v);if(v<4)return 2.8;if(v<5.5)return 3.5;if(v<6.5)return 4.8;if(v<8)return 6;if(v<9.5)return 8.3;if(v<11)return 9.8;return 11.5;}
+    function metPorResistencia(tipo,r,v=0){const nivel={baja:0,media:1,alta:2}[r]??1;if(tipo==='eliptica')return [4.5,5.5,7][nivel];if(tipo==='bici'){let base=[4,6.8,8.8][nivel];if(Number(v)>=25)base+=1.2;else if(Number(v)>=18)base+=.5;return base;}return 0;}
+    function calcularCaloriasSesion(x,peso){if(!peso)return 0;let met=0,min=Number(x.tiempo)||0;if(x.tipo==='cinta'||esCintaDeCorrer(x.maquina))met=metCinta(x.velocidad);else if(x.tipo==='eliptica'||esEliptica(x.maquina))met=metPorResistencia('eliptica',x.resistencia);else if(x.tipo==='bici'||esBiciEstatica(x.maquina))met=metPorResistencia('bici',x.resistencia,x.velocidad);else{const series=Number(String(x.series||'').replace(',','.'))||0;min=series*2;met=3.5;}return Math.round(met*3.5*peso/200*min);}
+
     function registrarSerieDirecta(id) {
-      const maquina = maquinas.find(m => m.id === id);
-      if (!maquina) return;
-
-      const inputSeries = document.getElementById(`reg-series-${id}`);
-      const inputReps = document.getElementById(`reg-reps-${id}`);
-      const inputPeso = document.getElementById(`reg-peso-${id}`);
-
-      const seriesVal = inputSeries ? inputSeries.value.trim() : (maquina.series || '-');
-      const repsVal = inputReps ? inputReps.value.trim() : (maquina.reps || '-');
-      const pesoVal = inputPeso ? inputPeso.value.trim() : (maquina.peso || '-');
-
-      const fechaHora = obtenerFechaHoraActual();
-
-      const nuevaSesion = {
-        id: Date.now(),
-        fecha: fechaHora,
-        maquina: maquina.nombre,
-        series: seriesVal || '-',
-        reps: repsVal || '-',
-        peso: pesoVal || '-'
-      };
-
-      maquina.series = seriesVal;
-      maquina.reps = repsVal;
-      maquina.peso = pesoVal;
-      maquina.fecha = fechaHora.split(' ')[0];
-
-      historialSesiones.unshift(nuevaSesion);
-      guardarDatos();
-      guardarHistorial();
-      renderizarLista();
-      mostrarToast('✅ Serie registrada con éxito');
+      const maquina=maquinas.find(m=>m.id===id);if(!maquina)return;const fechaHora=obtenerFechaHoraActual();let sesion={id:Date.now(),fecha:fechaHora,maquina:maquina.nombre};
+      if(esCintaDeCorrer(maquina.nombre)){const tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,velocidad=document.getElementById(`reg-velocidad-${id}`)?.value;if(!tiempo||!velocidad)return alert('Introduce tiempo y velocidad.');Object.assign(sesion,{tipo:'cinta',tiempo,velocidad,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{tiempo,velocidad});}
+      else if(esEliptica(maquina.nombre)){const pasos=document.getElementById(`reg-pasos-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!pasos||!tiempo)return alert('Introduce pasos y tiempo.');Object.assign(sesion,{tipo:'eliptica',pasos,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{pasos,tiempo,resistencia});}
+      else if(esBiciEstatica(maquina.nombre)){const velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!velocidad||!tiempo)return alert('Introduce velocidad y tiempo.');Object.assign(sesion,{tipo:'bici',velocidad,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{velocidad,tiempo,resistencia});}
+      else{const series=document.getElementById(`reg-series-${id}`)?.value||'',reps=document.getElementById(`reg-reps-${id}`)?.value||'',peso=document.getElementById(`reg-peso-${id}`)?.value||'';Object.assign(sesion,{tipo:'fuerza',series:series||'-',reps:reps||'-',peso:peso||'-'});Object.assign(maquina,{series,reps,peso});}
+      sesion.calorias=calcularCaloriasSesion(sesion,Number(cargarDatosPerfil().peso));maquina.fecha=fechaHora.split(' ')[0];historialSesiones.unshift(sesion);guardarDatos();guardarHistorial();renderizarLista();mostrarToast(`✅ Registrado · 🔥 ${sesion.calorias} kcal estimadas`);
     }
-
     function borrarRegistroMaquina(id) {
       const maquina = maquinas.find(m => m.id === id);
       if (!maquina) return;
@@ -1257,15 +1185,24 @@
         if (esEditando) {
           card.innerHTML = `
             <div class="card-header">
-              <div style="flex:1;min-width:0">
-                <label for="edit-nombre-${m.id}">Nombre de la máquina</label>
-                <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
-                <div style="font-size:.75rem;color:var(--text-muted);margin-top:4px">Se guarda automáticamente al salir del campo o pulsar Intro.</div>
-              </div>
+              <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
+            </div>
+            <div class="info-row">
+              <span>Series:</span>
+              <input type="text" inputmode="decimal" id="edit-series-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.series || '')}" placeholder="Series">
+            </div>
+            <div class="info-row">
+              <span>Repeticiones:</span>
+              <input type="text" inputmode="decimal" id="edit-reps-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.reps || '')}" placeholder="Reps">
+            </div>
+            <div class="info-row">
+              <span>Peso:</span>
+              <input type="text" inputmode="decimal" id="edit-peso-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.peso || '')}" placeholder="Peso">
             </div>
             <div class="card-footer">
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
+                <button class="btn-card btn-edit-toggle save" id="btn-save-${m.id}">✓ Guardar</button>
                 <button class="btn-delete" id="btn-del-${m.id}">🗑️ Máquina</button>
               </div>
             </div>
@@ -1274,12 +1211,7 @@
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
-          const inputNombre = document.getElementById(`edit-nombre-${m.id}`);
-          inputNombre.addEventListener('blur', () => guardarNombreInstantaneo(m.id));
-          inputNombre.addEventListener('keydown', e => {
-            if (e.key === 'Enter') { e.preventDefault(); inputNombre.blur(); }
-            if (e.key === 'Escape') { maquinaEditandoId = null; renderizarLista(); }
-          });
+          document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
 
         } else {
@@ -1289,23 +1221,9 @@
             </div>
 
             <div class="register-box">
-              <div class="register-inputs">
-                <div>
-                  <label>Series</label>
-                  <input type="text" inputmode="decimal" id="reg-series-${m.id}" value="${escaparHTML(m.series || '')}" placeholder="-">
-                </div>
-                <div>
-                  <label>Reps</label>
-                  <input type="text" inputmode="decimal" id="reg-reps-${m.id}" value="${escaparHTML(m.reps || '')}" placeholder="-">
-                </div>
-                <div>
-                  <label>Peso</label>
-                  <input type="text" inputmode="decimal" id="reg-peso-${m.id}" value="${escaparHTML(m.peso || '')}" placeholder="-">
-                </div>
-              </div>
+              ${esCintaDeCorrer(m.nombre) ? `<div class="cardio-inputs"><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div></div>` : esEliptica(m.nombre) ? `<div class="cardio-inputs"><div><label>Pasos</label><input type="number" id="reg-pasos-${m.id}" value="${escaparHTML(m.pasos||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : esBiciEstatica(m.nombre) ? `<div class="cardio-inputs"><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : `<div class="register-inputs"><div><label>Series</label><input type="text" id="reg-series-${m.id}" value="${escaparHTML(m.series||'')}"></div><div><label>Reps</label><input type="text" id="reg-reps-${m.id}" value="${escaparHTML(m.reps||'')}"></div><div><label>Peso</label><input type="text" id="reg-peso-${m.id}" value="${escaparHTML(m.peso||'')}"></div></div>`}
               <div class="register-actions-row">
                 <button class="btn-register" id="btn-reg-${m.id}">✅ Registrar Ejercicio</button>
-                <button class="btn-clear-reg" id="btn-clear-${m.id}">🗑️ Borrar registro</button>
               </div>
             </div>
 
@@ -1323,7 +1241,6 @@
 
           document.getElementById(`title-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));
-          document.getElementById(`btn-clear-${m.id}`).addEventListener('click', () => borrarRegistroMaquina(m.id));
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
         }
@@ -1371,10 +1288,8 @@
 
         const headerDiv = document.createElement('div');
         headerDiv.className = 'history-group-header';
-        headerDiv.innerHTML = `
-          <div>${flecha} 📅 ${escaparHTML(fechaClave)}</div>
-          <span class="badge-count">${elementos.length} ${elementos.length === 1 ? 'ejercicio' : 'ejercicios'}</span>
-        `;
+        const pesoPerfil=Number(cargarDatosPerfil().peso);const caloriasDia=elementos.reduce((t,x)=>t+(Number(x.calorias)||calcularCaloriasSesion(x,pesoPerfil)),0);
+        headerDiv.innerHTML = `<div class="history-header-date">${flecha} 📅 ${escaparHTML(fechaClave)}</div><div class="history-header-metrics"><span class="calorie-badge">🔥 ${Math.round(caloriasDia)} kcal</span><span class="badge-count">${elementos.length} ${elementos.length===1?'ejercicio':'ejercicios'}</span></div>`;
         headerDiv.addEventListener('click', () => toggleGrupoHistorial(fechaClave));
 
         const contentDiv = document.createElement('div');
@@ -1389,7 +1304,7 @@
           itemDiv.innerHTML = `
             <div class="history-details">
               <div class="history-machine-title">🏋️ ${escaparHTML(s.maquina || 'Máquina')}</div>
-              <span>Series: <strong>${escaparHTML(s.series || '-')}</strong> | Reps: <strong>${escaparHTML(s.reps || '-')}</strong> | Peso: <strong>${escaparHTML(s.peso || '-')}</strong></span>
+              ${s.tipo==='cinta'||esCintaDeCorrer(s.maquina)?`<span>Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='eliptica'||esEliptica(s.maquina)?`<span>Pasos: <strong>${escaparHTML(s.pasos||'-')}</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='bici'||esBiciEstatica(s.maquina)?`<span>Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:`<span>Series: <strong>${escaparHTML(s.series||'-')}</strong> | Reps: <strong>${escaparHTML(s.reps||'-')}</strong> | Peso: <strong>${escaparHTML(s.peso||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`}
               ${horaPart ? `<div class="history-date">🕒 ${escaparHTML(horaPart)}</div>` : ''}
             </div>
             <button class="btn-delete" id="del-hist-${s.id}">🗑️ Borrar</button>
@@ -1609,6 +1524,7 @@
         perfilActual: perfilActual,
         maquinasPorPerfil: {},
         historialPorPerfil: {},
+        datosPerfil: {},
         fotos: await obtenerTodasFotosDB()
       };
 
@@ -1618,6 +1534,7 @@
         } catch(e) { backupData.maquinasPorPerfil[p] = []; }
 
         backupData.historialPorPerfil[p] = cargarHistorial(p);
+        backupData.datosPerfil[p] = cargarDatosPerfil(p);
       });
 
       const jsonStr = JSON.stringify(backupData, null, 2);
@@ -1651,6 +1568,7 @@
               if (data.maquinasPorPerfil[p]) {
                 localStorage.setItem(`mis_maquinas_${p}`, JSON.stringify(data.maquinasPorPerfil[p]));
               }
+              if (data.datosPerfil && data.datosPerfil[p]) guardarDatosPerfil(p, data.datosPerfil[p]);
               if (data.historialPorPerfil[p]) {
                 localStorage.setItem(`historial_sesiones_${p}`, JSON.stringify(data.historialPorPerfil[p]));
               }
@@ -1683,36 +1601,36 @@
       }, 50);
     }
 
-    function guardarNombreInstantaneo(id) {
+    function guardarEdicionDirecta(id) {
       const inputNombre = document.getElementById(`edit-nombre-${id}`);
-      const maquina = maquinas.find(m => m.id === id);
-      if (!inputNombre || !maquina) return;
+      const inputSeries = document.getElementById(`edit-series-${id}`);
+      const inputPeso = document.getElementById(`edit-peso-${id}`);
+      const inputReps = document.getElementById(`edit-reps-${id}`);
+
+      if (!inputNombre) return;
 
       const nuevoNombre = inputNombre.value.trim();
-      const nombreAnterior = maquina.nombre;
+      const nuevasSeries = inputSeries ? inputSeries.value.trim() : '';
+      const nuevoPeso = inputPeso ? inputPeso.value.trim() : '';
+      const nuevasReps = inputReps ? inputReps.value.trim() : '';
+
       if (!nuevoNombre) {
-        inputNombre.value = nombreAnterior;
-        mostrarToast('⚠️ El nombre no puede estar vacío');
-        return;
-      }
-      if (nuevoNombre === nombreAnterior) {
-        maquinaEditandoId = null;
-        renderizarLista();
+        alert('El nombre no puede estar vacío');
         return;
       }
 
-      // El historial mantiene todos sus registros y solo actualiza el nombre asociado.
-      historialSesiones.forEach(sesion => {
-        if (String(sesion.maquina || '').trim().toLowerCase() === String(nombreAnterior).trim().toLowerCase()) {
-          sesion.maquina = nuevoNombre;
-        }
-      });
-      maquina.nombre = nuevoNombre;
-      guardarDatos();
-      guardarHistorial();
+      const maquina = maquinas.find(m => m.id === id);
+      if (maquina) {
+        maquina.nombre = nuevoNombre;
+        maquina.series = nuevasSeries;
+        maquina.peso = nuevoPeso;
+        maquina.reps = nuevasReps;
+        guardarDatos();
+      }
+
       maquinaEditandoId = null;
       renderizarLista();
-      mostrarToast('✓ Nombre actualizado en máquina, historial, Excel y JSON');
+      mostrarToast('✓ Cambios guardados');
     }
 
     function escaparHTML(str) {
@@ -1721,42 +1639,16 @@
       });
     }
 
-    let maquinaFotoModalId = null;
-    function abrirFotoModal(src, id) {
-      maquinaFotoModalId = id;
-      const modal = document.getElementById('modal-foto');
-      document.getElementById('img-modal-fullscreen').src = src;
-      modal.classList.add('active');
-    }
-
-    function cerrarFotoModal() {
-      document.getElementById('modal-foto').classList.remove('active');
-      document.getElementById('img-modal-fullscreen').src = '';
-      maquinaFotoModalId = null;
-    }
-
-    function cambiarFotoDesdeModal() {
-      if (!maquinaFotoModalId) return;
-      const id = maquinaFotoModalId;
-      cerrarFotoModal();
-      tomarFoto(id);
-    }
-
-    async function eliminarFotoDesdeModal() {
-      if (!maquinaFotoModalId) return;
-      const id = maquinaFotoModalId;
-      if (!confirm('¿Eliminar la foto de esta máquina? Los registros de ejercicios no se modificarán.')) return;
-      await eliminarFotoDB(id);
-      cerrarFotoModal();
-      renderizarLista();
-      mostrarToast('🗑️ Foto eliminada');
-    }
+    let maquinaFotoModalId=null;
+    function abrirFotoModal(src,id) { maquinaFotoModalId=id; document.getElementById('img-modal-fullscreen').src=src; document.getElementById('modal-foto').classList.add('active'); }
+    function cerrarFotoModal() { document.getElementById('modal-foto').classList.remove('active'); document.getElementById('img-modal-fullscreen').src=''; maquinaFotoModalId=null; }
+    function cambiarFotoDesdeModal(){ if(!maquinaFotoModalId)return; const id=maquinaFotoModalId; cerrarFotoModal(); tomarFoto(id); }
+    async function eliminarFotoDesdeModal(){ if(!maquinaFotoModalId)return; const id=maquinaFotoModalId; if(!confirm('¿Eliminar la foto de esta máquina?'))return; await eliminarFotoDB(id); cerrarFotoModal(); renderizarLista(); mostrarToast('🗑️ Foto eliminada'); }
 
     function tomarFoto(id) {
       maquinaParaFotoId = id;
       document.getElementById('input-camara').click();
     }
-
 
     document.getElementById('input-camara').addEventListener('change', function(e) {
       const file = e.target.files[0];
@@ -1805,6 +1697,8 @@
         series: "",
         peso: "",
         reps: "",
+        tiempo: "",
+        velocidad: "",
         fecha: obtenerFechaHoraActual().split(' ')[0]
       });
 
@@ -1826,14 +1720,12 @@
 
     abrirDB().then(() => {
       cargarMaquinaExpandida();
-      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
-      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
