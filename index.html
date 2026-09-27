@@ -690,6 +690,23 @@
 
     /* VERSION 13 */
     .profile-data-summary{margin-top:8px;color:var(--text-muted);font-size:.85rem;text-align:center}.cardio-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:7px}.cardio-inputs label{font-size:.74rem;text-align:center}.cardio-inputs input,.cardio-inputs select{width:100%;padding:7px;border-radius:7px;border:1px solid #475569;background:var(--input-bg);color:var(--text);text-align:center}.calorie-badge{color:#fb923c;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.35);border-radius:999px;padding:3px 9px;font-weight:800;font-size:.78rem;white-space:nowrap}.history-group-header{gap:7px;flex-wrap:wrap}.history-header-date{flex:1;min-width:130px}.history-header-metrics{display:flex;align-items:center;gap:7px}.profile-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}@media(max-width:420px){.cardio-inputs{grid-template-columns:1fr}.profile-edit-grid{grid-template-columns:1fr}.history-header-metrics{width:100%;justify-content:space-between}}
+
+    /* VERSION 14: NOMBRE UNICO Y PERSONALIZACION TIPOGRAFICA */
+    :root{--font-global:1;--font-machines:1;--font-data:1;--font-history:1;--font-datetime:1;--font-buttons:1;--font-profiles:1}
+    html{font-size:calc(16px * var(--font-global))}
+    .machine-summary-name{font-size:calc(clamp(1.05rem,3.8vw,1.35rem) * var(--font-machines))}
+    .register-box label,.register-box input,.register-box select,.info-row,.edit-input-card{font-size:calc(1rem * var(--font-data))}
+    .history-details,.history-machine-title,.history-details span,.history-section h2{font-size:calc(1rem * var(--font-history))}
+    .fecha-badge,.history-date,.history-group-header,.calorie-badge,.badge-count{font-size:calc(.9rem * var(--font-datetime))}
+    button,.btn-main,.btn-profile-action,.btn-card,.btn-delete,.btn-register,.btn-export,.btn-import,.btn-backup,.btn-submit{font-size:calc(1rem * var(--font-buttons))}
+    .btn-profile,.profile-data-summary,.profiles-header label{font-size:calc(1rem * var(--font-profiles))}
+    .font-settings{grid-column:1/-1;border:1px solid #475569;border-radius:10px;overflow:hidden;background:var(--input-bg)}
+    .font-settings-toggle{width:100%;min-height:50px;padding:10px 12px;border:0;background:#334155;color:var(--accent);font-weight:800;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .font-settings-panel{display:none;padding:10px;gap:8px}.font-settings-panel.visible{display:grid}
+    .font-control{display:grid;grid-template-columns:minmax(0,1fr) 42px 64px 42px;gap:6px;align-items:center;padding:8px;border-radius:8px;background:var(--card-bg)}
+    .font-control.global{border:1px solid var(--accent)}.font-control-label{min-width:0;overflow-wrap:anywhere;color:var(--text);font-size:.9rem}.font-control button{width:42px!important;min-height:38px!important;padding:4px;border:1px solid var(--accent);border-radius:7px;background:transparent;color:var(--accent);font-weight:900}.font-control output{text-align:center;color:#fbbf24;font-weight:800;font-size:.82rem}.font-reset{grid-column:1/-1;width:100%;min-height:44px;border:1px solid var(--danger);border-radius:8px;background:transparent;color:var(--danger);font-weight:800}
+    @media(min-width:700px){.font-settings-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.font-control.global,.font-reset{grid-column:1/-1}}
+    @media(max-width:420px){.font-control{grid-template-columns:minmax(0,1fr) 38px 58px 38px;gap:4px;padding:7px 5px}.font-control button{width:38px!important}.font-settings-panel{padding:7px}}
   </style>
 </head>
 <body>
@@ -766,6 +783,19 @@
   <section class="advanced-tools">
     <button type="button" class="advanced-tools-toggle" id="advanced-tools-toggle" aria-expanded="false" onclick="toggleHerramientasAvanzadas()"><span>⚙️ Herramientas avanzadas</span><span id="advanced-tools-arrow">▼</span></button>
     <div class="advanced-tools-panel" id="advanced-tools-panel"><div class="advanced-tools-grid">
+      <section class="font-settings">
+        <button type="button" class="font-settings-toggle" id="font-settings-toggle" aria-expanded="false" onclick="toggleAjustesFuente()"><span>🔠 Tamaño de letra</span><span id="font-settings-arrow">▼</span></button>
+        <div class="font-settings-panel" id="font-settings-panel">
+          <div class="font-control global"><span class="font-control-label">🌐 Toda la aplicación</span><button type="button" onclick="ajustarFuente('global',-0.1)">A−</button><output id="font-global">100%</output><button type="button" onclick="ajustarFuente('global',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">🏋️ Nombres de máquinas</span><button type="button" onclick="ajustarFuente('machines',-0.1)">A−</button><output id="font-machines">100%</output><button type="button" onclick="ajustarFuente('machines',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">📊 Datos de ejercicios</span><button type="button" onclick="ajustarFuente('data',-0.1)">A−</button><output id="font-data">100%</output><button type="button" onclick="ajustarFuente('data',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">📋 Historial</span><button type="button" onclick="ajustarFuente('history',-0.1)">A−</button><output id="font-history">100%</output><button type="button" onclick="ajustarFuente('history',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">📅 Fechas, horas y calorías</span><button type="button" onclick="ajustarFuente('datetime',-0.1)">A−</button><output id="font-datetime">100%</output><button type="button" onclick="ajustarFuente('datetime',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">🔘 Botones</span><button type="button" onclick="ajustarFuente('buttons',-0.1)">A−</button><output id="font-buttons">100%</output><button type="button" onclick="ajustarFuente('buttons',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">👤 Perfiles</span><button type="button" onclick="ajustarFuente('profiles',-0.1)">A−</button><output id="font-profiles">100%</output><button type="button" onclick="ajustarFuente('profiles',0.1)">A+</button></div>
+          <button type="button" class="font-reset" onclick="restaurarFuentes()">♻ Restaurar tamaños</button>
+        </div>
+      </section>
       <button class="btn-export" onclick="exportarExcelMultiPestana()">📊 Exportar informe Excel</button>
       <button class="btn-import" onclick="document.getElementById('input-excel-file').click()">📥 Cargar / fusionar Excel</button>
       <button class="btn-backup" onclick="exportarBackupJSON()">💾 Guardar copia JSON</button>
@@ -877,6 +907,14 @@
     function cargarMaquinaExpandida(){const v=localStorage.getItem(claveMaquinaExpandida());maquinaExpandidaId=v===null?null:Number(v);}
     function toggleMaquina(id){maquinaExpandidaId=maquinaExpandidaId===id?null:id;if(maquinaExpandidaId===null)localStorage.removeItem(claveMaquinaExpandida());else localStorage.setItem(claveMaquinaExpandida(),String(id));renderizarLista();}
     function toggleHerramientasAvanzadas(){const p=document.getElementById('advanced-tools-panel'),b=document.getElementById('advanced-tools-toggle'),a=document.getElementById('advanced-tools-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
+    const FUENTES_PREDETERMINADAS={global:1,machines:1,data:1,history:1,datetime:1,buttons:1,profiles:1};
+    let ajustesFuente={...FUENTES_PREDETERMINADAS};
+    function claveFuente(){return `ajustes_fuente_v14_${perfilActual}`;}
+    function cargarAjustesFuente(){try{ajustesFuente={...FUENTES_PREDETERMINADAS,...JSON.parse(localStorage.getItem(claveFuente())||'{}')};}catch(e){ajustesFuente={...FUENTES_PREDETERMINADAS};}aplicarAjustesFuente();}
+    function aplicarAjustesFuente(){Object.entries(ajustesFuente).forEach(([campo,valor])=>{document.documentElement.style.setProperty(`--font-${campo}`,String(valor));const o=document.getElementById(`font-${campo}`);if(o)o.textContent=`${Math.round(valor*100)}%`;});}
+    function ajustarFuente(campo,cambio){const actual=Number(ajustesFuente[campo]||1);ajustesFuente[campo]=Math.min(1.8,Math.max(.8,Math.round((actual+cambio)*10)/10));localStorage.setItem(claveFuente(),JSON.stringify(ajustesFuente));aplicarAjustesFuente();}
+    function restaurarFuentes(){ajustesFuente={...FUENTES_PREDETERMINADAS};localStorage.setItem(claveFuente(),JSON.stringify(ajustesFuente));aplicarAjustesFuente();mostrarToast('♻ Tamaños restaurados');}
+    function toggleAjustesFuente(){const p=document.getElementById('font-settings-panel'),b=document.getElementById('font-settings-toggle'),a=document.getElementById('font-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
 
     function cargarPerfiles() {
       try {
@@ -995,6 +1033,7 @@
       historialSesiones = cargarHistorial();
       maquinaEditandoId = null;
       cargarMaquinaExpandida();
+      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
@@ -1216,10 +1255,6 @@
 
         } else {
           card.innerHTML = `
-            <div class="card-header">
-              <h3 class="editable" id="title-edit-${m.id}" title="Toca para editar">${escaparHTML(m.nombre)}</h3>
-            </div>
-
             <div class="register-box">
               ${esCintaDeCorrer(m.nombre) ? `<div class="cardio-inputs"><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div></div>` : esEliptica(m.nombre) ? `<div class="cardio-inputs"><div><label>Pasos</label><input type="number" id="reg-pasos-${m.id}" value="${escaparHTML(m.pasos||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : esBiciEstatica(m.nombre) ? `<div class="cardio-inputs"><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : `<div class="register-inputs"><div><label>Series</label><input type="text" id="reg-series-${m.id}" value="${escaparHTML(m.series||'')}"></div><div><label>Reps</label><input type="text" id="reg-reps-${m.id}" value="${escaparHTML(m.reps||'')}"></div><div><label>Peso</label><input type="text" id="reg-peso-${m.id}" value="${escaparHTML(m.peso||'')}"></div></div>`}
               <div class="register-actions-row">
@@ -1239,7 +1274,6 @@
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
-          document.getElementById(`title-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
@@ -1720,12 +1754,14 @@
 
     abrirDB().then(() => {
       cargarMaquinaExpandida();
+      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
+      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
