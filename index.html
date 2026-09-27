@@ -682,6 +682,43 @@
       .machine-summary-photo-button { width: 48px; height: 48px; flex-basis: 48px; }
     }
 
+
+    /* VERSION 10.0: INTERFAZ ADAPTATIVA Y TAMANOS SELECTIVOS */
+    :root {
+      --fs-machines: 1;
+      --fs-data: 1;
+      --fs-history: 1;
+      --fs-datetime: 1;
+      --fs-buttons: 1;
+      --fs-profiles: 1;
+    }
+    .machine-summary-name, .card h3 { font-size: calc(clamp(1.05rem, 3.8vw, 1.35rem) * var(--fs-machines)); }
+    .register-box label, .register-box input, .info-row { font-size: calc(clamp(.86rem, 3vw, 1rem) * var(--fs-data)); }
+    .history-details, .history-machine-title, .history-details span { font-size: calc(clamp(.82rem, 2.8vw, 1rem) * var(--fs-history)); }
+    .fecha-badge, .history-date, .history-group-header { font-size: calc(clamp(.76rem, 2.7vw, .95rem) * var(--fs-datetime)); }
+    button, .btn-main, .btn-profile-action, .btn-card, .btn-delete, .btn-register, .btn-clear-reg,
+    .btn-export, .btn-import, .btn-backup { font-size: calc(clamp(.78rem, 2.8vw, 1rem) * var(--fs-buttons)); }
+    .btn-profile { font-size: calc(clamp(.9rem, 3vw, 1.08rem) * var(--fs-profiles)); }
+    .visual-settings { grid-column: 1 / -1; border:1px solid #475569; border-radius:10px; overflow:hidden; background:var(--input-bg); }
+    .visual-settings-toggle { width:100%; min-height:50px; padding:10px; border:0; background:#334155; color:var(--accent); font-weight:800; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+    .visual-settings-panel { display:none; padding:10px; gap:8px; }
+    .visual-settings-panel.visible { display:grid; }
+    .font-control { display:grid; grid-template-columns:minmax(0,1fr) 42px 64px 42px; gap:6px; align-items:center; padding:8px; border-radius:8px; background:var(--card-bg); }
+    .font-control-label { color:var(--text); font-size:clamp(.82rem,2.8vw,.98rem); min-width:0; overflow-wrap:anywhere; }
+    .font-control button { min-height:38px; padding:5px; border:1px solid var(--accent); border-radius:7px; color:var(--accent); background:transparent; font-weight:900; }
+    .font-control-output { text-align:center; color:#fbbf24; font-weight:800; font-size:.84rem; }
+    .visual-reset { width:100%; min-height:44px; margin-top:2px; border:1px solid var(--danger); border-radius:8px; color:var(--danger); background:transparent; font-weight:800; }
+    @media(max-width:420px){
+      .font-control { grid-template-columns:minmax(0,1fr) 38px 58px 38px; padding:7px 5px; gap:4px; }
+      .machine-summary { flex-wrap:nowrap; }
+      .machine-summary-record { max-width:28vw; overflow:hidden; text-overflow:ellipsis; }
+    }
+    @media(min-width:700px){
+      body { max-width:900px; margin:0 auto; padding:18px; }
+      .advanced-tools-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .visual-settings-panel { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .visual-reset { grid-column:1/-1; }
+    }
   </style>
 </head>
 <body>
@@ -745,6 +782,18 @@
   <section class="advanced-tools">
     <button type="button" class="advanced-tools-toggle" id="advanced-tools-toggle" aria-expanded="false" onclick="toggleHerramientasAvanzadas()"><span>⚙️ Herramientas avanzadas</span><span id="advanced-tools-arrow">▼</span></button>
     <div class="advanced-tools-panel" id="advanced-tools-panel"><div class="advanced-tools-grid">
+      <section class="visual-settings">
+        <button type="button" class="visual-settings-toggle" id="visual-settings-toggle" aria-expanded="false" onclick="togglePersonalizacionVisual()"><span>🔠 Personalización visual</span><span id="visual-settings-arrow">▼</span></button>
+        <div class="visual-settings-panel" id="visual-settings-panel">
+          <div class="font-control"><span class="font-control-label">🏋️ Nombres de máquinas</span><button type="button" onclick="ajustarFuente('machines',-0.1)">A−</button><output class="font-control-output" id="font-machines">100%</output><button type="button" onclick="ajustarFuente('machines',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">📊 Series / reps / peso</span><button type="button" onclick="ajustarFuente('data',-0.1)">A−</button><output class="font-control-output" id="font-data">100%</output><button type="button" onclick="ajustarFuente('data',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">📋 Historial</span><button type="button" onclick="ajustarFuente('history',-0.1)">A−</button><output class="font-control-output" id="font-history">100%</output><button type="button" onclick="ajustarFuente('history',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">📅 Fechas y horas</span><button type="button" onclick="ajustarFuente('datetime',-0.1)">A−</button><output class="font-control-output" id="font-datetime">100%</output><button type="button" onclick="ajustarFuente('datetime',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">🔘 Botones</span><button type="button" onclick="ajustarFuente('buttons',-0.1)">A−</button><output class="font-control-output" id="font-buttons">100%</output><button type="button" onclick="ajustarFuente('buttons',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">👤 Perfiles</span><button type="button" onclick="ajustarFuente('profiles',-0.1)">A−</button><output class="font-control-output" id="font-profiles">100%</output><button type="button" onclick="ajustarFuente('profiles',0.1)">A+</button></div>
+          <button type="button" class="visual-reset" onclick="restaurarFuentes()">♻ Restaurar tamaños predeterminados</button>
+        </div>
+      </section>
       <button class="btn-export" onclick="exportarExcelMultiPestana()">📊 Exportar informe Excel</button>
       <button class="btn-import" onclick="document.getElementById('input-excel-file').click()">📥 Cargar / fusionar Excel</button>
       <button class="btn-backup" onclick="exportarBackupJSON()">💾 Guardar copia JSON</button>
@@ -850,6 +899,37 @@
     function cargarMaquinaExpandida(){const v=localStorage.getItem(claveMaquinaExpandida());maquinaExpandidaId=v===null?null:Number(v);}
     function toggleMaquina(id){maquinaExpandidaId=maquinaExpandidaId===id?null:id;if(maquinaExpandidaId===null)localStorage.removeItem(claveMaquinaExpandida());else localStorage.setItem(claveMaquinaExpandida(),String(id));renderizarLista();}
     function toggleHerramientasAvanzadas(){const p=document.getElementById('advanced-tools-panel'),b=document.getElementById('advanced-tools-toggle'),a=document.getElementById('advanced-tools-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
+    const FUENTES_DEFECTO = { machines:1, data:1, history:1, datetime:1, buttons:1, profiles:1 };
+    let ajustesFuente = { ...FUENTES_DEFECTO };
+    function claveAjustesFuente(){ return `ajustes_fuente_${perfilActual}`; }
+    function cargarAjustesFuente(){
+      try { ajustesFuente = { ...FUENTES_DEFECTO, ...JSON.parse(localStorage.getItem(claveAjustesFuente()) || '{}') }; }
+      catch(e) { ajustesFuente = { ...FUENTES_DEFECTO }; }
+      aplicarAjustesFuente();
+    }
+    function aplicarAjustesFuente(){
+      Object.entries(ajustesFuente).forEach(([campo,valor]) => {
+        document.documentElement.style.setProperty(`--fs-${campo}`, String(valor));
+        const salida=document.getElementById(`font-${campo}`);
+        if(salida) salida.textContent=`${Math.round(valor*100)}%`;
+      });
+    }
+    function ajustarFuente(campo, cambio){
+      const actual=Number(ajustesFuente[campo] || 1);
+      ajustesFuente[campo]=Math.min(1.8,Math.max(0.8,Math.round((actual+cambio)*10)/10));
+      localStorage.setItem(claveAjustesFuente(),JSON.stringify(ajustesFuente));
+      aplicarAjustesFuente();
+    }
+    function restaurarFuentes(){
+      ajustesFuente={...FUENTES_DEFECTO};
+      localStorage.setItem(claveAjustesFuente(),JSON.stringify(ajustesFuente));
+      aplicarAjustesFuente();
+      mostrarToast('♻ Tamaños restaurados');
+    }
+    function togglePersonalizacionVisual(){
+      const p=document.getElementById('visual-settings-panel'),b=document.getElementById('visual-settings-toggle'),a=document.getElementById('visual-settings-arrow');
+      const visible=p.classList.toggle('visible'); b.setAttribute('aria-expanded',String(visible)); a.textContent=visible?'▲':'▼';
+    }
 
     function cargarPerfiles() {
       try {
@@ -952,6 +1032,7 @@
       historialSesiones = cargarHistorial();
       maquinaEditandoId = null;
       cargarMaquinaExpandida();
+      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
@@ -1744,12 +1825,14 @@
 
     abrirDB().then(() => {
       cargarMaquinaExpandida();
+      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
+      cargarAjustesFuente();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();

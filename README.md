@@ -1,6 +1,9 @@
-## Registro Gimnasio v9
+## Registro Gimnasio v10
 
-- Cambio y eliminación de fotos desde el recuadro desplegado de cada máquina.
-- Edición instantánea del nombre, sin botón de guardado ni confirmación adicional.
-- Al renombrar una máquina se actualiza únicamente su nombre y se conservan series, repeticiones, pesos, fechas y todos los registros asociados.
-- El nombre actualizado se refleja en el historial, las exportaciones Excel y las copias/restauraciones JSON.
+- Interfaz completamente adaptativa para móvil, tablet y escritorio.
+- Menú de Personalización visual dentro de Herramientas avanzadas.
+- Tamaño independiente para nombres de máquinas, datos de entrenamiento, historial, fechas y horas, botones y perfiles.
+- Controles sencillos A− y A+, con rango del 80% al 180%.
+- Preferencias guardadas de forma independiente para cada perfil.
+- Botón para restaurar todos los tamaños predeterminados.
+- Conserva las mejoras v9 de cambio/eliminación de fotos y renombrado sin perder registros.
