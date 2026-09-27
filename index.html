@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mi Gimnasio</title>
+  <title>Registro Gimnasio V17</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -599,28 +599,36 @@
       cursor: pointer;
     }
 
-    /* Toast Notification */
+    /* V17: Toast centrado y seguro para móviles */
     .toast {
       position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background-color: var(--success);
-      color: #0f172a;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 0.95rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease;
-      z-index: 2000;
-      pointer-events: none;
+      left: 50%; top: 50%; bottom: auto;
+      width: max-content; max-width: min(88vw, 420px);
+      transform: translate(-50%, -50%) scale(.92);
+      opacity: 0; visibility: hidden;
+      background: #16a34a; color: #07111f;
+      padding: 11px 16px; border-radius: 12px;
+      font-weight: 800; font-size: clamp(.86rem, 3.5vw, 1rem);
+      line-height: 1.25; text-align: center;
+      box-shadow: 0 10px 28px rgba(0,0,0,.48);
+      transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+      z-index: 9999; pointer-events: none;
     }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
+    .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); transition-delay: 0s; }
+    /* V17: panel de estadísticas */
+    .dashboard{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;padding:12px;margin-bottom:12px}
+    .dashboard h2{color:var(--accent);font-size:1.2rem;margin-bottom:10px}
+    .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .kpi{background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:10px;text-align:center;min-width:0}
+    .kpi-value{display:block;color:#fbbf24;font-size:clamp(1.05rem,4vw,1.35rem);font-weight:900;overflow-wrap:anywhere}
+    .kpi-label{display:block;color:var(--text-muted);font-size:.78rem;margin-top:3px}
+    .chart-card{margin-top:10px;background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:8px}
+    .chart-title{color:var(--text);font-size:.9rem;font-weight:800;margin-bottom:6px;text-align:center}
+    .chart-wrap{position:relative;width:100%;height:180px}
+    .chart-wrap canvas{width:100%;height:100%;display:block}
+    .dashboard-note{color:var(--text-muted);font-size:.75rem;text-align:center;margin-top:8px}
+    @media(min-width:700px){.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
+    @media(max-width:420px){button,.btn-main,.btn-profile-action,.btn-card,.btn-delete,.btn-register,.btn-export,.btn-import,.btn-backup,.btn-submit{font-size:clamp(.78rem,4vw,1rem)!important;line-height:1.15}.profile-actions{display:grid;grid-template-columns:1fr 1fr}.profile-actions .delete{grid-column:1/-1}}
     /* VERSION COMPACTA: MAQUINAS PLEGABLES */
     .card{padding:0;overflow:hidden}.machine-summary{width:100%;min-height:58px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:0;background:var(--card-bg);color:var(--text);cursor:pointer;text-align:left}.machine-summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.machine-arrow{color:var(--accent);font-size:1.15rem;width:22px;flex:0 0 22px;text-align:center;transition:transform .2s}.card.expanded .machine-arrow{transform:rotate(90deg)}.machine-summary-name{flex:1;min-width:0;color:var(--accent);font-size:1.25rem;font-weight:800;overflow-wrap:anywhere}.machine-details{display:none;padding:0 12px 12px;border-top:1px solid #334155}.card.expanded .machine-details{display:block}.machine-details .card-header{margin-top:10px}
     .advanced-tools{margin-top:14px;background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden}.advanced-tools-toggle{width:100%;min-height:54px;padding:11px 12px;display:flex;justify-content:space-between;align-items:center;border:0;background:var(--card-bg);color:var(--accent);font-weight:800;cursor:pointer}.advanced-tools-panel{display:none;padding:0 12px 12px}.advanced-tools-panel.visible{display:block}.advanced-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:10px;border-top:1px solid #334155}.advanced-tools-grid button{width:100%;min-height:52px;white-space:normal}
@@ -774,6 +782,25 @@
   <!-- Lista de Máquinas -->
   <div class="grid" id="lista-maquinas"></div>
 
+  <!-- V17: Dashboard de progreso -->
+  <section class="dashboard" id="dashboard">
+    <h2>📈 Resumen de progreso</h2>
+    <div class="kpi-grid">
+      <div class="kpi"><span class="kpi-value" id="kpi-kcal-semana">0</span><span class="kpi-label">kcal últimos 7 días</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-kcal-mes">0</span><span class="kpi-label">kcal este mes</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-cardio">0 min</span><span class="kpi-label">cardio últimos 7 días</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-imc">--</span><span class="kpi-label">IMC actual</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-frecuencia">0</span><span class="kpi-label">sesiones últimos 30 días</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-favorita">--</span><span class="kpi-label">máquina más utilizada</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-records">0</span><span class="kpi-label">récords personales</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpi-peso-max">--</span><span class="kpi-label">mayor peso registrado</span></div>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card"><div class="chart-title">Calorías de los últimos 7 días</div><div class="chart-wrap"><canvas id="chart-calorias"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Peso máximo por sesión de fuerza</div><div class="chart-wrap"><canvas id="chart-peso"></canvas></div></div>
+    </div>
+    <div class="dashboard-note">Las calorías son estimaciones orientativas basadas en los datos registrados.</div>
+  </section>
   <!-- Historial Agrupado Desplegable -->
   <div class="history-section">
     <h2>📋 Historial de Sesiones Realizadas</h2>
@@ -986,13 +1013,16 @@
       }
     }
 
+    let toastTimer = null;
     function mostrarToast(mensaje = '✅ Ejercicio registrado con éxito') {
       const toast = document.getElementById('toast');
+      if (!toast) return;
+      clearTimeout(toastTimer);
+      toast.classList.remove('show');
       toast.textContent = mensaje;
+      void toast.offsetWidth;
       toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
     }
 
     function cargarDatosPerfil(nombre=perfilActual){
@@ -1037,6 +1067,7 @@
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
+      renderizarDashboard();
     }
 
     function mostrarPanelNuevoPerfil() {
@@ -1281,6 +1312,37 @@
       }
     }
 
+    /* V17: ESTADISTICAS Y GRAFICOS SIN LIBRERIAS EXTERNAS */
+    function fechaSesion(s){
+      const p=String(s.fecha||'').split(' ')[0].split('/');
+      return p.length===3?new Date(Number(p[2]),Number(p[1])-1,Number(p[0])):null;
+    }
+    function esCardioSesion(s){return ['cinta','eliptica','bici'].includes(s.tipo)||esCintaDeCorrer(s.maquina)||esEliptica(s.maquina)||esBiciEstatica(s.maquina);}
+    function renderizarDashboard(){
+      const ahora=new Date(), inicio7=new Date(ahora);inicio7.setHours(0,0,0,0);inicio7.setDate(inicio7.getDate()-6);
+      const inicio30=new Date(ahora);inicio30.setHours(0,0,0,0);inicio30.setDate(inicio30.getDate()-29);
+      const pesoPerfil=Number(cargarDatosPerfil().peso)||0;
+      const validas=historialSesiones.map(x=>({...x,_f:fechaSesion(x)})).filter(x=>x._f);
+      const ult7=validas.filter(x=>x._f>=inicio7&&x._f<=ahora), ult30=validas.filter(x=>x._f>=inicio30&&x._f<=ahora);
+      const kcal=x=>Number(x.calorias)||calcularCaloriasSesion(x,pesoPerfil)||0;
+      const kcal7=Math.round(ult7.reduce((t,x)=>t+kcal(x),0));
+      const kcalMes=Math.round(validas.filter(x=>x._f.getMonth()===ahora.getMonth()&&x._f.getFullYear()===ahora.getFullYear()).reduce((t,x)=>t+kcal(x),0));
+      const cardio=Math.round(ult7.filter(esCardioSesion).reduce((t,x)=>t+(Number(x.tiempo)||0),0));
+      const conteo={};validas.forEach(x=>conteo[x.maquina]=(conteo[x.maquina]||0)+1);const favorita=Object.entries(conteo).sort((a,b)=>b[1]-a[1])[0];
+      const estatura=Number(cargarDatosPerfil().estatura)/100;const imc=pesoPerfil&&estatura?pesoPerfil/(estatura*estatura):0;
+      const fuerza=validas.filter(x=>!esCardioSesion(x)).map(x=>({x,p:parseFloat(String(x.peso||'').replace(',','.'))})).filter(o=>Number.isFinite(o.p));
+      const records=new Set(validas.map(x=>normalizarNombre(x.maquina))).size;
+      const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+      set('kpi-kcal-semana',kcal7);set('kpi-kcal-mes',kcalMes);set('kpi-cardio',`${cardio} min`);set('kpi-imc',imc?imc.toFixed(1):'--');set('kpi-frecuencia',new Set(ult30.map(x=>x.fecha.split(' ')[0])).size);set('kpi-favorita',favorita?`${favorita[0]} · ${favorita[1]}`:'--');set('kpi-records',records);set('kpi-peso-max',fuerza.length?`${Math.max(...fuerza.map(o=>o.p))} kg`:'--');
+      const dias=[];for(let i=0;i<7;i++){const d=new Date(inicio7);d.setDate(d.getDate()+i);dias.push(d);}
+      dibujarGrafico('chart-calorias',dias.map(d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`),dias.map(d=>Math.round(validas.filter(x=>x._f.toDateString()===d.toDateString()).reduce((t,x)=>t+kcal(x),0))),'#fb923c');
+      const ultF=fuerza.slice(0,10).reverse();dibujarGrafico('chart-peso',ultF.map(o=>o.x.fecha.split(' ')[0].slice(0,5)),ultF.map(o=>o.p),'#38bdf8');
+    }
+    function dibujarGrafico(id,labels,values,color){
+      const c=document.getElementById(id);if(!c)return;const dpr=Math.max(1,window.devicePixelRatio||1),r=c.getBoundingClientRect();if(!r.width)return;c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);const w=r.width,h=r.height,p={l:34,r:8,t:12,b:28},max=Math.max(1,...values)*1.12;x.clearRect(0,0,w,h);x.strokeStyle='#475569';x.fillStyle='#94a3b8';x.font='11px system-ui';x.textAlign='right';for(let i=0;i<=3;i++){const y=p.t+(h-p.t-p.b)*i/3;x.beginPath();x.moveTo(p.l,y);x.lineTo(w-p.r,y);x.stroke();x.fillText(Math.round(max*(1-i/3)),p.l-5,y+4);}if(!values.length)return;const step=(w-p.l-p.r)/Math.max(1,values.length-1);x.strokeStyle=color;x.lineWidth=3;x.beginPath();values.forEach((v,i)=>{const px=p.l+i*step,py=h-p.b-(v/max)*(h-p.t-p.b);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();x.fillStyle=color;values.forEach((v,i)=>{const px=p.l+i*step,py=h-p.b-(v/max)*(h-p.t-p.b);x.beginPath();x.arc(px,py,3.5,0,Math.PI*2);x.fill()});x.fillStyle='#94a3b8';x.textAlign='center';labels.forEach((v,i)=>{if(labels.length<=7||i%2===0)x.fillText(v,p.l+i*step,h-8)});
+    }
+    window.addEventListener('resize',()=>{clearTimeout(window._grafTimer);window._grafTimer=setTimeout(renderizarDashboard,120)});
+
     /* HISTORIAL AGRUPADO POR FECHA */
     function renderizarHistorial() {
       const contenedor = document.getElementById('lista-historial');
@@ -1362,6 +1424,7 @@
     function toggleGrupoHistorial(fechaClave) {
       gruposExpandidos[fechaClave] = !gruposExpandidos[fechaClave];
       renderizarHistorial();
+      renderizarDashboard();
     }
 
     function eliminarSesionHistorial(id) {
@@ -1373,42 +1436,19 @@
 
     /* EXPORTACIÓN MULTI-PESTAÑA A EXCEL (.XLSX) */
     function exportarExcelMultiPestana() {
-      if (typeof XLSX === 'undefined') {
-        alert('Cargando librería Excel, por favor intenta en unos segundos o conéctate a internet.');
-        return;
-      }
-
-      const libro = XLSX.utils.book_new();
-      let hayDatos = false;
-
-      perfiles.forEach(perfil => {
-        const historialPerfil = cargarHistorial(perfil);
-        
-        const datosHoja = [
-          ['Fecha y Hora', 'Máquina', 'Series', 'Repeticiones', 'Peso']
-        ];
-
-        if (historialPerfil.length > 0) {
-          hayDatos = true;
-          historialPerfil.forEach(s => {
-            datosHoja.push([s.fecha, s.maquina, s.series || '-', s.reps || '-', s.peso || '-']);
-          });
-        } else {
-          datosHoja.push(['Sin registros', '-', '-', '-', '-']);
-        }
-
-        const hoja = XLSX.utils.aoa_to_sheet(datosHoja);
-        const nombrePestana = perfil.substring(0, 30).replace(/[:\\/?*\[\]]/g, '');
-        XLSX.utils.book_append_sheet(libro, hoja, nombrePestana);
+      if (typeof XLSX === 'undefined') { alert('Librería Excel no lista. Comprueba la conexión.'); return; }
+      const libro=XLSX.utils.book_new();let hayDatos=false;
+      perfiles.forEach(perfil=>{
+        const historial=cargarHistorial(perfil);const pesoPerfil=Number(cargarDatosPerfil(perfil).peso)||0;
+        const cab=['Fecha y Hora','Máquina','Tipo','Series','Repeticiones','Peso (kg)','Tiempo (min)','Velocidad (km/h)','Inclinación (%)','Pasos','Resistencia','Calorías estimadas'];
+        const filas=[cab];
+        historial.forEach(s=>{hayDatos=true;filas.push([s.fecha,s.maquina,s.tipo||'fuerza',s.series||'-',s.reps||'-',s.peso||'-',s.tiempo||'-',s.velocidad||'-',s.inclinacion||'-',s.pasos||'-',s.resistencia||'-',Number(s.calorias)||calcularCaloriasSesion(s,pesoPerfil)||0]);});
+        if(!historial.length)filas.push(['Sin registros','-','-','-','-','-','-','-','-','-','-',0]);
+        const hoja=XLSX.utils.aoa_to_sheet(filas);hoja['!cols']=[18,24,12,10,14,12,13,16,15,10,14,20].map(w=>({wch:w}));
+        XLSX.utils.book_append_sheet(libro,hoja,perfil.substring(0,30).replace(/[:\\/?*\[\]]/g,''));
       });
-
-      if (!hayDatos) {
-        alert('No hay registros guardados en ningún perfil para exportar.');
-        return;
-      }
-
-      const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_${fechaHoy}.xlsx`);
+      if(!hayDatos){alert('No hay registros para exportar.');return;}
+      XLSX.writeFile(libro,`Informe_Gimnasio_V17_${new Date().toISOString().slice(0,10)}.xlsx`);
     }
 
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
@@ -1454,9 +1494,11 @@
 
               const fechaRaw = String(fila[0] || '').trim();
               const maquina = String(fila[1] || '').trim();
-              const series = String(fila[2] || '-').trim();
-              const reps = String(fila[3] || '-').trim();
-              const peso = String(fila[4] || '-').trim();
+              const tipo=String(fila[2]||'fuerza').trim();
+              const series=String(fila[3]||'-').trim();
+              const reps=String(fila[4]||'-').trim();
+              const peso=String(fila[5]||'-').trim();
+              const tiempo=String(fila[6]||'-').trim(),velocidad=String(fila[7]||'-').trim(),inclinacion=String(fila[8]||'-').trim(),pasos=String(fila[9]||'-').trim(),resistencia=String(fila[10]||'-').trim(),calorias=Number(fila[11])||0;
 
               if (!fechaRaw || !maquina) continue;
 
@@ -1476,7 +1518,7 @@
                   maquina: maquina,
                   series: series,
                   reps: reps,
-                  peso: peso
+                  peso, tipo, tiempo, velocidad, inclinacion, pasos, resistencia, calorias
                 });
                 totalImportados++;
               } else {
@@ -1655,6 +1697,11 @@
 
       const maquina = maquinas.find(m => m.id === id);
       if (maquina) {
+        const nombreAnterior = maquina.nombre;
+        if (normalizarNombre(nombreAnterior) !== normalizarNombre(nuevoNombre)) {
+          historialSesiones.forEach(s => { if (normalizarNombre(s.maquina) === normalizarNombre(nombreAnterior)) s.maquina = nuevoNombre; });
+          localStorage.setItem(`historial_sesiones_${perfilActual}`, JSON.stringify(historialSesiones));
+        }
         maquina.nombre = nuevoNombre;
         maquina.series = nuevasSeries;
         maquina.peso = nuevoPeso;
@@ -1758,6 +1805,7 @@
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
+      renderizarDashboard();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
@@ -1765,6 +1813,7 @@
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
+      renderizarDashboard();
     });
   </script>
 

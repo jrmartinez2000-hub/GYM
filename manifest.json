@@ -1,7 +1,7 @@
 {
-  "name": "Registro Gimnasio",
+  "name": "Registro Gimnasio V17",
   "short_name": "Gimnasio",
-  "description": "Registro de máquinas, ejercicios, historial y progreso de gimnasio",
+  "description": "Registro de máquinas, ejercicios, cardio, calorías, estadísticas, historial y progreso de gimnasio",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
