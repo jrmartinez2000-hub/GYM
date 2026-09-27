@@ -626,6 +626,61 @@
     .advanced-tools{margin-top:14px;background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden}.advanced-tools-toggle{width:100%;min-height:54px;padding:11px 12px;display:flex;justify-content:space-between;align-items:center;border:0;background:var(--card-bg);color:var(--accent);font-weight:800;cursor:pointer}.advanced-tools-panel{display:none;padding:0 12px 12px}.advanced-tools-panel.visible{display:block}.advanced-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:10px;border-top:1px solid #334155}.advanced-tools-grid button{width:100%;min-height:52px;white-space:normal}
     @media(max-width:600px){body{padding:7px}.profile-actions,.card-footer,.card-actions,.register-actions-row{flex-wrap:wrap}.card-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(110px,100%),1fr));width:100%}.register-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.register-inputs>div,.register-inputs input{min-width:0}.machine-details{padding:0 9px 10px}.advanced-tools-grid{grid-template-columns:1fr}.history-item{flex-direction:column;align-items:stretch;gap:8px}.history-item .btn-delete{width:100%}}@media(max-width:380px){.register-inputs{grid-template-columns:1fr}}
 
+
+    /* VERSION 8.0: FOTO Y RECORD EN LA FILA COMPACTA */
+    .machine-summary { padding-right: 8px; }
+    .machine-summary-record {
+      flex: 0 0 auto;
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.10);
+      border: 1px solid rgba(251, 191, 36, 0.28);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .machine-summary-photo-button {
+      flex: 0 0 52px;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border: 1.5px solid var(--accent);
+      border-radius: 9px;
+      background: var(--input-bg);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .machine-summary-photo-button:focus-visible {
+      outline: 2px solid #f8fafc;
+      outline-offset: 2px;
+    }
+    .machine-summary-photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .machine-summary-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      color: var(--text-muted);
+    }
+    @media(max-width:420px){
+      .machine-summary { gap: 7px; padding-left: 8px; }
+      .machine-arrow { width: 18px; flex-basis: 18px; }
+      .machine-summary-name { font-size: 1.05rem; }
+      .machine-summary-record { padding: 3px 6px; font-size: 0.70rem; }
+      .machine-summary-photo-button { width: 48px; height: 48px; flex-basis: 48px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1032,6 +1087,59 @@
       mostrarToast('🧹 Registro limpiado');
     }
 
+    function obtenerRecordPesoMaquina(nombreMaquina) {
+      const nombreNormalizado = String(nombreMaquina || '').trim().toLowerCase();
+      const pesos = historialSesiones
+        .filter(s => String(s.maquina || '').trim().toLowerCase() === nombreNormalizado)
+        .map(s => parseFloat(String(s.peso || '').replace(',', '.').replace(/[^0-9.-]/g, '')))
+        .filter(n => Number.isFinite(n));
+      return pesos.length ? Math.max(...pesos) : null;
+    }
+
+    function crearResumenMaquina(m, estaExpandida, fotoData) {
+      const resumen = document.createElement('div');
+      resumen.className = 'machine-summary';
+
+      const botonDesplegar = document.createElement('button');
+      botonDesplegar.type = 'button';
+      botonDesplegar.style.cssText = 'display:flex;align-items:center;gap:10px;flex:1 1 auto;min-width:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;padding:0;';
+      botonDesplegar.setAttribute('aria-expanded', String(estaExpandida));
+      botonDesplegar.setAttribute('aria-label', `${estaExpandida ? 'Cerrar' : 'Abrir'} ${m.nombre}`);
+      botonDesplegar.innerHTML = `<span class="machine-arrow">▶</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;
+      botonDesplegar.addEventListener('click', () => toggleMaquina(m.id));
+      resumen.appendChild(botonDesplegar);
+
+      const record = obtenerRecordPesoMaquina(m.nombre);
+      if (record !== null) {
+        const recordBadge = document.createElement('span');
+        recordBadge.className = 'machine-summary-record';
+        recordBadge.textContent = `🏆 ${record}`;
+        recordBadge.title = 'Récord de peso';
+        resumen.appendChild(recordBadge);
+      }
+
+      const botonFoto = document.createElement('button');
+      botonFoto.type = 'button';
+      botonFoto.className = 'machine-summary-photo-button';
+      botonFoto.setAttribute('aria-label', fotoData ? `Ampliar foto de ${m.nombre}` : `Añadir foto a ${m.nombre}`);
+      botonFoto.title = fotoData ? 'Ampliar foto' : 'Añadir foto';
+      if (fotoData) {
+        botonFoto.innerHTML = `<img class="machine-summary-photo" src="${fotoData}" alt="Foto de ${escaparHTML(m.nombre)}">`;
+        botonFoto.addEventListener('click', e => {
+          e.stopPropagation();
+          abrirFotoModal(fotoData);
+        });
+      } else {
+        botonFoto.innerHTML = '<span class="machine-summary-photo-placeholder">🏋️</span>';
+        botonFoto.addEventListener('click', e => {
+          e.stopPropagation();
+          tomarFoto(m.id);
+        });
+      }
+      resumen.appendChild(botonFoto);
+      return resumen;
+    }
+
     async function renderizarLista() {
       const contenedor = document.getElementById('lista-maquinas');
       contenedor.innerHTML = '';
@@ -1092,7 +1200,7 @@
 
           card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
-          const resumen=document.createElement('button');resumen.type='button';resumen.className='machine-summary';resumen.setAttribute('aria-expanded',String(estaExpandida));resumen.innerHTML=`<span class="machine-arrow">▶</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;resumen.addEventListener('click',()=>toggleMaquina(m.id));card.appendChild(resumen);card.appendChild(detalles);
+          const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
           document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
@@ -1139,7 +1247,7 @@
 
           card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
-          const resumen=document.createElement('button');resumen.type='button';resumen.className='machine-summary';resumen.setAttribute('aria-expanded',String(estaExpandida));resumen.innerHTML=`<span class="machine-arrow">▶</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;resumen.addEventListener('click',()=>toggleMaquina(m.id));card.appendChild(resumen);card.appendChild(detalles);
+          const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
           document.getElementById(`title-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));

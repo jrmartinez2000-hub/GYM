@@ -1,3 +1,3 @@
-# Registro Gimnasio v7 compacta
+# Registro Gimnasio v8
 
-Máquinas en acordeón y herramientas Excel/JSON al final.
+Foto ampliable y récord de peso visibles en la fila compacta de cada máquina.
