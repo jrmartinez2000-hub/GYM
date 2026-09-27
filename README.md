@@ -1,3 +1,3 @@
-# Registro Gimnasio PWA v6
+# Registro Gimnasio v7 compacta
 
-Panel limpio de progreso, récords y evolución, manteniendo modo entrenamiento, móvil, tamaños por perfil y fusión Excel.
+Máquinas en acordeón y herramientas Excel/JSON al final.

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mi Gimnasio</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Gimnasio">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2548/2548537.png">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Registro Gimnasio","short_name":"Gimnasio","start_url":".","display":"standalone","background_color":"#0b1120","theme_color":"#0b1120","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2548/2548537.png","sizes":"512x512","type":"image/png"}]}'>
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="manifest" href="./manifest.json">
 
   <style>
     *, *::before, *::after {
@@ -621,309 +621,10 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    :root{--fs-app:16px;--fs-machine:21px;--fs-values:18px;--fs-buttons:16px;--fs-history:15px;--fs-profiles:16px;--fs-dates:13px}
-    body{font-size:var(--fs-app)} .card h3{font-size:var(--fs-machine)}
-    .register-inputs input,.register-inputs label,.info-row,.edit-input-card{font-size:var(--fs-values)}
-    button,.btn-main,.btn-export,.btn-import,.btn-backup,.btn-submit,.btn-register,.btn-clear-reg,.btn-card,.btn-delete,.btn-profile-action{font-size:var(--fs-buttons)}
-    .history-details,.history-details .history-machine-title,.history-group-header,.history-group-header span.badge-count{font-size:var(--fs-history)}
-    .btn-profile,.profiles-header label{font-size:var(--fs-profiles)} .fecha-badge,.history-date{font-size:var(--fs-dates)}
-    .view-settings{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;margin-bottom:12px;overflow:hidden}
-    .view-settings-toggle{width:100%;padding:12px;border:0;background:var(--card-bg);color:var(--accent);font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-    .view-settings-panel{display:none;padding:0 12px 12px}.view-settings-panel.visible{display:block}
-    .size-control{display:grid;grid-template-columns:minmax(110px,1fr) 46px 58px 46px;gap:6px;align-items:center;padding:8px 0;border-top:1px solid #334155}
-    .size-control label{margin:0;color:var(--text);font-size:.95rem}.size-value{text-align:center;color:var(--accent);font-weight:700}
-    .size-btn{min-height:44px;border:1.5px solid var(--accent);border-radius:8px;background:var(--input-bg);color:var(--accent);font-weight:800;cursor:pointer}
-    .reset-view-btn{width:100%;margin-top:9px;padding:11px;border-radius:8px;border:1.5px solid var(--text-muted);background:transparent;color:var(--text-muted);font-weight:700}
-    .view-note{color:var(--text-muted);font-size:.82rem;margin:5px 0 8px}
-    @media(max-width:480px){body{padding:8px}.size-control{grid-template-columns:minmax(100px,1fr) 44px 52px 44px;gap:4px}.register-inputs input{min-height:46px}.btn-register,.btn-main,.btn-export,.btn-import{min-height:52px}}
-
-
-    /* VERSION 4.0: ADAPTACION COMPLETA PARA MOVIL */
-    html, body {
-      min-width: 0;
-      width: 100%;
-      max-width: 100%;
-    }
-    body, main, section, div, form, header, footer {
-      min-width: 0;
-    }
-    img, canvas, svg, video {
-      max-width: 100%;
-      height: auto;
-    }
-    button, input, select, textarea {
-      max-width: 100%;
-      min-width: 0;
-    }
-    button {
-      white-space: normal;
-      overflow-wrap: anywhere;
-      word-break: normal;
-      line-height: 1.25;
-    }
-    .card h3,
-    .history-machine-title,
-    .history-details,
-    .view-note,
-    .profiles-header label,
-    .size-control label {
-      overflow-wrap: anywhere;
-      word-break: normal;
-      min-width: 0;
-    }
-    .profile-actions,
-    .card-footer,
-    .card-actions,
-    .register-actions-row {
-      flex-wrap: wrap;
-      min-width: 0;
-    }
-    .profile-actions > *,
-    .register-actions-row > * {
-      min-width: min(135px, 100%);
-    }
-    .card-actions {
-      flex: 1 1 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
-      gap: 6px;
-      width: 100%;
-    }
-    .card-actions > * {
-      width: 100%;
-      min-height: 44px;
-    }
-    .fecha-badge {
-      white-space: normal;
-      overflow-wrap: anywhere;
-      flex: 1 1 100%;
-    }
-    .history-item {
-      gap: 8px;
-      min-width: 0;
-    }
-    .history-details {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-    .history-item .btn-delete {
-      flex: 0 0 auto;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 7px;
-      }
-      h1 {
-        font-size: clamp(1.25rem, 7vw, 1.8rem);
-        overflow-wrap: anywhere;
-      }
-      .profiles-section,
-      .panel,
-      .card,
-      .history-section,
-      .view-settings {
-        padding-left: 9px;
-        padding-right: 9px;
-      }
-      .view-settings {
-        padding-left: 0;
-        padding-right: 0;
-      }
-      .profile-actions {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .profile-actions .delete {
-        grid-column: 1 / -1;
-      }
-      .btn-profile-action {
-        width: 100%;
-        min-width: 0;
-        min-height: 46px;
-        padding: 8px 5px;
-      }
-      .profile-tabs {
-        flex-wrap: wrap;
-        overflow-x: visible;
-      }
-      .btn-profile {
-        white-space: normal;
-        overflow-wrap: anywhere;
-        flex: 1 1 min(140px, 100%);
-        min-width: 0;
-        min-height: 44px;
-      }
-      .action-buttons,
-      .grid {
-        width: 100%;
-      }
-      .btn-main,
-      .btn-export,
-      .btn-import,
-      .btn-backup,
-      .btn-submit {
-        min-height: 52px;
-        padding: 10px 8px;
-      }
-      .card-header {
-        align-items: flex-start;
-        flex-wrap: wrap;
-      }
-      .card-header h3,
-      .card-header .edit-input-card {
-        flex: 1 1 calc(100% - 62px);
-        min-width: 0;
-      }
-      .register-inputs {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        width: 100%;
-      }
-      .register-inputs > div {
-        min-width: 0;
-      }
-      .register-inputs input {
-        width: 100%;
-        min-width: 0;
-        padding-left: 3px;
-        padding-right: 3px;
-      }
-      .register-actions-row {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .btn-register,
-      .btn-clear-reg {
-        width: 100%;
-        min-width: 0;
-        min-height: 50px;
-      }
-      .card-footer {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .history-item {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .history-item .btn-delete {
-        width: 100%;
-        min-height: 44px;
-      }
-      .history-group-header {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 6px;
-        overflow-wrap: anywhere;
-      }
-      .history-group-header span.badge-count {
-        justify-self: start;
-      }
-      .size-control {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 7px;
-      }
-      .size-control label {
-        grid-column: 1 / -1;
-        text-align: center;
-      }
-      .size-btn,
-      .size-value {
-        width: 100%;
-        min-width: 0;
-      }
-      .size-value {
-        align-self: center;
-      }
-      .view-settings-toggle {
-        gap: 8px;
-      }
-      .info-row {
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .info-row > span:first-child {
-        flex: 1 1 100%;
-      }
-      .info-row input {
-        width: 100% !important;
-        text-align: left !important;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .register-inputs {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .profile-actions {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .profile-actions .delete {
-        grid-column: auto;
-      }
-      .card-header h3,
-      .card-header .edit-input-card {
-        flex-basis: 100%;
-      }
-    }
-
-
-
-    /* VERSION 5.0: MODO ENTRENAMIENTO */
-    .training-mode-button {
-      width: 100%; min-height: 54px; padding: 12px; margin-bottom: 12px;
-      border: 2px solid var(--success); border-radius: 10px;
-      background: rgba(34,197,94,.12); color: var(--success);
-      font-weight: 800; cursor: pointer;
-    }
-    .training-exit-button {
-      display: none; position: sticky; top: 6px; z-index: 900;
-      width: 100%; min-height: 50px; margin-bottom: 10px; padding: 10px;
-      border: 2px solid var(--danger); border-radius: 10px;
-      background: #450a0a; color: #fff; font-weight: 800; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,.35);
-    }
-    body.training-mode .training-exit-button { display: block; }
-    body.training-mode > h1,
-    body.training-mode .profiles-section,
-    body.training-mode .view-settings,
-    body.training-mode .action-buttons,
-    body.training-mode #panel-nuevo-perfil,
-    body.training-mode #panel-nueva,
-    body.training-mode .history-section,
-    body.training-mode .training-mode-button { display: none !important; }
-    body.training-mode .grid { gap: 10px; margin-bottom: 0; }
-    body.training-mode .card { padding: 10px; }
-    body.training-mode .card-footer { margin-top: 7px; padding-top: 7px; }
-    body.training-mode .card-actions .btn-edit-toggle,
-    body.training-mode .card-actions .btn-delete,
-    body.training-mode .card-actions [id^="btn-foto-"] { display: none !important; }
-    body.training-mode .card-actions { display: none !important; }
-    body.training-mode .fecha-badge { text-align: center; }
-    body.training-mode .register-box { margin-top: 7px; }
-    body.training-mode .btn-register { min-height: 58px; font-weight: 900; }
-    @media(max-width:600px){
-      body.training-mode { padding: 6px; }
-      body.training-mode .card h3 { text-align: center; }
-      body.training-mode .card-header { justify-content: center; }
-      body.training-mode .register-inputs input { min-height: 52px; font-weight: 800; }
-    }
-
-
-
-    /* VERSION 6.0: PROGRESO LIMPIO */
-    .progress-button{width:100%;min-height:52px;padding:11px;margin-bottom:12px;border:1.5px solid var(--accent);border-radius:10px;background:var(--card-bg);color:var(--accent);font-weight:800;cursor:pointer}
-    .progress-panel{display:none;background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;padding:12px;margin-bottom:12px}
-    .progress-panel.visible{display:block}.progress-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.progress-head h2{font-size:1.15rem;color:var(--accent)}
-    .progress-close{border:0;background:transparent;color:var(--text-muted);font-size:1.35rem;cursor:pointer}
-    .progress-filter{margin-bottom:10px}.progress-filter input,.progress-filter select{width:100%;padding:11px;border-radius:8px;border:1.5px solid #475569;background:var(--input-bg);color:var(--text);font-size:1rem}
-    .progress-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}.progress-kpi{background:var(--input-bg);border-radius:9px;padding:10px 6px;text-align:center;min-width:0}.progress-kpi strong{display:block;color:var(--accent);font-size:1.3rem;overflow-wrap:anywhere}.progress-kpi span{display:block;color:var(--text-muted);font-size:.75rem;margin-top:3px}
-    .progress-chart-wrap{background:var(--input-bg);border-radius:10px;padding:8px;margin-bottom:10px;overflow:hidden}.progress-chart-title{font-size:.85rem;color:var(--text-muted);margin:2px 0 8px}.progress-chart{width:100%;height:190px;display:block}.progress-empty{text-align:center;color:var(--text-muted);padding:22px 8px}
-    .progress-record{padding:9px;border-left:3px solid var(--success);background:rgba(34,197,94,.08);border-radius:7px;font-size:.9rem}.progress-record strong{color:var(--success)}
-    body.training-mode .progress-button,body.training-mode .progress-panel{display:none!important}
-    @media(max-width:420px){.progress-kpis{grid-template-columns:minmax(0,1fr)}.progress-chart{height:165px}}
+    /* VERSION COMPACTA: MAQUINAS PLEGABLES */
+    .card{padding:0;overflow:hidden}.machine-summary{width:100%;min-height:58px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:0;background:var(--card-bg);color:var(--text);cursor:pointer;text-align:left}.machine-summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.machine-arrow{color:var(--accent);font-size:1.15rem;width:22px;flex:0 0 22px;text-align:center;transition:transform .2s}.card.expanded .machine-arrow{transform:rotate(90deg)}.machine-summary-name{flex:1;min-width:0;color:var(--accent);font-size:1.25rem;font-weight:800;overflow-wrap:anywhere}.machine-details{display:none;padding:0 12px 12px;border-top:1px solid #334155}.card.expanded .machine-details{display:block}.machine-details .card-header{margin-top:10px}
+    .advanced-tools{margin-top:14px;background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden}.advanced-tools-toggle{width:100%;min-height:54px;padding:11px 12px;display:flex;justify-content:space-between;align-items:center;border:0;background:var(--card-bg);color:var(--accent);font-weight:800;cursor:pointer}.advanced-tools-panel{display:none;padding:0 12px 12px}.advanced-tools-panel.visible{display:block}.advanced-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:10px;border-top:1px solid #334155}.advanced-tools-grid button{width:100%;min-height:52px;white-space:normal}
+    @media(max-width:600px){body{padding:7px}.profile-actions,.card-footer,.card-actions,.register-actions-row{flex-wrap:wrap}.card-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(110px,100%),1fr));width:100%}.register-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.register-inputs>div,.register-inputs input{min-width:0}.machine-details{padding:0 9px 10px}.advanced-tools-grid{grid-template-columns:1fr}.history-item{flex-direction:column;align-items:stretch;gap:8px}.history-item .btn-delete{width:100%}}@media(max-width:380px){.register-inputs{grid-template-columns:1fr}}
 
   </style>
 </head>
@@ -947,10 +648,6 @@
     <div class="profile-tabs" id="profile-tabs"></div>
   </div>
 
-  <section class="view-settings" aria-label="Personalizar vista">
-    <button type="button" class="view-settings-toggle" id="view-settings-toggle" aria-expanded="false" onclick="togglePersonalizacion()"><span>⚙️ Personalizar tamaños</span><span id="view-settings-arrow">▼</span></button>
-    <div class="view-settings-panel" id="view-settings-panel"><p class="view-note">Los tamaños se guardan para el perfil activo.</p><div id="size-controls"></div><button type="button" class="reset-view-btn" onclick="restablecerTamanos()">↺ Restablecer tamaños</button></div>
-  </section>
   <!-- Panel: Crear Perfil -->
   <div class="panel" id="panel-nuevo-perfil">
     <h2>Crear nuevo perfil</h2>
@@ -963,24 +660,9 @@
     </form>
   </div>
 
-  <button type="button" class="progress-button" onclick="togglePanelProgreso()">📈 Ver progreso</button>
-  <section class="progress-panel" id="progress-panel" aria-label="Progreso de entrenamiento">
-    <div class="progress-head"><h2>Progreso</h2><button type="button" class="progress-close" onclick="togglePanelProgreso(false)" aria-label="Cerrar">✕</button></div>
-    <div class="progress-filter"><input type="search" id="progress-search" placeholder="Buscar ejercicio..." oninput="actualizarSelectorProgreso()"></div>
-    <div class="progress-filter"><select id="progress-machine" onchange="renderizarProgreso()"></select></div>
-    <div id="progress-content"></div>
-  </section>
-  <button type="button" class="training-mode-button" onclick="activarModoEntrenamiento()">🏋️ Iniciar modo entrenamiento</button>
-  <button type="button" class="training-exit-button" onclick="desactivarModoEntrenamiento()">✕ Salir del modo entrenamiento</button>
   <!-- Botones de Acción -->
   <div class="action-buttons">
     <button class="btn-main" onclick="togglePanelNueva()">➕ Añadir Nueva Máquina</button>
-    <button class="btn-export" onclick="exportarExcelMultiPestana()">📊 Exportar Informe a Excel (.XLSX)</button>
-    <button class="btn-import" onclick="document.getElementById('input-excel-file').click()">📥 Cargar / Fusionar Excel (.XLSX)</button>
-    
-    <!-- Opciones de Backup Completo -->
-    <button class="btn-backup" onclick="exportarBackupJSON()">💾 Guardar Copia Completa (JSON)</button>
-    <button class="btn-backup" onclick="document.getElementById('input-json-file').click()">📂 Restaurar Copia Completa (JSON)</button>
   </div>
 
   <!-- Panel: Nueva Máquina -->
@@ -1004,6 +686,15 @@
     <div class="history-list" id="lista-historial"></div>
   </div>
 
+  <section class="advanced-tools">
+    <button type="button" class="advanced-tools-toggle" id="advanced-tools-toggle" aria-expanded="false" onclick="toggleHerramientasAvanzadas()"><span>⚙️ Herramientas avanzadas</span><span id="advanced-tools-arrow">▼</span></button>
+    <div class="advanced-tools-panel" id="advanced-tools-panel"><div class="advanced-tools-grid">
+      <button class="btn-export" onclick="exportarExcelMultiPestana()">📊 Exportar informe Excel</button>
+      <button class="btn-import" onclick="document.getElementById('input-excel-file').click()">📥 Cargar / fusionar Excel</button>
+      <button class="btn-backup" onclick="exportarBackupJSON()">💾 Guardar copia JSON</button>
+      <button class="btn-backup" onclick="document.getElementById('input-json-file').click()">📂 Restaurar copia JSON</button>
+    </div></div>
+  </section>
   <!-- Toast Notification -->
   <div id="toast" class="toast">✅ Ejercicio registrado con éxito</div>
 
@@ -1098,78 +789,11 @@
     /* ========================================================
        LOGICA PRINCIPAL DE LA APLICACION
        ======================================================== */
-    const TAMANOS_DEFECTO={app:16,maquina:21,valores:18,botones:16,historial:15,perfiles:16,fechas:13};
-    const LIMITES_TAMANO={app:[12,26],maquina:[16,40],valores:[14,36],botones:[12,30],historial:[12,30],perfiles:[12,28],fechas:[10,24]};
-    const ETIQUETAS_TAMANO={app:'Texto general',maquina:'Nombre máquina',valores:'Series / Reps / Peso',botones:'Botones',historial:'Historial',perfiles:'Perfiles',fechas:'Fechas y horas'};
-    const VARIABLES_TAMANO={app:'--fs-app',maquina:'--fs-machine',valores:'--fs-values',botones:'--fs-buttons',historial:'--fs-history',perfiles:'--fs-profiles',fechas:'--fs-dates'};
-    function claveTamanosPerfil(){return `tamanos_vista_${perfilActual}`}
-    function cargarTamanosPerfil(){try{return {...TAMANOS_DEFECTO,...(JSON.parse(localStorage.getItem(claveTamanosPerfil()))||{})}}catch(e){return {...TAMANOS_DEFECTO}}}
-    function aplicarTamanosPerfil(){const t=cargarTamanosPerfil();Object.keys(VARIABLES_TAMANO).forEach(c=>document.documentElement.style.setProperty(VARIABLES_TAMANO[c],`${t[c]}px`));renderizarControlesTamano(t)}
-    function renderizarControlesTamano(t=cargarTamanosPerfil()){const x=document.getElementById('size-controls');if(!x)return;x.innerHTML='';Object.keys(ETIQUETAS_TAMANO).forEach(c=>{const f=document.createElement('div');f.className='size-control';f.innerHTML=`<label>${ETIQUETAS_TAMANO[c]}</label><button type="button" class="size-btn" onclick="cambiarTamano('${c}',-1)">A−</button><span class="size-value" id="size-value-${c}">${t[c]} px</span><button type="button" class="size-btn" onclick="cambiarTamano('${c}',1)">A+</button>`;x.appendChild(f)})}
-    function cambiarTamano(c,d){const t=cargarTamanosPerfil(),[mn,mx]=LIMITES_TAMANO[c];t[c]=Math.min(mx,Math.max(mn,Number(t[c])+d));localStorage.setItem(claveTamanosPerfil(),JSON.stringify(t));document.documentElement.style.setProperty(VARIABLES_TAMANO[c],`${t[c]}px`);document.getElementById(`size-value-${c}`).textContent=`${t[c]} px`}
-    function restablecerTamanos(){localStorage.removeItem(claveTamanosPerfil());aplicarTamanosPerfil();mostrarToast('↺ Tamaños restablecidos')}
-    function togglePersonalizacion(){const p=document.getElementById('view-settings-panel'),b=document.getElementById('view-settings-toggle'),a=document.getElementById('view-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼'}
-
-    /* MODO ENTRENAMIENTO: configuracion independiente por perfil */
-    function claveModoEntrenamiento() {
-      return `modo_entrenamiento_${perfilActual}`;
-    }
-    function aplicarModoEntrenamiento() {
-      const activo = localStorage.getItem(claveModoEntrenamiento()) === 'true';
-      document.body.classList.toggle('training-mode', activo);
-      if (activo) {
-        document.getElementById('panel-nueva').classList.remove('visible');
-        document.getElementById('panel-nuevo-perfil').classList.remove('visible');
-      }
-    }
-    function activarModoEntrenamiento() {
-      localStorage.setItem(claveModoEntrenamiento(), 'true');
-      aplicarModoEntrenamiento();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    function desactivarModoEntrenamiento() {
-      localStorage.setItem(claveModoEntrenamiento(), 'false');
-      aplicarModoEntrenamiento();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    /* PANEL DE PROGRESO LIMPIO */
-    function togglePanelProgreso(forzar) {
-      const panel=document.getElementById('progress-panel');
-      const mostrar=typeof forzar==='boolean'?forzar:!panel.classList.contains('visible');
-      panel.classList.toggle('visible',mostrar);
-      if(mostrar){actualizarSelectorProgreso();panel.scrollIntoView({behavior:'smooth',block:'start'});}
-    }
-    function registrosValidosProgreso(){
-      return cargarHistorial(perfilActual).filter(r=>r&&r.maquina);
-    }
-    function numeroProgreso(v){
-      const n=parseFloat(String(v??'').replace(',','.').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:null;
-    }
-    function actualizarSelectorProgreso(){
-      const select=document.getElementById('progress-machine');if(!select)return;
-      const antes=select.value;const q=(document.getElementById('progress-search')?.value||'').trim().toLowerCase();
-      const nombres=[...new Set(registrosValidosProgreso().map(r=>String(r.maquina).trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-      const filtrados=nombres.filter(n=>n.toLowerCase().includes(q));
-      select.innerHTML=filtrados.length?filtrados.map(n=>`<option value="${escaparHTML(n)}">${escaparHTML(n)}</option>`).join(''):'<option value="">Sin ejercicios</option>';
-      if(filtrados.includes(antes))select.value=antes;renderizarProgreso();
-    }
-    function renderizarProgreso(){
-      const destino=document.getElementById('progress-content'),nombre=document.getElementById('progress-machine')?.value;if(!destino)return;
-      if(!nombre){destino.innerHTML='<div class="progress-empty">No hay registros para mostrar.</div>';return;}
-      const regs=registrosValidosProgreso().filter(r=>r.maquina===nombre).sort((a,b)=>fechaAOrden(a.fecha)-fechaAOrden(b.fecha));
-      const pesos=regs.map(r=>numeroProgreso(r.peso)).filter(v=>v!==null);const maxPeso=pesos.length?Math.max(...pesos):null;
-      const volumen=regs.reduce((s,r)=>{const p=numeroProgreso(r.peso),re=numeroProgreso(r.reps),se=numeroProgreso(r.series);return s+(p!==null&&re!==null&&se!==null?p*re*se:0)},0);
-      const ultimo=regs[regs.length-1];
-      destino.innerHTML=`<div class="progress-kpis"><div class="progress-kpi"><strong>${regs.length}</strong><span>Registros</span></div><div class="progress-kpi"><strong>${maxPeso===null?'—':maxPeso}</strong><span>Récord de peso</span></div><div class="progress-kpi"><strong>${volumen?Math.round(volumen):'—'}</strong><span>Volumen total</span></div></div><div class="progress-chart-wrap"><div class="progress-chart-title">Evolución del peso</div><canvas id="progress-chart" class="progress-chart"></canvas></div><div class="progress-record"><strong>Último registro:</strong> ${escaparHTML(ultimo?.fecha||'—')} · ${escaparHTML(ultimo?.series||'—')} series · ${escaparHTML(ultimo?.reps||'—')} reps · ${escaparHTML(ultimo?.peso||'—')} peso</div>`;
-      dibujarGraficaProgreso(regs);
-    }
-    function dibujarGraficaProgreso(regs){
-      const canvas=document.getElementById('progress-chart');if(!canvas)return;const datos=regs.map(r=>({v:numeroProgreso(r.peso),f:r.fecha})).filter(x=>x.v!==null).slice(-20);const ratio=window.devicePixelRatio||1;const w=canvas.clientWidth||300,h=canvas.clientHeight||190;canvas.width=w*ratio;canvas.height=h*ratio;const c=canvas.getContext('2d');c.scale(ratio,ratio);c.clearRect(0,0,w,h);
-      if(datos.length<1){c.fillStyle='#94a3b8';c.font='14px system-ui';c.textAlign='center';c.fillText('Sin datos numéricos de peso',w/2,h/2);return;}
-      const pad={l:34,r:12,t:12,b:24},min=Math.min(...datos.map(x=>x.v)),max=Math.max(...datos.map(x=>x.v)),rango=max-min||1;c.strokeStyle='#475569';c.lineWidth=1;c.beginPath();c.moveTo(pad.l,pad.t);c.lineTo(pad.l,h-pad.b);c.lineTo(w-pad.r,h-pad.b);c.stroke();
-      c.strokeStyle='#38bdf8';c.lineWidth=3;c.lineJoin='round';c.beginPath();datos.forEach((x,i)=>{const px=pad.l+(datos.length===1?(w-pad.l-pad.r)/2:i*(w-pad.l-pad.r)/(datos.length-1));const py=pad.t+(max-x.v)*(h-pad.t-pad.b)/rango;i?c.lineTo(px,py):c.moveTo(px,py)});c.stroke();c.fillStyle='#38bdf8';datos.forEach((x,i)=>{const px=pad.l+(datos.length===1?(w-pad.l-pad.r)/2:i*(w-pad.l-pad.r)/(datos.length-1));const py=pad.t+(max-x.v)*(h-pad.t-pad.b)/rango;c.beginPath();c.arc(px,py,4,0,Math.PI*2);c.fill()});c.fillStyle='#94a3b8';c.font='11px system-ui';c.textAlign='right';c.fillText(String(max),pad.l-5,pad.t+4);c.fillText(String(min),pad.l-5,h-pad.b+4);
-    }
+    let maquinaExpandidaId = null;
+    function claveMaquinaExpandida(){return `maquina_expandida_${perfilActual}`;}
+    function cargarMaquinaExpandida(){const v=localStorage.getItem(claveMaquinaExpandida());maquinaExpandidaId=v===null?null:Number(v);}
+    function toggleMaquina(id){maquinaExpandidaId=maquinaExpandidaId===id?null:id;if(maquinaExpandidaId===null)localStorage.removeItem(claveMaquinaExpandida());else localStorage.setItem(claveMaquinaExpandida(),String(id));renderizarLista();}
+    function toggleHerramientasAvanzadas(){const p=document.getElementById('advanced-tools-panel'),b=document.getElementById('advanced-tools-toggle'),a=document.getElementById('advanced-tools-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
 
     function cargarPerfiles() {
       try {
@@ -1235,7 +859,6 @@
       if (perfil === perfilActual) {
         localStorage.setItem(`historial_sesiones_${perfilActual}`, JSON.stringify(historialSesiones));
         renderizarHistorial();
-        if(document.getElementById('progress-panel')?.classList.contains('visible')) actualizarSelectorProgreso();
       } else {
         const hist = cargarHistorial(perfil);
         localStorage.setItem(`historial_sesiones_${perfil}`, JSON.stringify(hist));
@@ -1272,12 +895,10 @@
       maquinas = cargarDatos();
       historialSesiones = cargarHistorial();
       maquinaEditandoId = null;
+      cargarMaquinaExpandida();
       renderizarPerfiles();
-      aplicarTamanosPerfil();
-      aplicarModoEntrenamiento();
       renderizarLista();
       renderizarHistorial();
-      if(document.getElementById('progress-panel')?.classList.contains('visible')) actualizarSelectorProgreso();
     }
 
     function mostrarPanelNuevoPerfil() {
@@ -1423,7 +1044,8 @@
       for (const m of maquinas) {
         const card = document.createElement('div');
         const esEditando = (maquinaEditandoId === m.id);
-        card.className = `card ${esEditando ? 'editing' : ''}`;
+        const estaExpandida = maquinaExpandidaId === m.id;
+        card.className = `card ${esEditando ? 'editing' : ''} ${estaExpandida ? 'expanded' : ''}`;
 
         const fotoData = await obtenerFotoDB(m.id);
 
@@ -1469,6 +1091,8 @@
           `;
 
           card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
+          const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
+          const resumen=document.createElement('button');resumen.type='button';resumen.className='machine-summary';resumen.setAttribute('aria-expanded',String(estaExpandida));resumen.innerHTML=`<span class="machine-arrow">▶</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;resumen.addEventListener('click',()=>toggleMaquina(m.id));card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
           document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
@@ -1514,6 +1138,8 @@
           `;
 
           card.querySelector('.thumb-slot').replaceWith(thumbContainer.firstChild);
+          const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
+          const resumen=document.createElement('button');resumen.type='button';resumen.className='machine-summary';resumen.setAttribute('aria-expanded',String(estaExpandida));resumen.innerHTML=`<span class="machine-arrow">▶</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;resumen.addEventListener('click',()=>toggleMaquina(m.id));card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
           document.getElementById(`title-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
@@ -1658,83 +1284,13 @@
       XLSX.writeFile(libro, `Informe_Gimnasio_${fechaHoy}.xlsx`);
     }
 
-    /* LECTURA Y FUSIÓN DE EXCEL SIN DUPLICADOS */
-    function normalizarTexto(valor) {
-      return String(valor ?? '')
-        .trim()
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/\s+/g, ' ');
-    }
-
-    function normalizarValor(valor, defecto = '-') {
-      const texto = String(valor ?? '').trim();
-      return texto || defecto;
-    }
-
-    function normalizarFechaExcel(valor) {
-      if (valor === null || valor === undefined || valor === '') return '';
-
-      // Excel puede entregar fechas como número de serie.
-      if (typeof valor === 'number' && typeof XLSX !== 'undefined' && XLSX.SSF) {
-        const partes = XLSX.SSF.parse_date_code(valor);
-        if (partes) {
-          const dd = String(partes.d).padStart(2, '0');
-          const mm = String(partes.m).padStart(2, '0');
-          const yyyy = String(partes.y);
-          const hh = String(partes.H || 0).padStart(2, '0');
-          const min = String(partes.M || 0).padStart(2, '0');
-          return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-        }
-      }
-
-      if (valor instanceof Date && !isNaN(valor)) {
-        const dd = String(valor.getDate()).padStart(2, '0');
-        const mm = String(valor.getMonth() + 1).padStart(2, '0');
-        const yyyy = valor.getFullYear();
-        const hh = String(valor.getHours()).padStart(2, '0');
-        const min = String(valor.getMinutes()).padStart(2, '0');
-        return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-      }
-
-      const texto = String(valor).trim();
-      const coincidencia = texto.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
-      if (coincidencia) {
-        const dd = coincidencia[1].padStart(2, '0');
-        const mm = coincidencia[2].padStart(2, '0');
-        const yyyy = coincidencia[3];
-        const hh = (coincidencia[4] || '00').padStart(2, '0');
-        const min = coincidencia[5] || '00';
-        return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-      }
-      return texto;
-    }
-
-    function claveRegistro(registro) {
-      // Un registro solo se considera duplicado si coinciden todos estos campos.
-      return [
-        normalizarFechaExcel(registro.fecha),
-        normalizarTexto(registro.maquina),
-        normalizarTexto(registro.series),
-        normalizarTexto(registro.reps),
-        normalizarTexto(registro.peso)
-      ].join('|');
-    }
-
-    function fechaAOrden(fecha) {
-      const m = String(fecha || '').match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
-      if (!m) return 0;
-      return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4] || 0), Number(m[5] || 0)).getTime();
-    }
-
+    /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
 
       if (typeof XLSX === 'undefined') {
-        alert('La librería Excel todavía no está disponible. Comprueba la conexión y vuelve a intentarlo.');
-        e.target.value = '';
+        alert('Librería Excel no lista. Comprueba tu conexión a internet.');
         return;
       }
 
@@ -1742,127 +1298,130 @@
       reader.onload = function(evt) {
         try {
           const data = new Uint8Array(evt.target.result);
-          const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+          const workbook = XLSX.read(data, { type: 'array' });
+
           let totalImportados = 0;
-          let totalDuplicados = 0;
-          let totalInvalidos = 0;
-          const perfilesActualizados = [];
+          let totalOmitidos = 0;
 
           workbook.SheetNames.forEach(sheetName => {
             const worksheet = workbook.Sheets[sheetName];
-            const filas = XLSX.utils.sheet_to_json(worksheet, {
-              header: 1,
-              raw: true,
-              defval: ''
-            });
-            if (filas.length <= 1) return;
+            const jsonSheet = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-            let perfilPestana = String(sheetName).trim() || 'Importado';
-            const existente = perfiles.find(p => normalizarTexto(p) === normalizarTexto(perfilPestana));
-            if (existente) {
-              perfilPestana = existente;
-            } else {
+            if (jsonSheet.length <= 1) return;
+
+            let perfilPestana = sheetName.trim();
+            
+            if (!perfiles.some(p => p.toLowerCase() === perfilPestana.toLowerCase())) {
               perfiles.push(perfilPestana);
-              perfilesActualizados.push(perfilPestana);
+              guardarPerfiles();
+            } else {
+              const pExistente = perfiles.find(p => p.toLowerCase() === perfilPestana.toLowerCase());
+              if (pExistente) perfilPestana = pExistente;
             }
 
             const historialExistente = cargarHistorial(perfilPestana);
-            const clavesExistentes = new Set(historialExistente.map(claveRegistro));
 
-            for (let i = 1; i < filas.length; i++) {
-              const fila = filas[i] || [];
-              if (!fila.some(celda => String(celda ?? '').trim() !== '')) continue;
-              if (normalizarTexto(fila[0]) === 'sin registros') continue;
+            for (let i = 1; i < jsonSheet.length; i++) {
+              const fila = jsonSheet[i];
+              if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
 
-              const registro = {
-                id: Date.now() + i + Math.random(),
-                fecha: normalizarFechaExcel(fila[0]),
-                maquina: String(fila[1] ?? '').trim(),
-                series: normalizarValor(fila[2]),
-                reps: normalizarValor(fila[3]),
-                peso: normalizarValor(fila[4])
-              };
+              const fechaRaw = String(fila[0] || '').trim();
+              const maquina = String(fila[1] || '').trim();
+              const series = String(fila[2] || '-').trim();
+              const reps = String(fila[3] || '-').trim();
+              const peso = String(fila[4] || '-').trim();
 
-              if (!registro.fecha || !registro.maquina) {
-                totalInvalidos++;
-                continue;
+              if (!fechaRaw || !maquina) continue;
+
+              const fechaSolo = fechaRaw.split(' ')[0];
+
+              // EVITAR DUPLICADOS: Comprueba si ya existe un registro con la misma fecha y mismo ejercicio
+              const yaExiste = historialExistente.some(h => {
+                const hFechaSolo = h.fecha ? h.fecha.split(' ')[0] : '';
+                return hFechaSolo === fechaSolo && 
+                       h.maquina.toLowerCase() === maquina.toLowerCase();
+              });
+
+              if (!yaExiste) {
+                historialExistente.unshift({
+                  id: Date.now() + Math.random() + i,
+                  fecha: fechaRaw,
+                  maquina: maquina,
+                  series: series,
+                  reps: reps,
+                  peso: peso
+                });
+                totalImportados++;
+              } else {
+                totalOmitidos++;
               }
-
-              const clave = claveRegistro(registro);
-              if (clavesExistentes.has(clave)) {
-                totalDuplicados++;
-                continue;
-              }
-
-              historialExistente.push(registro);
-              clavesExistentes.add(clave);
-              totalImportados++;
             }
 
-            historialExistente.sort((a, b) => fechaAOrden(b.fecha) - fechaAOrden(a.fecha));
+            // Ordenar el historial de más reciente a más antiguo
+            historialExistente.sort((a, b) => {
+              const parseDate = (dStr) => {
+                const parts = dStr.split(' ')[0].split('/');
+                if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
+                return new Date(0);
+              };
+              return parseDate(b.fecha) - parseDate(a.fecha);
+            });
+
             localStorage.setItem(`historial_sesiones_${perfilPestana}`, JSON.stringify(historialExistente));
 
-            // Añadir máquinas desconocidas y mostrar en cada una su registro más reciente.
+            // Sincronizar las máquinas activas de este perfil con los últimos valores registrados si corresponde
             let maquinasPerfil = [];
             try {
-              maquinasPerfil = JSON.parse(localStorage.getItem(`mis_maquinas_${perfilPestana}`)) || [];
-            } catch (err) {
-              maquinasPerfil = [];
-            }
+              const mData = localStorage.getItem(`mis_maquinas_${perfilPestana}`);
+              if (mData) maquinasPerfil = JSON.parse(mData);
+            } catch(err) {}
 
             historialExistente.forEach(sesion => {
-              let maquina = maquinasPerfil.find(m => normalizarTexto(m.nombre) === normalizarTexto(sesion.maquina));
-              if (!maquina) {
-                maquina = {
+              let maq = maquinasPerfil.find(m => m.nombre.toLowerCase() === sesion.maquina.toLowerCase());
+              if (!maq) {
+                // Si la máquina no existía en la lista activa del perfil, se añade automáticamente
+                maq = {
                   id: Date.now() + Math.random(),
                   nombre: sesion.maquina,
-                  series: '',
-                  reps: '',
-                  peso: '',
-                  fecha: '-'
+                  series: "",
+                  peso: "",
+                  reps: "",
+                  fecha: "-"
                 };
-                maquinasPerfil.push(maquina);
+                maquinasPerfil.push(maq);
               }
-
-              if (maquina.fecha === '-' || fechaAOrden(sesion.fecha) >= fechaAOrden(maquina.fecha)) {
-                maquina.series = sesion.series;
-                maquina.reps = sesion.reps;
-                maquina.peso = sesion.peso;
-                maquina.fecha = sesion.fecha;
+              // Si la fecha de la sesión es más reciente o igual a la actual guardada en la máquina, actualizar vista rápida
+              const fechaMaq = maq.fecha ? maq.fecha.split(' ')[0] : '';
+              const fechaSes = sesion.fecha ? sesion.fecha.split(' ')[0] : '';
+              if (!maq.fecha || maq.fecha === '-' || fechaSes >= fechaMaq) {
+                maq.series = sesion.series;
+                maq.reps = sesion.reps;
+                maq.peso = sesion.peso;
+                maq.fecha = fechaSes;
               }
             });
 
             localStorage.setItem(`mis_maquinas_${perfilPestana}`, JSON.stringify(maquinasPerfil));
           });
 
-          guardarPerfiles();
+          // Actualizar variables y pantalla actual
+          perfiles = cargarPerfiles();
           maquinas = cargarDatos();
           historialSesiones = cargarHistorial(perfilActual);
-          maquinaEditandoId = null;
           renderizarPerfiles();
           renderizarLista();
           renderizarHistorial();
 
-          alert(
-            `✅ Fusión terminada\n\n` +
-            `• Registros nuevos: ${totalImportados}\n` +
-            `• Duplicados omitidos: ${totalDuplicados}\n` +
-            `• Filas inválidas: ${totalInvalidos}`
-          );
+          alert(`✅ Importación completada:\n\n• Nuevos registros añadidos: ${totalImportados}\n• Registros omitidos (duplicados): ${totalOmitidos}`);
+
         } catch (err) {
-          console.error('Error al importar Excel:', err);
-          alert(`No se pudo cargar el Excel. Detalle: ${err.message || err}`);
-        } finally {
-          e.target.value = '';
+          console.error(err);
+          alert('Error procesando el archivo Excel.');
         }
       };
 
-      reader.onerror = function() {
-        alert('No se pudo leer el archivo seleccionado.');
-        e.target.value = '';
-      };
-
-      reader.readAsArrayBuffer(file);
+      reader.readAsBuffer(file);
+      e.target.value = '';
     });
 
     /* BACKUP Y RESTAURACIÓN EN JSON */
@@ -1937,6 +1496,7 @@
     });
 
     function activarEdicion(id) {
+      maquinaExpandidaId=id; localStorage.setItem(claveMaquinaExpandida(),String(id));
       maquinaEditandoId = id;
       renderizarLista();
       setTimeout(() => {
@@ -2065,20 +1625,19 @@
     }
 
     abrirDB().then(() => {
-      aplicarTamanosPerfil();
-      aplicarModoEntrenamiento();
+      cargarMaquinaExpandida();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
     }).catch(err => {
       console.error(err);
-      aplicarTamanosPerfil();
-      aplicarModoEntrenamiento();
+      cargarMaquinaExpandida();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
     });
   </script>
 
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
 </body>
 </html>

@@ -1,11 +1,12 @@
 {
   "name": "Registro Gimnasio",
   "short_name": "Gimnasio",
-  "description": "Registro de máquinas, ejercicios e historial de gimnasio",
+  "description": "Registro de máquinas, ejercicios, historial y progreso de gimnasio",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0b1120",
   "theme_color": "#0b1120",
   "icons": [
