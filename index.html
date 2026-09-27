@@ -1125,13 +1125,13 @@
     function esCintaDeCorrer(nombre){const n=normalizarNombre(nombre);return n.includes('cinta')||n.includes('treadmill');}
     function esEliptica(nombre){const n=normalizarNombre(nombre);return n.includes('eliptica')||n.includes('cross trainer')||n.includes('orbitrek');}
     function esBiciEstatica(nombre){const n=normalizarNombre(nombre);return n.includes('bici estatica')||n.includes('bicicleta estatica')||n.includes('spinning')||n.includes('ciclo indoor')||n.includes('stationary bike');}
-    function metCinta(v){v=Number(v);if(v<4)return 2.8;if(v<5.5)return 3.5;if(v<6.5)return 4.8;if(v<8)return 6;if(v<9.5)return 8.3;if(v<11)return 9.8;return 11.5;}
+    function caloriasCinta(x,peso){const kmh=Number(x.velocidad)||0,min=Number(x.tiempo)||0,grade=Math.max(0,Number(x.inclinacion)||0)/100,speed=kmh*1000/60;if(!peso||!kmh||!min)return 0;const vo2=kmh<8?(0.1*speed+1.8*speed*grade+3.5):(0.2*speed+0.9*speed*grade+3.5);return Math.round(vo2*peso*min*5/1000);}
     function metPorResistencia(tipo,r,v=0){const nivel={baja:0,media:1,alta:2}[r]??1;if(tipo==='eliptica')return [4.5,5.5,7][nivel];if(tipo==='bici'){let base=[4,6.8,8.8][nivel];if(Number(v)>=25)base+=1.2;else if(Number(v)>=18)base+=.5;return base;}return 0;}
-    function calcularCaloriasSesion(x,peso){if(!peso)return 0;let met=0,min=Number(x.tiempo)||0;if(x.tipo==='cinta'||esCintaDeCorrer(x.maquina))met=metCinta(x.velocidad);else if(x.tipo==='eliptica'||esEliptica(x.maquina))met=metPorResistencia('eliptica',x.resistencia);else if(x.tipo==='bici'||esBiciEstatica(x.maquina))met=metPorResistencia('bici',x.resistencia,x.velocidad);else{const series=Number(String(x.series||'').replace(',','.'))||0;min=series*2;met=3.5;}return Math.round(met*3.5*peso/200*min);}
+    function calcularCaloriasSesion(x,peso){if(!peso)return 0;if(x.tipo==='cinta'||esCintaDeCorrer(x.maquina))return caloriasCinta(x,peso);let met=0,min=Number(x.tiempo)||0;if(x.tipo==='eliptica'||esEliptica(x.maquina))met=metPorResistencia('eliptica',x.resistencia);else if(x.tipo==='bici'||esBiciEstatica(x.maquina))met=metPorResistencia('bici',x.resistencia,x.velocidad);else{const series=Number(String(x.series||'').replace(',','.'))||0;min=series*2;met=3.5;}return Math.round(met*3.5*peso/200*min);}
 
     function registrarSerieDirecta(id) {
       const maquina=maquinas.find(m=>m.id===id);if(!maquina)return;const fechaHora=obtenerFechaHoraActual();let sesion={id:Date.now(),fecha:fechaHora,maquina:maquina.nombre};
-      if(esCintaDeCorrer(maquina.nombre)){const tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,velocidad=document.getElementById(`reg-velocidad-${id}`)?.value;if(!tiempo||!velocidad)return alert('Introduce tiempo y velocidad.');Object.assign(sesion,{tipo:'cinta',tiempo,velocidad,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{tiempo,velocidad});}
+      if(esCintaDeCorrer(maquina.nombre)){const tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,inclinacion=document.getElementById(`reg-inclinacion-${id}`)?.value||'0';if(!tiempo||!velocidad||Number(inclinacion)<0)return alert('Introduce tiempo, velocidad e inclinación válidos.');Object.assign(sesion,{tipo:'cinta',tiempo,velocidad,inclinacion,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{tiempo,velocidad,inclinacion});}
       else if(esEliptica(maquina.nombre)){const pasos=document.getElementById(`reg-pasos-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!pasos||!tiempo)return alert('Introduce pasos y tiempo.');Object.assign(sesion,{tipo:'eliptica',pasos,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{pasos,tiempo,resistencia});}
       else if(esBiciEstatica(maquina.nombre)){const velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!velocidad||!tiempo)return alert('Introduce velocidad y tiempo.');Object.assign(sesion,{tipo:'bici',velocidad,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{velocidad,tiempo,resistencia});}
       else{const series=document.getElementById(`reg-series-${id}`)?.value||'',reps=document.getElementById(`reg-reps-${id}`)?.value||'',peso=document.getElementById(`reg-peso-${id}`)?.value||'';Object.assign(sesion,{tipo:'fuerza',series:series||'-',reps:reps||'-',peso:peso||'-'});Object.assign(maquina,{series,reps,peso});}
@@ -1151,13 +1151,13 @@
       mostrarToast('🧹 Registro limpiado');
     }
 
-    function obtenerRecordPesoMaquina(nombreMaquina) {
-      const nombreNormalizado = String(nombreMaquina || '').trim().toLowerCase();
-      const pesos = historialSesiones
-        .filter(s => String(s.maquina || '').trim().toLowerCase() === nombreNormalizado)
-        .map(s => parseFloat(String(s.peso || '').replace(',', '.').replace(/[^0-9.-]/g, '')))
-        .filter(n => Number.isFinite(n));
-      return pesos.length ? Math.max(...pesos) : null;
+    function obtenerLogroMaquina(nombreMaquina) {
+      const nombreNormalizado=normalizarNombre(nombreMaquina);
+      const sesiones=historialSesiones.filter(x=>normalizarNombre(x.maquina)===nombreNormalizado);
+      const cardio=esCintaDeCorrer(nombreMaquina)||esEliptica(nombreMaquina)||esBiciEstatica(nombreMaquina);
+      if(cardio){const tiempos=sesiones.map(x=>Number(String(x.tiempo||'').replace(',','.'))).filter(Number.isFinite);return tiempos.length?{valor:Math.max(...tiempos),unidad:'min',titulo:'Mayor tiempo registrado'}:null;}
+      const pesos=sesiones.map(x=>parseFloat(String(x.peso||'').replace(',','.').replace(/[^0-9.-]/g,''))).filter(Number.isFinite);
+      return pesos.length?{valor:Math.max(...pesos),unidad:'',titulo:'Récord de peso'}:null;
     }
 
     function crearResumenMaquina(m, estaExpandida, fotoData) {
@@ -1173,12 +1173,12 @@
       botonDesplegar.addEventListener('click', () => toggleMaquina(m.id));
       resumen.appendChild(botonDesplegar);
 
-      const record = obtenerRecordPesoMaquina(m.nombre);
-      if (record !== null) {
+      const logro = obtenerLogroMaquina(m.nombre);
+      if (logro) {
         const recordBadge = document.createElement('span');
         recordBadge.className = 'machine-summary-record';
-        recordBadge.textContent = `🏆 ${record}`;
-        recordBadge.title = 'Récord de peso';
+        recordBadge.textContent = `🏆 ${logro.valor}${logro.unidad ? ' ' + logro.unidad : ''}`;
+        recordBadge.title = logro.titulo;
         resumen.appendChild(recordBadge);
       }
 
@@ -1256,7 +1256,7 @@
         } else {
           card.innerHTML = `
             <div class="register-box">
-              ${esCintaDeCorrer(m.nombre) ? `<div class="cardio-inputs"><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div></div>` : esEliptica(m.nombre) ? `<div class="cardio-inputs"><div><label>Pasos</label><input type="number" id="reg-pasos-${m.id}" value="${escaparHTML(m.pasos||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : esBiciEstatica(m.nombre) ? `<div class="cardio-inputs"><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : `<div class="register-inputs"><div><label>Series</label><input type="text" id="reg-series-${m.id}" value="${escaparHTML(m.series||'')}"></div><div><label>Reps</label><input type="text" id="reg-reps-${m.id}" value="${escaparHTML(m.reps||'')}"></div><div><label>Peso</label><input type="text" id="reg-peso-${m.id}" value="${escaparHTML(m.peso||'')}"></div></div>`}
+              ${esCintaDeCorrer(m.nombre) ? `<div class="cardio-inputs"><div><label>Tiempo (min)</label><input type="number" min="0" step="0.1" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Velocidad (km/h)</label><input type="number" min="0" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Inclinación (%)</label><input type="number" min="0" max="40" step="0.5" id="reg-inclinacion-${m.id}" value="${escaparHTML(m.inclinacion||'0')}"></div></div>` : esEliptica(m.nombre) ? `<div class="cardio-inputs"><div><label>Pasos</label><input type="number" id="reg-pasos-${m.id}" value="${escaparHTML(m.pasos||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : esBiciEstatica(m.nombre) ? `<div class="cardio-inputs"><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : `<div class="register-inputs"><div><label>Series</label><input type="text" id="reg-series-${m.id}" value="${escaparHTML(m.series||'')}"></div><div><label>Reps</label><input type="text" id="reg-reps-${m.id}" value="${escaparHTML(m.reps||'')}"></div><div><label>Peso</label><input type="text" id="reg-peso-${m.id}" value="${escaparHTML(m.peso||'')}"></div></div>`}
               <div class="register-actions-row">
                 <button class="btn-register" id="btn-reg-${m.id}">✅ Registrar Ejercicio</button>
               </div>
@@ -1338,7 +1338,7 @@
           itemDiv.innerHTML = `
             <div class="history-details">
               <div class="history-machine-title">🏋️ ${escaparHTML(s.maquina || 'Máquina')}</div>
-              ${s.tipo==='cinta'||esCintaDeCorrer(s.maquina)?`<span>Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='eliptica'||esEliptica(s.maquina)?`<span>Pasos: <strong>${escaparHTML(s.pasos||'-')}</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='bici'||esBiciEstatica(s.maquina)?`<span>Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:`<span>Series: <strong>${escaparHTML(s.series||'-')}</strong> | Reps: <strong>${escaparHTML(s.reps||'-')}</strong> | Peso: <strong>${escaparHTML(s.peso||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`}
+              ${s.tipo==='cinta'||esCintaDeCorrer(s.maquina)?`<span>Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | Inclinación: <strong>${escaparHTML(s.inclinacion||'0')}%</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='eliptica'||esEliptica(s.maquina)?`<span>Pasos: <strong>${escaparHTML(s.pasos||'-')}</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='bici'||esBiciEstatica(s.maquina)?`<span>Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:`<span>Series: <strong>${escaparHTML(s.series||'-')}</strong> | Reps: <strong>${escaparHTML(s.reps||'-')}</strong> | Peso: <strong>${escaparHTML(s.peso||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`}
               ${horaPart ? `<div class="history-date">🕒 ${escaparHTML(horaPart)}</div>` : ''}
             </div>
             <button class="btn-delete" id="del-hist-${s.id}">🗑️ Borrar</button>
