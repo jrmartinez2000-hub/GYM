@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V17</title>
+  <title>Registro Gimnasio V17.1</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -715,11 +715,25 @@
     .font-control.global{border:1px solid var(--accent)}.font-control-label{min-width:0;overflow-wrap:anywhere;color:var(--text);font-size:.9rem}.font-control button{width:42px!important;min-height:38px!important;padding:4px;border:1px solid var(--accent);border-radius:7px;background:transparent;color:var(--accent);font-weight:900}.font-control output{text-align:center;color:#fbbf24;font-weight:800;font-size:.82rem}.font-reset{grid-column:1/-1;width:100%;min-height:44px;border:1px solid var(--danger);border-radius:8px;background:transparent;color:var(--danger);font-weight:800}
     @media(min-width:700px){.font-settings-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.font-control.global,.font-reset{grid-column:1/-1}}
     @media(max-width:420px){.font-control{grid-template-columns:minmax(0,1fr) 38px 58px 38px;gap:4px;padding:7px 5px}.font-control button{width:38px!important}.font-settings-panel{padding:7px}}
+
+    /* V17.1: cabecera y resumen de progreso desplegable */
+    .app-title{display:flex;align-items:center;justify-content:center;gap:10px}
+    .app-title-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1.5px solid var(--accent);background:#fff}
+    .dashboard{padding:0;overflow:hidden}
+    .dashboard-toggle{width:100%;min-height:58px;padding:10px 12px;display:flex;align-items:center;gap:9px;border:0;background:var(--card-bg);color:var(--accent);cursor:pointer;text-align:left}
+    .dashboard-arrow{width:22px;flex:0 0 22px;text-align:center;font-size:1.1rem;transition:transform .2s}
+    .dashboard.expanded .dashboard-arrow{transform:rotate(90deg)}
+    .dashboard-title{font-size:1.18rem;font-weight:900;flex:1}
+    .dashboard-compact{color:#fbbf24;font-size:.76rem;font-weight:800;text-align:right;white-space:nowrap}
+    .dashboard-content{display:none;padding:0 12px 12px;border-top:1px solid #334155}
+    .dashboard.expanded .dashboard-content{display:block}
+    .dashboard-content .kpi-grid{padding-top:10px}
+    @media(max-width:480px){.app-title-logo{width:44px;height:44px}.dashboard-toggle{gap:6px;padding:9px 8px}.dashboard-title{font-size:1rem}.dashboard-compact{font-size:.68rem;max-width:42%;white-space:normal;line-height:1.2}}
   </style>
 </head>
 <body>
 
-  <h1>🏋️ Registro de Gimnasio</h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -784,7 +798,10 @@
 
   <!-- V17: Dashboard de progreso -->
   <section class="dashboard" id="dashboard">
-    <h2>📈 Resumen de progreso</h2>
+    <button type="button" class="dashboard-toggle" id="dashboard-toggle" aria-expanded="false" onclick="toggleDashboard()">
+      <span class="dashboard-arrow">▶</span><span class="dashboard-title">📈 Resumen de progreso</span><span class="dashboard-compact" id="dashboard-compact">🔥 0 kcal · 🏃 0 min · 🏆 0</span>
+    </button>
+    <div class="dashboard-content" id="dashboard-content">
     <div class="kpi-grid">
       <div class="kpi"><span class="kpi-value" id="kpi-kcal-semana">0</span><span class="kpi-label">kcal últimos 7 días</span></div>
       <div class="kpi"><span class="kpi-value" id="kpi-kcal-mes">0</span><span class="kpi-label">kcal este mes</span></div>
@@ -800,6 +817,7 @@
       <div class="chart-card"><div class="chart-title">Peso máximo por sesión de fuerza</div><div class="chart-wrap"><canvas id="chart-peso"></canvas></div></div>
     </div>
     <div class="dashboard-note">Las calorías son estimaciones orientativas basadas en los datos registrados.</div>
+    </div>
   </section>
   <!-- Historial Agrupado Desplegable -->
   <div class="history-section">
@@ -1068,6 +1086,7 @@
       renderizarLista();
       renderizarHistorial();
       renderizarDashboard();
+      aplicarEstadoDashboard();
     }
 
     function mostrarPanelNuevoPerfil() {
@@ -1312,6 +1331,17 @@
       }
     }
 
+    function claveDashboard(){return `dashboard_expandido_v171_${perfilActual}`;}
+    function aplicarEstadoDashboard(){
+      const d=document.getElementById('dashboard'),b=document.getElementById('dashboard-toggle');if(!d||!b)return;
+      const abierto=localStorage.getItem(claveDashboard())==='1';d.classList.toggle('expanded',abierto);b.setAttribute('aria-expanded',String(abierto));
+      if(abierto)setTimeout(renderizarDashboard,30);
+    }
+    function toggleDashboard(){
+      const d=document.getElementById('dashboard'),b=document.getElementById('dashboard-toggle');if(!d||!b)return;
+      const abierto=d.classList.toggle('expanded');b.setAttribute('aria-expanded',String(abierto));localStorage.setItem(claveDashboard(),abierto?'1':'0');
+      if(abierto)setTimeout(renderizarDashboard,30);
+    }
     /* V17: ESTADISTICAS Y GRAFICOS SIN LIBRERIAS EXTERNAS */
     function fechaSesion(s){
       const p=String(s.fecha||'').split(' ')[0].split('/');
@@ -1334,6 +1364,7 @@
       const records=new Set(validas.map(x=>normalizarNombre(x.maquina))).size;
       const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
       set('kpi-kcal-semana',kcal7);set('kpi-kcal-mes',kcalMes);set('kpi-cardio',`${cardio} min`);set('kpi-imc',imc?imc.toFixed(1):'--');set('kpi-frecuencia',new Set(ult30.map(x=>x.fecha.split(' ')[0])).size);set('kpi-favorita',favorita?`${favorita[0]} · ${favorita[1]}`:'--');set('kpi-records',records);set('kpi-peso-max',fuerza.length?`${Math.max(...fuerza.map(o=>o.p))} kg`:'--');
+      set('dashboard-compact',`🔥 ${kcal7} kcal · 🏃 ${cardio} min · 🏆 ${records}`);
       const dias=[];for(let i=0;i<7;i++){const d=new Date(inicio7);d.setDate(d.getDate()+i);dias.push(d);}
       dibujarGrafico('chart-calorias',dias.map(d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`),dias.map(d=>Math.round(validas.filter(x=>x._f.toDateString()===d.toDateString()).reduce((t,x)=>t+kcal(x),0))),'#fb923c');
       const ultF=fuerza.slice(0,10).reverse();dibujarGrafico('chart-peso',ultF.map(o=>o.x.fecha.split(' ')[0].slice(0,5)),ultF.map(o=>o.p),'#38bdf8');
@@ -1425,6 +1456,7 @@
       gruposExpandidos[fechaClave] = !gruposExpandidos[fechaClave];
       renderizarHistorial();
       renderizarDashboard();
+      aplicarEstadoDashboard();
     }
 
     function eliminarSesionHistorial(id) {
@@ -1806,6 +1838,7 @@
       renderizarLista();
       renderizarHistorial();
       renderizarDashboard();
+      aplicarEstadoDashboard();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
@@ -1814,6 +1847,7 @@
       renderizarLista();
       renderizarHistorial();
       renderizarDashboard();
+      aplicarEstadoDashboard();
     });
   </script>
 

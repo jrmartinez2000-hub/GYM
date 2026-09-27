@@ -1,9 +1,8 @@
-# Registro Gimnasio V17
+# Registro Gimnasio V17.1
 
-- Toast centrado y compacto en móviles, con cierre automático a los 1,5 segundos.
-- Botones adaptativos en pantallas pequeñas.
-- Dashboard de calorías, cardio, frecuencia, IMC, máquina más usada y récords.
-- Gráficos de calorías y evolución del peso.
-- Excel ampliado con datos de fuerza y cardio.
-- Renombrado sincronizado con el historial.
-- Nuevos iconos PWA y caché V17.
+- Resumen de progreso convertido en panel desplegable.
+- Resumen compacto visible con calorías, cardio y récords.
+- Estado abierto o cerrado recordado de forma independiente para cada perfil.
+- Nuevo logo aplicado a la cabecera y a los iconos PWA de 192 y 512 px.
+- Se conservan todas las funciones incorporadas en la V17.
+- Caché actualizada a registro-gym-v17-1.
