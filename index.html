@@ -452,6 +452,7 @@
       white-space: nowrap;
     }
 
+    .btn-photo-delete { border-color: var(--danger); color: var(--danger); background: transparent; }
     .btn-edit-toggle.save {
       background-color: var(--success);
       border-color: var(--success);
@@ -627,7 +628,7 @@
     @media(max-width:600px){body{padding:7px}.profile-actions,.card-footer,.card-actions,.register-actions-row{flex-wrap:wrap}.card-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(110px,100%),1fr));width:100%}.register-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.register-inputs>div,.register-inputs input{min-width:0}.machine-details{padding:0 9px 10px}.advanced-tools-grid{grid-template-columns:1fr}.history-item{flex-direction:column;align-items:stretch;gap:8px}.history-item .btn-delete{width:100%}}@media(max-width:380px){.register-inputs{grid-template-columns:1fr}}
 
 
-    /* VERSION 8.0: FOTO Y RECORD EN LA FILA COMPACTA */
+    /* VERSION 9.0: FOTO, RENOMBRADO INSTANTANEO Y CONSERVACION DE HISTORIAL */
     .machine-summary { padding-right: 8px; }
     .machine-summary-record {
       flex: 0 0 auto;
@@ -1174,25 +1175,17 @@
           card.innerHTML = `
             <div class="card-header">
               <div class="thumb-slot"></div>
-              <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
-            </div>
-            <div class="info-row">
-              <span>Series:</span>
-              <input type="text" inputmode="decimal" id="edit-series-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.series || '')}" placeholder="Series">
-            </div>
-            <div class="info-row">
-              <span>Repeticiones:</span>
-              <input type="text" inputmode="decimal" id="edit-reps-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.reps || '')}" placeholder="Reps">
-            </div>
-            <div class="info-row">
-              <span>Peso:</span>
-              <input type="text" inputmode="decimal" id="edit-peso-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.peso || '')}" placeholder="Peso">
+              <div style="flex:1;min-width:0">
+                <label for="edit-nombre-${m.id}">Nombre de la máquina</label>
+                <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
+                <div style="font-size:.75rem;color:var(--text-muted);margin-top:4px">Se guarda automáticamente al salir del campo o pulsar Intro.</div>
+              </div>
             </div>
             <div class="card-footer">
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
-                <button class="btn-card btn-edit-toggle save" id="btn-save-${m.id}">✓ Guardar</button>
-                <button class="btn-card" id="btn-foto-${m.id}">📷 Foto</button>
+                <button class="btn-card" id="btn-foto-${m.id}">${fotoData ? '📷 Cambiar foto' : '📷 Añadir foto'}</button>
+                ${fotoData ? `<button class="btn-card btn-photo-delete" id="btn-del-foto-${m.id}">🗑️ Eliminar foto</button>` : ''}
                 <button class="btn-delete" id="btn-del-${m.id}">🗑️ Máquina</button>
               </div>
             </div>
@@ -1203,8 +1196,15 @@
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
           contenedor.appendChild(card);
 
-          document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
+          const inputNombre = document.getElementById(`edit-nombre-${m.id}`);
+          inputNombre.addEventListener('blur', () => guardarNombreInstantaneo(m.id));
+          inputNombre.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); inputNombre.blur(); }
+            if (e.key === 'Escape') { maquinaEditandoId = null; renderizarLista(); }
+          });
           document.getElementById(`btn-foto-${m.id}`).addEventListener('click', () => tomarFoto(m.id));
+          const btnDelFoto = document.getElementById(`btn-del-foto-${m.id}`);
+          if (btnDelFoto) btnDelFoto.addEventListener('click', () => eliminarFotoMaquina(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
 
         } else {
@@ -1239,7 +1239,8 @@
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
                 <button class="btn-card btn-edit-toggle" id="btn-edit-${m.id}">✏️ Editar</button>
-                <button class="btn-card" id="btn-foto-${m.id}">📷 Foto</button>
+                <button class="btn-card" id="btn-foto-${m.id}">${fotoData ? '📷 Cambiar foto' : '📷 Añadir foto'}</button>
+                ${fotoData ? `<button class="btn-card btn-photo-delete" id="btn-del-foto-${m.id}">🗑️ Eliminar foto</button>` : ''}
                 <button class="btn-delete" id="btn-del-${m.id}">🗑️ Borrar máquina</button>
               </div>
             </div>
@@ -1255,6 +1256,8 @@
           document.getElementById(`btn-clear-${m.id}`).addEventListener('click', () => borrarRegistroMaquina(m.id));
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-foto-${m.id}`).addEventListener('click', () => tomarFoto(m.id));
+          const btnDelFoto = document.getElementById(`btn-del-foto-${m.id}`);
+          if (btnDelFoto) btnDelFoto.addEventListener('click', () => eliminarFotoMaquina(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
         }
       }
@@ -1613,36 +1616,36 @@
       }, 50);
     }
 
-    function guardarEdicionDirecta(id) {
+    function guardarNombreInstantaneo(id) {
       const inputNombre = document.getElementById(`edit-nombre-${id}`);
-      const inputSeries = document.getElementById(`edit-series-${id}`);
-      const inputPeso = document.getElementById(`edit-peso-${id}`);
-      const inputReps = document.getElementById(`edit-reps-${id}`);
-
-      if (!inputNombre) return;
+      const maquina = maquinas.find(m => m.id === id);
+      if (!inputNombre || !maquina) return;
 
       const nuevoNombre = inputNombre.value.trim();
-      const nuevasSeries = inputSeries ? inputSeries.value.trim() : '';
-      const nuevoPeso = inputPeso ? inputPeso.value.trim() : '';
-      const nuevasReps = inputReps ? inputReps.value.trim() : '';
-
+      const nombreAnterior = maquina.nombre;
       if (!nuevoNombre) {
-        alert('El nombre no puede estar vacío');
+        inputNombre.value = nombreAnterior;
+        mostrarToast('⚠️ El nombre no puede estar vacío');
+        return;
+      }
+      if (nuevoNombre === nombreAnterior) {
+        maquinaEditandoId = null;
+        renderizarLista();
         return;
       }
 
-      const maquina = maquinas.find(m => m.id === id);
-      if (maquina) {
-        maquina.nombre = nuevoNombre;
-        maquina.series = nuevasSeries;
-        maquina.peso = nuevoPeso;
-        maquina.reps = nuevasReps;
-        guardarDatos();
-      }
-
+      // El historial mantiene todos sus registros y solo actualiza el nombre asociado.
+      historialSesiones.forEach(sesion => {
+        if (String(sesion.maquina || '').trim().toLowerCase() === String(nombreAnterior).trim().toLowerCase()) {
+          sesion.maquina = nuevoNombre;
+        }
+      });
+      maquina.nombre = nuevoNombre;
+      guardarDatos();
+      guardarHistorial();
       maquinaEditandoId = null;
       renderizarLista();
-      mostrarToast('✓ Cambios guardados');
+      mostrarToast('✓ Nombre actualizado en máquina, historial, Excel y JSON');
     }
 
     function escaparHTML(str) {
@@ -1664,6 +1667,13 @@
     function tomarFoto(id) {
       maquinaParaFotoId = id;
       document.getElementById('input-camara').click();
+    }
+
+    async function eliminarFotoMaquina(id) {
+      if (!confirm('¿Eliminar la foto de esta máquina? Los registros de ejercicios no se modificarán.')) return;
+      await eliminarFotoDB(id);
+      renderizarLista();
+      mostrarToast('🗑️ Foto eliminada');
     }
 
     document.getElementById('input-camara').addEventListener('change', function(e) {
