@@ -1,16 +1,26 @@
 {
-  "name":"Registro Gimnasio V18.6",
-  "short_name":"Gimnasio",
-  "description":"Registro de gimnasio con perfiles, grupos musculares, ejercicios de fuerza y cardio y gestión Excel.",
-  "lang":"es",
-  "start_url":"./index.html",
-  "scope":"./",
-  "display":"standalone",
-  "orientation":"portrait",
-  "background_color":"#0b1120",
-  "theme_color":"#0b1120",
-  "icons":[
-    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  "name": "Registro Gimnasio V18.5",
+  "short_name": "Gimnasio",
+  "description": "Registro de gimnasio con grupos musculares personalizables y versión visible",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }

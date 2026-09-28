@@ -1,23 +1,10 @@
-# Registro Gimnasio V18.6
+# Registro Gimnasio V18.5
 
-## Archivos necesarios
-
-- `index.html`
-- `manifest.json`
-- `sw.js`
-- `icon-192.png`
-- `icon-512.png`
-
-Conserva los dos iconos de la V18.5.
-
-## Cambios principales
-
-- Exportación Excel completa para fuerza y cardio.
-- Columnas de tiempo, velocidad, inclinación, pasos, resistencia y calorías.
-- Hoja `PERFILES` con edad, peso, estatura y perfil activo.
-- Importación Excel que reconstruye historial y máquinas.
-- Conserva las claves de almacenamiento de perfiles, máquinas, historial y grupos de la V18.5.
-
-## Publicación
-
-Sube todos los archivos al mismo directorio de GitHub Pages. Sustituye `index.html`, `manifest.json` y `sw.js`, y conserva los iconos existentes.
+- Número V18.5 visible junto al logotipo.
+- Grupos musculares con ID interno estable.
+- Permite renombrar grupos y cambiar su icono sin perder asociaciones.
+- Permite añadir grupos personalizados.
+- Impide eliminar grupos que todavía tengan máquinas asociadas.
+- Excel incluye hoja __GRUPOS__ y exporta ID y nombre actual del grupo.
+- Backup JSON conserva el catálogo de grupos.
+- Mantiene máquinas desplegables, registros de fuerza/cardio, fotos, perfiles, historial y calorías.
