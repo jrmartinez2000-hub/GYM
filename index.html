@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V18.6</title>
+  <title>Registro Gimnasio V18.7</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -692,9 +692,10 @@
     .profile-data-summary{margin-top:8px;color:var(--text-muted);font-size:.85rem;text-align:center}.cardio-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:7px}.cardio-inputs label{font-size:.74rem;text-align:center}.cardio-inputs input,.cardio-inputs select{width:100%;padding:7px;border-radius:7px;border:1px solid #475569;background:var(--input-bg);color:var(--text);text-align:center}.calorie-badge{color:#fb923c;background:rgba(251,146,60,.12);border:1px solid rgba(251,146,60,.35);border-radius:999px;padding:3px 9px;font-weight:800;font-size:.78rem;white-space:nowrap}.history-group-header{gap:7px;flex-wrap:wrap}.history-header-date{flex:1;min-width:130px}.history-header-metrics{display:flex;align-items:center;gap:7px}.profile-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}@media(max-width:420px){.cardio-inputs{grid-template-columns:1fr}.profile-edit-grid{grid-template-columns:1fr}.history-header-metrics{width:100%;justify-content:space-between}}
 
     /* VERSION 14: NOMBRE UNICO Y PERSONALIZACION TIPOGRAFICA */
-    :root{--font-global:1;--font-machines:1;--font-data:1;--font-history:1;--font-datetime:1;--font-buttons:1;--font-profiles:1}
+    :root{--font-global:1;--font-machines:1;--font-achievements:1;--font-data:1;--font-history:1;--font-datetime:1;--font-buttons:1;--font-profiles:1}
     html{font-size:calc(16px * var(--font-global))}
     .machine-summary-name{font-size:calc(clamp(1.05rem,3.8vw,1.35rem) * var(--font-machines))}
+    .machine-summary-record{font-size:calc(.78rem * var(--font-achievements))}
     .register-box label,.register-box input,.register-box select,.info-row,.edit-input-card{font-size:calc(1rem * var(--font-data))}
     .history-details,.history-machine-title,.history-details span,.history-section h2{font-size:calc(1rem * var(--font-history))}
     .fecha-badge,.history-date,.history-group-header,.calorie-badge,.badge-count{font-size:calc(.9rem * var(--font-datetime))}
@@ -708,7 +709,7 @@
     @media(min-width:700px){.font-settings-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.font-control.global,.font-reset{grid-column:1/-1}}
     @media(max-width:420px){.font-control{grid-template-columns:minmax(0,1fr) 38px 58px 38px;gap:4px;padding:7px 5px}.font-control button{width:38px!important}.font-settings-panel{padding:7px}}
 
-    /* V18.6 */
+    /* V18.7 */
     .app-title{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}.app-title-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1.5px solid var(--accent);background:#fff}.version-badge{font-size:.7rem;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);padding:4px 8px;border-radius:999px;white-space:nowrap}
     select{width:100%;padding:10px;border-radius:8px;border:1.5px solid #475569;background:var(--input-bg);color:var(--text);font-size:1rem}.muscle-filter,.muscle-analysis{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;margin-bottom:12px}.muscle-filter{padding:10px}.muscle-filter label{color:var(--accent);font-weight:800}.muscle-header{width:100%;min-height:55px;padding:10px 12px;border:1.5px solid #334155;border-radius:12px;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-header-arrow{width:20px;transition:transform .2s}.muscle-header.open .muscle-header-arrow{transform:rotate(90deg)}.muscle-header-name{flex:1}.muscle-header-count{background:var(--bg);color:var(--text-muted);padding:3px 8px;border-radius:999px}.card.muscle-hidden{display:none!important}.group-edit{margin:8px 0}.history-muscle{color:#fbbf24;font-size:.75rem;font-weight:800}.group-manager{grid-column:1/-1;border:1px solid #475569;border-radius:10px;overflow:hidden}.group-manager-toggle{width:100%;min-height:50px;border:0;background:#334155;color:var(--accent);font-weight:800;padding:10px 12px;text-align:left}.group-manager-panel{display:none;padding:10px}.group-manager-panel.visible{display:block}.group-row{display:grid;grid-template-columns:42px 1fr auto;gap:7px;align-items:center;padding:7px;background:var(--card-bg);border-radius:8px;margin-bottom:7px}.group-row input{padding:7px}.group-icon{width:42px;text-align:center}.group-actions{display:flex;gap:5px}.group-actions button{padding:7px;min-height:38px;border-radius:7px}.btn-group-save{border:1px solid var(--accent);background:transparent;color:var(--accent)}.btn-group-delete{border:1px solid var(--danger);background:transparent;color:var(--danger)}.group-add{display:grid;grid-template-columns:64px 1fr auto;gap:7px;margin-top:10px}.group-add button{border:0;background:var(--accent);color:#0f172a;border-radius:8px;font-weight:800}.muscle-analysis-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);text-align:left;font-weight:900}.muscle-analysis-content{display:none;padding:10px}.muscle-analysis.expanded .muscle-analysis-content{display:block}.muscle-bar{display:grid;grid-template-columns:100px 1fr 45px;gap:7px;align-items:center;margin:7px 0}.muscle-track{height:12px;background:#0b1120;border-radius:999px;overflow:hidden}.muscle-fill{height:100%;background:var(--accent)}
     @media(max-width:480px){.app-title-logo{width:44px;height:44px}.group-row{grid-template-columns:36px 1fr}.group-actions{grid-column:1/-1}.group-add{grid-template-columns:54px 1fr}.group-add button{grid-column:1/-1;min-height:42px}}
@@ -716,7 +717,7 @@
 </head>
 <body>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.6</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.7</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -777,7 +778,7 @@
     </form>
   </div>
 
-  <div class="muscle-filter"><label>🔎 Mostrar grupo muscular</label><select id="filtro-grupo" onchange="cambiarFiltroGrupo(this.value)"></select></div>
+  
   <!-- Lista de Máquinas -->
   <div class="grid" id="lista-maquinas"></div>
 
@@ -796,7 +797,8 @@
         <button type="button" class="font-settings-toggle" id="font-settings-toggle" aria-expanded="false" onclick="toggleAjustesFuente()"><span>🔠 Tamaño de letra</span><span id="font-settings-arrow">▼</span></button>
         <div class="font-settings-panel" id="font-settings-panel">
           <div class="font-control global"><span class="font-control-label">🌐 Toda la aplicación</span><button type="button" onclick="ajustarFuente('global',-0.1)">A−</button><output id="font-global">100%</output><button type="button" onclick="ajustarFuente('global',0.1)">A+</button></div>
-          <div class="font-control"><span class="font-control-label">🏋️ Nombres de máquinas</span><button type="button" onclick="ajustarFuente('machines',-0.1)">A−</button><output id="font-machines">100%</output><button type="button" onclick="ajustarFuente('machines',0.1)">A+</button></div>
+          <div class="font-control"><span class="font-control-label">🏋️ Nombres de máquinas</span><button type="button" onclick="ajustarFuente('machines',-0.1)">A−</button><output id="font-machines">100%</output><button type="button" onclick="ajustarFuente('machines',0.1)">A+</button></div>  
+          <div class="font-control"><span class="font-control-label">🏆 Logros de máquinas</span><button type="button" onclick="ajustarFuente('achievements',-0.1)">A−</button><output id="font-achievements">100%</output><button type="button" onclick="ajustarFuente('achievements',0.1)">A+</button></div>
           <div class="font-control"><span class="font-control-label">📊 Datos de ejercicios</span><button type="button" onclick="ajustarFuente('data',-0.1)">A−</button><output id="font-data">100%</output><button type="button" onclick="ajustarFuente('data',0.1)">A+</button></div>
           <div class="font-control"><span class="font-control-label">📋 Historial</span><button type="button" onclick="ajustarFuente('history',-0.1)">A−</button><output id="font-history">100%</output><button type="button" onclick="ajustarFuente('history',0.1)">A+</button></div>
           <div class="font-control"><span class="font-control-label">📅 Fechas, horas y calorías</span><button type="button" onclick="ajustarFuente('datetime',-0.1)">A−</button><output id="font-datetime">100%</output><button type="button" onclick="ajustarFuente('datetime',0.1)">A+</button></div>
@@ -916,7 +918,7 @@
     function cargarMaquinaExpandida(){const v=localStorage.getItem(claveMaquinaExpandida());maquinaExpandidaId=v===null?null:Number(v);}
     function toggleMaquina(id){maquinaExpandidaId=maquinaExpandidaId===id?null:id;if(maquinaExpandidaId===null)localStorage.removeItem(claveMaquinaExpandida());else localStorage.setItem(claveMaquinaExpandida(),String(id));renderizarLista();}
     function toggleHerramientasAvanzadas(){const p=document.getElementById('advanced-tools-panel'),b=document.getElementById('advanced-tools-toggle'),a=document.getElementById('advanced-tools-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
-    const FUENTES_PREDETERMINADAS={global:1,machines:1,data:1,history:1,datetime:1,buttons:1,profiles:1};
+    const FUENTES_PREDETERMINADAS={global:1,machines:1,achievements:1,data:1,history:1,datetime:1,buttons:1,profiles:1};
     let ajustesFuente={...FUENTES_PREDETERMINADAS};
     function claveFuente(){return `ajustes_fuente_v14_${perfilActual}`;}
     function cargarAjustesFuente(){try{ajustesFuente={...FUENTES_PREDETERMINADAS,...JSON.parse(localStorage.getItem(claveFuente())||'{}')};}catch(e){ajustesFuente={...FUENTES_PREDETERMINADAS};}aplicarAjustesFuente();}
@@ -1443,7 +1445,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V18.6_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V18.7_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
