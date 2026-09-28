@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V18.5</title>
+  <title>Registro Gimnasio V18.6</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -716,7 +716,7 @@
 </head>
 <body>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.5</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.6</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -751,7 +751,7 @@
     <h2>Editar perfil</h2>
     <form id="form-editar-perfil">
       <div class="form-group"><label for="perfil-edit-nombre">Nombre</label><input id="perfil-edit-nombre" type="text" required></div>
-      <div class="profile-edit-grid">
+      <div class="profile-edit-grid"><div class="form-group"><label for="perfil-edit-edad">Edad</label><input id="perfil-edit-edad" type="number" inputmode="numeric" min="1" max="120" step="1" required></div>
         <div class="form-group"><label for="perfil-edit-peso">Peso corporal (kg)</label><input id="perfil-edit-peso" type="number" inputmode="decimal" min="20" max="300" step="0.1" required></div>
         <div class="form-group"><label for="perfil-edit-estatura">Estatura (cm)</label><input id="perfil-edit-estatura" type="number" inputmode="numeric" min="100" max="230" step="1" required></div>
       </div>
@@ -1025,18 +1025,18 @@
     }
 
     function cargarDatosPerfil(nombre=perfilActual){
-      try{return JSON.parse(localStorage.getItem(`datos_perfil_${nombre}`))||{peso:'',estatura:''};}catch(e){return {peso:'',estatura:''};}
+      try{return JSON.parse(localStorage.getItem(`datos_perfil_${nombre}`))||{edad:'',peso:'',estatura:''};}catch(e){return {edad:'',peso:'',estatura:''};}
     }
     function guardarDatosPerfil(nombre,datos){localStorage.setItem(`datos_perfil_${nombre}`,JSON.stringify(datos));}
-    function actualizarResumenPerfil(){const d=cargarDatosPerfil();const e=document.getElementById('profile-data-summary');if(e)e.textContent=d.peso&&d.estatura?`⚖️ ${d.peso} kg · 📏 ${d.estatura} cm`:'Configura peso y estatura para calcular calorías';}
+    function actualizarResumenPerfil(){const d=cargarDatosPerfil();const e=document.getElementById('profile-data-summary');if(e)e.textContent=d.peso&&d.estatura?`🎂 ${d.edad||'-'} años · ⚖️ ${d.peso} kg · 📏 ${d.estatura} cm`:'Configura peso y estatura para calcular calorías';}
     function mostrarPanelEditarPerfil(){
-      const d=cargarDatosPerfil(); document.getElementById('perfil-edit-nombre').value=perfilActual; document.getElementById('perfil-edit-peso').value=d.peso||''; document.getElementById('perfil-edit-estatura').value=d.estatura||''; document.getElementById('panel-editar-perfil').classList.toggle('visible');
+      const d=cargarDatosPerfil(); document.getElementById('perfil-edit-nombre').value=perfilActual; document.getElementById('perfil-edit-edad').value=d.edad||''; document.getElementById('perfil-edit-peso').value=d.peso||''; document.getElementById('perfil-edit-estatura').value=d.estatura||''; document.getElementById('panel-editar-perfil').classList.toggle('visible');
     }
     document.getElementById('form-editar-perfil').addEventListener('submit',e=>{
-      e.preventDefault(); const anterior=perfilActual,nuevo=document.getElementById('perfil-edit-nombre').value.trim(),peso=Number(document.getElementById('perfil-edit-peso').value),estatura=Number(document.getElementById('perfil-edit-estatura').value);
-      if(!nuevo||!peso||!estatura)return; if(nuevo!==anterior&&perfiles.some(x=>x.toLowerCase()===nuevo.toLowerCase())){alert('Ya existe otro perfil con ese nombre.');return;}
+      e.preventDefault(); const anterior=perfilActual,nuevo=document.getElementById('perfil-edit-nombre').value.trim(),edad=Number(document.getElementById('perfil-edit-edad').value),peso=Number(document.getElementById('perfil-edit-peso').value),estatura=Number(document.getElementById('perfil-edit-estatura').value);
+      if(!nuevo||!edad||!peso||!estatura)return; if(nuevo!==anterior&&perfiles.some(x=>x.toLowerCase()===nuevo.toLowerCase())){alert('Ya existe otro perfil con ese nombre.');return;}
       if(nuevo!==anterior){const dm=localStorage.getItem(`mis_maquinas_${anterior}`),dh=localStorage.getItem(`historial_sesiones_${anterior}`);if(dm)localStorage.setItem(`mis_maquinas_${nuevo}`,dm);if(dh)localStorage.setItem(`historial_sesiones_${nuevo}`,dh);localStorage.removeItem(`mis_maquinas_${anterior}`);localStorage.removeItem(`historial_sesiones_${anterior}`);localStorage.removeItem(`datos_perfil_${anterior}`);perfiles[perfiles.indexOf(anterior)]=nuevo;guardarPerfiles();perfilActual=nuevo;localStorage.setItem('perfil_activo',nuevo);}
-      guardarDatosPerfil(nuevo,{peso,estatura});document.getElementById('panel-editar-perfil').classList.remove('visible');maquinas=cargarDatos();historialSesiones=cargarHistorial();renderizarPerfiles();renderizarLista();renderizarHistorial();mostrarToast('✓ Perfil actualizado');
+      guardarDatosPerfil(nuevo,{edad,peso,estatura});document.getElementById('panel-editar-perfil').classList.remove('visible');maquinas=cargarDatos();historialSesiones=cargarHistorial();renderizarPerfiles();renderizarLista();renderizarHistorial();mostrarToast('✓ Perfil actualizado');
     });
 
     function renderizarPerfiles() {
@@ -1401,187 +1401,19 @@
       }
     }
 
-    /* EXPORTACIÓN MULTI-PESTAÑA A EXCEL (.XLSX) */
-    function exportarExcelMultiPestana() {
-      if (typeof XLSX === 'undefined') {
-        alert('Cargando librería Excel, por favor intenta en unos segundos o conéctate a internet.');
-        return;
-      }
-
-      const libro = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet([['ID grupo','Nombre','Icono','Orden'],...gruposMusculares.map((g,i)=>[g.id,g.nombre,g.icono,i+1])]),'__GRUPOS__');
-      let hayDatos = false;
-
-      perfiles.forEach(perfil => {
-        const historialPerfil = cargarHistorial(perfil);
-        
-        const datosHoja = [
-          ['Fecha y Hora','ID grupo','Grupo muscular','Máquina','Series','Repeticiones','Peso']
-        ];
-
-        if (historialPerfil.length > 0) {
-          hayDatos = true;
-          historialPerfil.forEach(s => {
-            const gid=normalizarGrupoId(s.grupoId||s.grupoMuscular||detectarGrupoId(s.maquina)),g=grupoPorId(gid);datosHoja.push([s.fecha,gid,g.nombre,s.maquina,s.series||'-',s.reps||'-',s.peso||'-']);
-          });
-        } else {
-          datosHoja.push(['Sin registros','-','-','-','-','-','-']);
-        }
-
-        const hoja = XLSX.utils.aoa_to_sheet(datosHoja);
-        const nombrePestana = perfil.substring(0, 30).replace(/[:\\/?*\[\]]/g, '');
-        XLSX.utils.book_append_sheet(libro, hoja, nombrePestana);
-      });
-
-      if (!hayDatos) {
-        alert('No hay registros guardados en ningún perfil para exportar.');
-        return;
-      }
-
-      const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V18.5_${fechaHoy}.xlsx`);
+    /* V18.6: EXCEL COMPLETO */
+    function exportarExcelMultiPestana(){
+      if(typeof XLSX==='undefined'){alert('Librería Excel no lista.');return;}
+      const wb=XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([['ID grupo','Nombre','Icono','Orden'],...gruposMusculares.map((g,i)=>[g.id,g.nombre,g.icono,i+1])]),'__GRUPOS__');
+      const perfilesRows=[['Perfil','Edad','Peso (kg)','Estatura (cm)','Perfil activo']];
+      perfiles.forEach(p=>{const d=cargarDatosPerfil(p);perfilesRows.push([p,d.edad||'',d.peso||'',d.estatura||'',p===perfilActual?'Sí':'No']);});
+      XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(perfilesRows),'PERFILES');
+      let hay=false;
+      perfiles.forEach(perfil=>{const rows=[['Fecha y Hora','Máquina','ID grupo','Grupo','Series','Repeticiones','Peso (kg)','Tiempo (min)','Velocidad (km/h)','Inclinación (%)','Pasos','Resistencia','Calorías estimadas']];const h=cargarHistorial(perfil);h.forEach(x=>{hay=true;const gid=normalizarGrupoId(x.grupoId||x.grupoMuscular||detectarGrupoId(x.maquina)),g=grupoPorId(gid);rows.push([x.fecha,x.maquina,gid,g.nombre,x.series||'-',x.reps||'-',x.peso||'-',x.tiempo||'-',x.velocidad||'-',x.inclinacion||'-',x.pasos||'-',x.resistencia||'-',Number(x.calorias)||calcularCaloriasSesion(x,Number(cargarDatosPerfil(perfil).peso))||0]);});if(!h.length)rows.push(['Sin registros','','','','','','','','','','','','']);const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[19,25,16,18,10,14,12,14,18,16,10,14,18].map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,perfil.substring(0,30).replace(/[:\/?*\[\]]/g,''));});
+      if(!hay){alert('No hay registros guardados.');return;}XLSX.writeFile(wb,`Informe_Gimnasio_V18.6_${new Date().toISOString().slice(0,10)}.xlsx`);
     }
-
-    /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
-    document.getElementById('input-excel-file').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      if (typeof XLSX === 'undefined') {
-        alert('Librería Excel no lista. Comprueba tu conexión a internet.');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        try {
-          const data = new Uint8Array(evt.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-
-          let totalImportados = 0;
-          let totalOmitidos = 0;
-
-          workbook.SheetNames.forEach(sheetName => {
-            const worksheet = workbook.Sheets[sheetName];
-            const jsonSheet = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-            if (jsonSheet.length <= 1) return;
-
-            let perfilPestana = sheetName.trim();
-            
-            if (!perfiles.some(p => p.toLowerCase() === perfilPestana.toLowerCase())) {
-              perfiles.push(perfilPestana);
-              guardarPerfiles();
-            } else {
-              const pExistente = perfiles.find(p => p.toLowerCase() === perfilPestana.toLowerCase());
-              if (pExistente) perfilPestana = pExistente;
-            }
-
-            const historialExistente = cargarHistorial(perfilPestana);
-
-            for (let i = 1; i < jsonSheet.length; i++) {
-              const fila = jsonSheet[i];
-              if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
-
-              const fechaRaw = String(fila[0] || '').trim();
-              const maquina = String(fila[1] || '').trim();
-              const series = String(fila[2] || '-').trim();
-              const reps = String(fila[3] || '-').trim();
-              const peso = String(fila[4] || '-').trim();
-
-              if (!fechaRaw || !maquina) continue;
-
-              const fechaSolo = fechaRaw.split(' ')[0];
-
-              // EVITAR DUPLICADOS: Comprueba si ya existe un registro con la misma fecha y mismo ejercicio
-              const yaExiste = historialExistente.some(h => {
-                const hFechaSolo = h.fecha ? h.fecha.split(' ')[0] : '';
-                return hFechaSolo === fechaSolo && 
-                       h.maquina.toLowerCase() === maquina.toLowerCase();
-              });
-
-              if (!yaExiste) {
-                historialExistente.unshift({
-                  id: Date.now() + Math.random() + i,
-                  fecha: fechaRaw,
-                  maquina: maquina,
-                  series: series,
-                  reps: reps,
-                  peso: peso
-                });
-                totalImportados++;
-              } else {
-                totalOmitidos++;
-              }
-            }
-
-            // Ordenar el historial de más reciente a más antiguo
-            historialExistente.sort((a, b) => {
-              const parseDate = (dStr) => {
-                const parts = dStr.split(' ')[0].split('/');
-                if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
-                return new Date(0);
-              };
-              return parseDate(b.fecha) - parseDate(a.fecha);
-            });
-
-            localStorage.setItem(`historial_sesiones_${perfilPestana}`, JSON.stringify(historialExistente));
-
-            // Sincronizar las máquinas activas de este perfil con los últimos valores registrados si corresponde
-            let maquinasPerfil = [];
-            try {
-              const mData = localStorage.getItem(`mis_maquinas_${perfilPestana}`);
-              if (mData) maquinasPerfil = JSON.parse(mData);
-            } catch(err) {}
-
-            historialExistente.forEach(sesion => {
-              let maq = maquinasPerfil.find(m => m.nombre.toLowerCase() === sesion.maquina.toLowerCase());
-              if (!maq) {
-                // Si la máquina no existía en la lista activa del perfil, se añade automáticamente
-                maq = {
-                  id: Date.now() + Math.random(),
-                  nombre: sesion.maquina,
-                  series: "",
-                  peso: "",
-                  reps: "",
-                  fecha: "-"
-                };
-                maquinasPerfil.push(maq);
-              }
-              // Si la fecha de la sesión es más reciente o igual a la actual guardada en la máquina, actualizar vista rápida
-              const fechaMaq = maq.fecha ? maq.fecha.split(' ')[0] : '';
-              const fechaSes = sesion.fecha ? sesion.fecha.split(' ')[0] : '';
-              if (!maq.fecha || maq.fecha === '-' || fechaSes >= fechaMaq) {
-                maq.series = sesion.series;
-                maq.reps = sesion.reps;
-                maq.peso = sesion.peso;
-                maq.fecha = fechaSes;
-              }
-            });
-
-            localStorage.setItem(`mis_maquinas_${perfilPestana}`, JSON.stringify(maquinasPerfil));
-          });
-
-          // Actualizar variables y pantalla actual
-          perfiles = cargarPerfiles();
-          maquinas = cargarDatos();
-          historialSesiones = cargarHistorial(perfilActual);
-          renderizarPerfiles();
-          renderizarLista();
-          renderizarHistorial();
-
-          alert(`✅ Importación completada:\n\n• Nuevos registros añadidos: ${totalImportados}\n• Registros omitidos (duplicados): ${totalOmitidos}`);
-
-        } catch (err) {
-          console.error(err);
-          alert('Error procesando el archivo Excel.');
-        }
-      };
-
-      reader.readAsBuffer(file);
-      e.target.value = '';
-    });
-
+    document.getElementById('input-excel-file').addEventListener('change',function(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=function(ev){try{const wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array'});if(wb.Sheets.PERFILES){XLSX.utils.sheet_to_json(wb.Sheets.PERFILES,{header:1,defval:''}).slice(1).forEach(row=>{const p=String(row[0]||'').trim();if(!p)return;if(!perfiles.some(x=>x.toLowerCase()===p.toLowerCase()))perfiles.push(p);const real=perfiles.find(x=>x.toLowerCase()===p.toLowerCase())||p;guardarDatosPerfil(real,{edad:row[1],peso:row[2],estatura:row[3]});});}if(wb.Sheets.__GRUPOS__){const gs=XLSX.utils.sheet_to_json(wb.Sheets.__GRUPOS__,{header:1,defval:''}).slice(1).filter(x=>x[0]&&x[1]).map(x=>({id:String(x[0]),nombre:String(x[1]),icono:String(x[2]||'📦')}));if(gs.length){gruposMusculares=gs;guardarCatalogoGrupos();}}const skip=new Set(['PERFILES','__GRUPOS__','__FOTOS__','__MAQUINAS__','Resumen Muscular']);let added=0,dup=0;wb.SheetNames.filter(n=>!skip.has(n)).forEach(name=>{const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,defval:''});if(rows.length<2)return;let p=perfiles.find(x=>x.toLowerCase()===name.toLowerCase())||name;if(!perfiles.includes(p))perfiles.push(p);const head=rows[0].map(String),ix=n=>head.indexOf(n),hist=cargarHistorial(p);let ms=[];try{ms=JSON.parse(localStorage.getItem(`mis_maquinas_${p}`)||'[]')}catch(_){}rows.slice(1).forEach((x,i)=>{if(!x[0]||x[0]==='Sin registros')return;const val=n=>ix(n)>=0?x[ix(n)]:'';const ses={id:Date.now()+Math.random()+i,fecha:String(val('Fecha y Hora')||x[0]),maquina:String(val('Máquina')||''),grupoId:normalizarGrupoId(val('ID grupo')||val('Grupo')||'otro'),series:val('Series')||'-',reps:val('Repeticiones')||'-',peso:val('Peso (kg)')||'-',tiempo:val('Tiempo (min)')||'-',velocidad:val('Velocidad (km/h)')||'-',inclinacion:val('Inclinación (%)')||'-',pasos:val('Pasos')||'-',resistencia:val('Resistencia')||'-',calorias:Number(val('Calorías estimadas'))||0};if(!ses.maquina)return;ses.tipo=esCintaDeCorrer(ses.maquina)?'cinta':esEliptica(ses.maquina)?'eliptica':esBiciEstatica(ses.maquina)?'bici':'fuerza';if(hist.some(z=>z.fecha===ses.fecha&&normalizarNombre(z.maquina)===normalizarNombre(ses.maquina)&&String(z.series)===String(ses.series)&&String(z.tiempo)===String(ses.tiempo))){dup++;return;}let m=ms.find(z=>normalizarNombre(z.nombre)===normalizarNombre(ses.maquina));if(!m){m={id:Date.now()+Math.random(),nombre:ses.maquina,grupoId:ses.grupoId,series:'',reps:'',peso:'',fecha:'-'};ms.push(m);}ses.maquinaId=m.id;Object.assign(m,{grupoId:ses.grupoId,series:ses.series==='-'?'':ses.series,reps:ses.reps==='-'?'':ses.reps,peso:ses.peso==='-'?'':ses.peso,tiempo:ses.tiempo==='-'?'':ses.tiempo,velocidad:ses.velocidad==='-'?'':ses.velocidad,inclinacion:ses.inclinacion==='-'?'':ses.inclinacion,pasos:ses.pasos==='-'?'':ses.pasos,resistencia:ses.resistencia==='-'?'':ses.resistencia,fecha:ses.fecha.split(' ')[0]});hist.push(ses);added++;});localStorage.setItem(`historial_sesiones_${p}`,JSON.stringify(hist));localStorage.setItem(`mis_maquinas_${p}`,JSON.stringify(ms));});guardarPerfiles();maquinas=cargarDatos();historialSesiones=cargarHistorial();poblarGrupos();renderizarPerfiles();renderizarLista();renderizarHistorial();alert(`✅ Importación completada\nRegistros añadidos: ${added}\nDuplicados: ${dup}`);}catch(err){console.error(err);alert('Error procesando Excel: '+err.message);}e.target.value='';};r.readAsArrayBuffer(file);});
     /* BACKUP Y RESTAURACIÓN EN JSON */
     async function exportarBackupJSON() {
       const backupData = {

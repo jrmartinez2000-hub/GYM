@@ -1,10 +1,11 @@
-# Registro Gimnasio V18.5
+# Registro Gimnasio V18.6
 
-- Número V18.5 visible junto al logotipo.
-- Grupos musculares con ID interno estable.
-- Permite renombrar grupos y cambiar su icono sin perder asociaciones.
-- Permite añadir grupos personalizados.
-- Impide eliminar grupos que todavía tengan máquinas asociadas.
-- Excel incluye hoja __GRUPOS__ y exporta ID y nombre actual del grupo.
-- Backup JSON conserva el catálogo de grupos.
-- Mantiene máquinas desplegables, registros de fuerza/cardio, fotos, perfiles, historial y calorías.
+Archivos necesarios para publicar la PWA:
+
+- index.html
+- manifest.json
+- sw.js
+- icon-192.png
+- icon-512.png
+
+La V18.6 incorpora el perfil con edad, la exportación Excel completa y la recuperación de máquinas y registros desde Excel.
