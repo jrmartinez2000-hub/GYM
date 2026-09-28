@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V18.1</title>
+  <title>Registro Gimnasio V18.2</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -708,22 +708,13 @@
     @media(min-width:700px){.font-settings-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.font-control.global,.font-reset{grid-column:1/-1}}
     @media(max-width:420px){.font-control{grid-template-columns:minmax(0,1fr) 38px 58px 38px;gap:4px;padding:7px 5px}.font-control button{width:38px!important}.font-settings-panel{padding:7px}}
 
-    /* V18: grupos musculares y analisis */
+    /* V18.2: agrupacion estable sin alterar el despliegue original de cada maquina */
     .app-title{display:flex;align-items:center;justify-content:center;gap:10px}.app-title-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1.5px solid var(--accent);background:#fff}
     select{width:100%;padding:10px;border-radius:8px;border:1.5px solid #475569;background:var(--input-bg);color:var(--text);font-size:1rem}
-    .muscle-filter{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;padding:10px;margin-bottom:12px}.muscle-filter label{color:var(--accent);font-weight:800}
-    .muscle-group{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden;margin-bottom:10px}.muscle-group-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-group-arrow{width:20px;transition:transform .2s}.muscle-group.expanded .muscle-group-arrow{transform:rotate(90deg)}.muscle-group-name{flex:1;font-size:1.08rem}.muscle-group-count{background:var(--bg);color:var(--text-muted);padding:3px 8px;border-radius:999px;font-size:.75rem}.muscle-group-content{display:none;padding:0 8px 8px}.muscle-group.expanded .muscle-group-content{display:flex;flex-direction:column;gap:10px}.muscle-group-content .card{margin:0}
-    .muscle-analysis{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden;margin-bottom:12px}.muscle-analysis-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-analysis-arrow{width:20px;transition:transform .2s}.muscle-analysis.expanded .muscle-analysis-arrow{transform:rotate(90deg)}.muscle-analysis-content{display:none;padding:10px 12px 12px;border-top:1px solid #334155}.muscle-analysis.expanded .muscle-analysis-content{display:block}.muscle-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.muscle-kpi{background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:10px;text-align:center}.muscle-kpi strong{display:block;color:#fbbf24;font-size:1.05rem;margin-top:4px;overflow-wrap:anywhere}.muscle-bars{display:flex;flex-direction:column;gap:8px}.muscle-bar-row{display:grid;grid-template-columns:minmax(90px,1fr) 3fr 48px;gap:7px;align-items:center}.muscle-bar-name{font-size:.83rem;color:var(--text)}.muscle-bar-track{height:12px;border-radius:999px;background:#0b1120;overflow:hidden}.muscle-bar-fill{height:100%;border-radius:999px;background:var(--accent)}.muscle-bar-pct{text-align:right;color:#fbbf24;font-weight:800;font-size:.8rem}.muscle-empty{text-align:center;color:var(--text-muted);padding:10px}
-    .history-muscle{display:inline-block;color:#fbbf24;font-size:.75rem;font-weight:800;margin-bottom:3px}.group-edit-select{margin:8px 0}
-    @media(max-width:480px){.app-title-logo{width:44px;height:44px}.muscle-kpis{grid-template-columns:1fr}.muscle-bar-row{grid-template-columns:minmax(78px,1fr) 2fr 42px}}
-
-    /* V18.1: recuperación del registro de ejercicios */
-    .registration-help{color:var(--text-muted);font-size:.78rem;text-align:center;padding:7px 9px;background:rgba(56,189,248,.06);border-bottom:1px solid #334155}
-    .muscle-group-content{padding-top:8px}
-    .machine-summary::after{content:'Pulsa para registrar';color:var(--text-muted);font-size:.68rem;white-space:nowrap;margin-left:3px}
-    .card.expanded .machine-summary::after{content:'Cerrar registro'}
-    .register-box{display:block!important}.register-inputs,.cardio-inputs,.treadmill-inputs{visibility:visible!important;opacity:1!important}
-    @media(max-width:480px){.machine-summary::after{display:none}}
+    .muscle-filter,.muscle-analysis{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;margin-bottom:12px}.muscle-filter{padding:10px}.muscle-filter label{color:var(--accent);font-weight:800}
+    .muscle-groups{display:flex;flex-direction:column;gap:10px}.muscle-group{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden}.muscle-group-toggle,.muscle-analysis-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-arrow{width:20px;transition:transform .2s}.muscle-group.expanded .muscle-arrow,.muscle-analysis.expanded .muscle-arrow{transform:rotate(90deg)}.muscle-name{flex:1;font-size:1.08rem}.muscle-count{background:var(--bg);color:var(--text-muted);padding:3px 8px;border-radius:999px;font-size:.75rem}.muscle-content{display:none;padding:8px;flex-direction:column;gap:10px}.muscle-group.expanded .muscle-content{display:flex}.muscle-content .card{margin:0}
+    .muscle-analysis-content{display:none;padding:10px 12px 12px;border-top:1px solid #334155}.muscle-analysis.expanded .muscle-analysis-content{display:block}.muscle-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.muscle-kpi{background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:10px;text-align:center}.muscle-kpi strong{display:block;color:#fbbf24;margin-top:4px}.muscle-bars{display:flex;flex-direction:column;gap:8px}.muscle-bar{display:grid;grid-template-columns:minmax(80px,1fr) 3fr 45px;gap:7px;align-items:center;font-size:.82rem}.muscle-track{height:12px;background:#0b1120;border-radius:999px;overflow:hidden}.muscle-fill{height:100%;background:var(--accent);border-radius:999px}.muscle-pct{color:#fbbf24;text-align:right;font-weight:800}.history-muscle{color:#fbbf24;font-size:.75rem;font-weight:800}.registration-help{color:var(--text-muted);font-size:.78rem;text-align:center;margin:-4px 0 10px}.group-edit{margin:8px 0}
+    @media(max-width:480px){.app-title-logo{width:44px;height:44px}.muscle-kpis{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -783,21 +774,18 @@
       <div class="form-group">
         <label for="nombre-nuevo">Nombre de la máquina:</label>
         <input type="text" id="nombre-nuevo" placeholder="Ej: Prensa de piernas" required oninput="sugerirGrupoNuevaMaquina()">
+      </div><div class="form-group"><label for="grupo-nuevo">Grupo muscular:</label><select id="grupo-nuevo"></select>
       </div>
-      <div class="form-group"><label for="grupo-nuevo">Grupo muscular:</label><select id="grupo-nuevo"></select></div>
       <button type="submit" class="btn-submit">Añadir a la Lista</button>
     </form>
   </div>
 
   <div class="muscle-filter"><label for="filtro-grupo">🔎 Mostrar grupo muscular</label><select id="filtro-grupo" onchange="cambiarFiltroGrupo(this.value)"></select></div>
-  <div class="registration-help">Abre un grupo y pulsa sobre una máquina para introducir series, repeticiones y peso, o los datos de cardio.</div>
-  <!-- Lista de Máquinas agrupada -->
+  <div class="registration-help">Abre un grupo y después pulsa sobre una máquina para introducir el registro.</div>
+  <!-- Lista de Máquinas -->
   <div class="grid" id="lista-maquinas"></div>
 
-  <section class="muscle-analysis" id="muscle-analysis">
-    <button type="button" class="muscle-analysis-toggle" aria-expanded="false" onclick="toggleAnalisisMuscular()"><span class="muscle-analysis-arrow">▶</span><span>📊 Análisis muscular</span></button>
-    <div class="muscle-analysis-content"><div class="muscle-kpis"><div class="muscle-kpi">🏆 Grupo más trabajado<strong id="muscle-most">--</strong></div><div class="muscle-kpi">⚠️ Grupo menos trabajado<strong id="muscle-least">--</strong></div></div><div class="muscle-bars" id="muscle-bars"></div><div class="dashboard-note">Distribución calculada por registros del historial del perfil activo.</div></div>
-  </section>
+  <section class="muscle-analysis" id="muscle-analysis"><button type="button" class="muscle-analysis-toggle" onclick="toggleAnalisisMuscular()"><span class="muscle-arrow">▶</span><span>📊 Análisis muscular</span></button><div class="muscle-analysis-content"><div class="muscle-kpis"><div class="muscle-kpi">🏆 Grupo más trabajado<strong id="muscle-most">--</strong></div><div class="muscle-kpi">⚠️ Grupo menos trabajado<strong id="muscle-least">--</strong></div></div><div id="muscle-bars" class="muscle-bars"></div></div></section>
   <!-- Historial Agrupado Desplegable -->
   <div class="history-section">
     <h2>📋 Historial de Sesiones Realizadas</h2>
@@ -940,21 +928,6 @@
     function restaurarFuentes(){ajustesFuente={...FUENTES_PREDETERMINADAS};localStorage.setItem(claveFuente(),JSON.stringify(ajustesFuente));aplicarAjustesFuente();mostrarToast('♻ Tamaños restaurados');}
     function toggleAjustesFuente(){const p=document.getElementById('font-settings-panel'),b=document.getElementById('font-settings-toggle'),a=document.getElementById('font-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
 
-    const GRUPOS_MUSCULARES=['Piernas','Pecho','Espalda','Hombros','Bíceps','Tríceps','Core','Cardio','Otro'];
-    const ICONOS_GRUPO={Piernas:'🦵',Pecho:'🏋️',Espalda:'🫁',Hombros:'🔷','Bíceps':'💪','Tríceps':'💪',Core:'🔥',Cardio:'🫀',Otro:'📦'};
-    let filtroGrupo='Todos';let gruposMuscularesExpandidos={};
-    function claveGruposMusculares(){return `grupos_musculares_v181_${perfilActual}`;}
-    function cargarEstadoGrupos(){try{gruposMuscularesExpandidos=JSON.parse(localStorage.getItem(claveGruposMusculares())||'{}');}catch(e){gruposMuscularesExpandidos={};}}
-    function grupoEstaExpandido(g){return gruposMuscularesExpandidos[g]!==false;}
-    function grupoValido(g){return GRUPOS_MUSCULARES.includes(g)?g:'Otro';}
-    function detectarGrupoMuscular(nombre){const n=normalizarNombre(nombre);if(/cinta|treadmill|eliptica|bicicleta|bici|spinning|cardio|remo ergometro/.test(n))return 'Cardio';if(/pierna|leg|sentadilla|squat|prensa|femoral|cuadriceps|gemelo|aductor|abductor|glute|hip thrust/.test(n))return 'Piernas';if(/pecho|chest|banca|pectoral|apertura|press inclinado/.test(n))return 'Pecho';if(/espalda|back|jalon|dominada|remo|pullover|dorsal/.test(n))return 'Espalda';if(/hombro|shoulder|militar|elevacion lateral|deltoid/.test(n))return 'Hombros';if(/bicep|curl/.test(n))return 'Bíceps';if(/tricep|fondos|extension polea/.test(n))return 'Tríceps';if(/abdominal|core|plancha|crunch|lumbar/.test(n))return 'Core';return 'Otro';}
-    function opcionesGrupo(seleccionado){return GRUPOS_MUSCULARES.map(g=>`<option value="${g}" ${g===grupoValido(seleccionado)?'selected':''}>${ICONOS_GRUPO[g]} ${g}</option>`).join('');}
-    function poblarSelectsGrupo(){const n=document.getElementById('grupo-nuevo'),f=document.getElementById('filtro-grupo');if(n&&!n.options.length)n.innerHTML=opcionesGrupo('Otro');if(f){f.innerHTML='<option value="Todos">Todos los grupos</option>'+GRUPOS_MUSCULARES.map(g=>`<option value="${g}">${ICONOS_GRUPO[g]} ${g}</option>`).join('');f.value=filtroGrupo;}}
-    function sugerirGrupoNuevaMaquina(){const n=document.getElementById('nombre-nuevo'),g=document.getElementById('grupo-nuevo');if(n&&g)g.value=detectarGrupoMuscular(n.value);}
-    function cambiarFiltroGrupo(v){filtroGrupo=v;renderizarLista();}
-    function toggleGrupoMuscular(g){gruposMuscularesExpandidos[g]=!grupoEstaExpandido(g);localStorage.setItem(claveGruposMusculares(),JSON.stringify(gruposMuscularesExpandidos));renderizarLista();}
-    function toggleAnalisisMuscular(){const e=document.getElementById('muscle-analysis');const v=e.classList.toggle('expanded');e.querySelector('button').setAttribute('aria-expanded',String(v));if(v)renderizarAnalisisMuscular();}
-    function renderizarAnalisisMuscular(){const cont=document.getElementById('muscle-bars');if(!cont)return;const c={};GRUPOS_MUSCULARES.forEach(g=>c[g]=0);historialSesiones.forEach(x=>c[grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina))]++);const total=Object.values(c).reduce((a,b)=>a+b,0),activos=Object.entries(c).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);document.getElementById('muscle-most').textContent=activos.length?`${ICONOS_GRUPO[activos[0][0]]} ${activos[0][0]}`:'--';document.getElementById('muscle-least').textContent=activos.length?`${ICONOS_GRUPO[activos[activos.length-1][0]]} ${activos[activos.length-1][0]}`:'--';cont.innerHTML=total?activos.map(([g,v])=>{const p=Math.round(v*100/total);return `<div class="muscle-bar-row"><span class="muscle-bar-name">${ICONOS_GRUPO[g]} ${g}</span><span class="muscle-bar-track"><span class="muscle-bar-fill" style="width:${p}%"></span></span><span class="muscle-bar-pct">${p}%</span></div>`}).join(''):'<div class="muscle-empty">Aún no hay entrenamientos registrados.</div>';}
     function cargarPerfiles() {
       try {
         const perfilesGuardados = localStorage.getItem('lista_perfiles');
@@ -994,7 +967,7 @@
 
       if (perfilActual === 'jr') {
         return [
-          { id: 1, nombre: "Prensa de piernas", grupoMuscular: "Piernas", series: "", peso: "", reps: "", fecha: fechaHoy }
+          { id: 1, nombre: "Prensa de piernas", grupoMuscular:"Piernas", series: "", peso: "", reps: "", fecha: fechaHoy }
         ];
       }
       return [];
@@ -1072,13 +1045,11 @@
       historialSesiones = cargarHistorial();
       maquinaEditandoId = null;
       cargarMaquinaExpandida();
-      cargarEstadoGrupos();
+      cargarGrupos();poblarGrupos();
       cargarAjustesFuente();
-      poblarSelectsGrupo();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
-      renderizarAnalisisMuscular();
     }
 
     function mostrarPanelNuevoPerfil() {
@@ -1164,6 +1135,20 @@
     }
 
     function normalizarNombre(n){return String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
+    const GRUPOS_MUSCULARES=['Piernas','Pecho','Espalda','Hombros','Bíceps','Tríceps','Core','Cardio','Otro'];
+    const ICONOS_GRUPO={Piernas:'🦵',Pecho:'🏋️',Espalda:'🫁',Hombros:'🔷','Bíceps':'💪','Tríceps':'💪',Core:'🔥',Cardio:'🫀',Otro:'📦'};
+    let filtroGrupo='Todos',gruposEstado={};
+    function grupoValido(g){return GRUPOS_MUSCULARES.includes(g)?g:'Otro';}
+    function detectarGrupoMuscular(nombre){const n=normalizarNombre(nombre);if(/cinta|treadmill|eliptica|bicicleta|bici|spinning|cardio/.test(n))return 'Cardio';if(/pierna|leg|sentadilla|squat|prensa|femoral|cuadriceps|gemelo|aductor|abductor|glute/.test(n))return 'Piernas';if(/pecho|chest|banca|pectoral|apertura/.test(n))return 'Pecho';if(/espalda|back|jalon|dominada|remo|pullover|dorsal/.test(n))return 'Espalda';if(/hombro|shoulder|militar|elevacion lateral|deltoid/.test(n))return 'Hombros';if(/bicep|curl/.test(n))return 'Bíceps';if(/tricep|fondos|extension polea/.test(n))return 'Tríceps';if(/abdominal|core|plancha|crunch|lumbar/.test(n))return 'Core';return 'Otro';}
+    function opcionesGrupo(sel){return GRUPOS_MUSCULARES.map(g=>`<option value="${g}" ${g===grupoValido(sel)?'selected':''}>${ICONOS_GRUPO[g]} ${g}</option>`).join('');}
+    function poblarGrupos(){const n=document.getElementById('grupo-nuevo'),f=document.getElementById('filtro-grupo');if(n)n.innerHTML=opcionesGrupo(n.value||'Otro');if(f){f.innerHTML='<option value="Todos">Todos los grupos</option>'+GRUPOS_MUSCULARES.map(g=>`<option value="${g}">${ICONOS_GRUPO[g]} ${g}</option>`).join('');f.value=filtroGrupo;}}
+    function sugerirGrupoNuevaMaquina(){const n=document.getElementById('nombre-nuevo'),g=document.getElementById('grupo-nuevo');if(n&&g)g.value=detectarGrupoMuscular(n.value);}
+    function cambiarFiltroGrupo(v){filtroGrupo=v;renderizarLista();}
+    function claveGrupos(){return `grupos_v182_${perfilActual}`;}function cargarGrupos(){try{gruposEstado=JSON.parse(localStorage.getItem(claveGrupos())||'{}')}catch(e){gruposEstado={}}}function grupoAbierto(g){return gruposEstado[g]!==false;}
+    function toggleGrupoMuscular(g){gruposEstado[g]=!grupoAbierto(g);localStorage.setItem(claveGrupos(),JSON.stringify(gruposEstado));const e=document.querySelector(`[data-grupo="${g}"]`);if(e)e.classList.toggle('expanded',grupoAbierto(g));}
+    function toggleAnalisisMuscular(){const e=document.getElementById('muscle-analysis');e.classList.toggle('expanded');if(e.classList.contains('expanded'))renderizarAnalisisMuscular();}
+    function renderizarAnalisisMuscular(){const c={};GRUPOS_MUSCULARES.forEach(g=>c[g]=0);historialSesiones.forEach(x=>c[grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina))]++);const a=Object.entries(c).filter(x=>x[1]>0).sort((x,y)=>y[1]-x[1]),t=a.reduce((z,x)=>z+x[1],0);document.getElementById('muscle-most').textContent=a.length?`${ICONOS_GRUPO[a[0][0]]} ${a[0][0]}`:'--';document.getElementById('muscle-least').textContent=a.length?`${ICONOS_GRUPO[a[a.length-1][0]]} ${a[a.length-1][0]}`:'--';document.getElementById('muscle-bars').innerHTML=a.length?a.map(([g,v])=>{const p=Math.round(v*100/t);return `<div class="muscle-bar"><span>${ICONOS_GRUPO[g]} ${g}</span><span class="muscle-track"><span class="muscle-fill" style="width:${p}%"></span></span><span class="muscle-pct">${p}%</span></div>`}).join(''):'<div class="muscle-empty">Sin registros todavía.</div>';}
+    function agruparTarjetasDOM(){const root=document.getElementById('lista-maquinas');const cards=[...root.querySelectorAll(':scope > .card')];if(!cards.length)return;const wrapper=document.createElement('div');wrapper.className='muscle-groups';GRUPOS_MUSCULARES.forEach(g=>{const ms=cards.filter(c=>{const m=maquinas.find(x=>String(x.id)===c.dataset.machineId);return m&&grupoValido(m.grupoMuscular)===g&&(filtroGrupo==='Todos'||filtroGrupo===g)});if(!ms.length)return;const sec=document.createElement('section');sec.className=`muscle-group ${grupoAbierto(g)?'expanded':''}`;sec.dataset.grupo=g;sec.innerHTML=`<button type="button" class="muscle-group-toggle" onclick="toggleGrupoMuscular('${g}')"><span class="muscle-arrow">▶</span><span class="muscle-name">${ICONOS_GRUPO[g]} ${g}</span><span class="muscle-count">${ms.length}</span></button><div class="muscle-content"></div>`;ms.forEach(c=>sec.querySelector('.muscle-content').appendChild(c));wrapper.appendChild(sec)});cards.forEach(c=>c.remove());root.appendChild(wrapper);}
     function esCintaDeCorrer(nombre){const n=normalizarNombre(nombre);return n.includes('cinta')||n.includes('treadmill');}
     function esEliptica(nombre){const n=normalizarNombre(nombre);return n.includes('eliptica')||n.includes('cross trainer')||n.includes('orbitrek');}
     function esBiciEstatica(nombre){const n=normalizarNombre(nombre);return n.includes('bici estatica')||n.includes('bicicleta estatica')||n.includes('spinning')||n.includes('ciclo indoor')||n.includes('stationary bike');}
@@ -1172,7 +1157,7 @@
     function calcularCaloriasSesion(x,peso){if(!peso)return 0;if(x.tipo==='cinta'||esCintaDeCorrer(x.maquina))return caloriasCinta(x,peso);let met=0,min=Number(x.tiempo)||0;if(x.tipo==='eliptica'||esEliptica(x.maquina))met=metPorResistencia('eliptica',x.resistencia);else if(x.tipo==='bici'||esBiciEstatica(x.maquina))met=metPorResistencia('bici',x.resistencia,x.velocidad);else{const series=Number(String(x.series||'').replace(',','.'))||0;min=series*2;met=3.5;}return Math.round(met*3.5*peso/200*min);}
 
     function registrarSerieDirecta(id) {
-      const maquina=maquinas.find(m=>m.id===id);if(!maquina)return;const fechaHora=obtenerFechaHoraActual();let sesion={id:Date.now(),fecha:fechaHora,maquina:maquina.nombre,grupoMuscular:grupoValido(maquina.grupoMuscular)};
+      const maquina=maquinas.find(m=>m.id===id);if(!maquina)return;const fechaHora=obtenerFechaHoraActual();let sesion={id:Date.now(),fecha:fechaHora,maquina:maquina.nombre,maquinaId:maquina.id,grupoMuscular:grupoValido(maquina.grupoMuscular)};
       if(esCintaDeCorrer(maquina.nombre)){const tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,inclinacion=document.getElementById(`reg-inclinacion-${id}`)?.value||'0';if(!tiempo||!velocidad||Number(inclinacion)<0)return alert('Introduce tiempo, velocidad e inclinación válidos.');Object.assign(sesion,{tipo:'cinta',tiempo,velocidad,inclinacion,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{tiempo,velocidad,inclinacion});}
       else if(esEliptica(maquina.nombre)){const pasos=document.getElementById(`reg-pasos-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!pasos||!tiempo)return alert('Introduce pasos y tiempo.');Object.assign(sesion,{tipo:'eliptica',pasos,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{pasos,tiempo,resistencia});}
       else if(esBiciEstatica(maquina.nombre)){const velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!velocidad||!tiempo)return alert('Introduce velocidad y tiempo.');Object.assign(sesion,{tipo:'bici',velocidad,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{velocidad,tiempo,resistencia});}
@@ -1255,13 +1240,12 @@
         return;
       }
 
-      const porGrupo={};visibles.forEach(m=>{const g=grupoValido(m.grupoMuscular);(porGrupo[g]||(porGrupo[g]=[])).push(m);});
-      for(const g of GRUPOS_MUSCULARES){if(!porGrupo[g])continue;const wrap=document.createElement('section');wrap.className=`muscle-group ${grupoEstaExpandido(g)?'expanded':''}`;wrap.innerHTML=`<button type="button" class="muscle-group-toggle" onclick="toggleGrupoMuscular('${g}')"><span class="muscle-group-arrow">▶</span><span class="muscle-group-name">${ICONOS_GRUPO[g]} ${g}</span><span class="muscle-group-count">${porGrupo[g].length}</span></button><div class="muscle-group-content"></div>`;contenedor.appendChild(wrap);const destino=wrap.querySelector('.muscle-group-content');
-      for (const m of porGrupo[g]) {
+      for (const m of maquinas) {
         const card = document.createElement('div');
         const esEditando = (maquinaEditandoId === m.id);
         const estaExpandida = maquinaExpandidaId === m.id;
         card.className = `card ${esEditando ? 'editing' : ''} ${estaExpandida ? 'expanded' : ''}`;
+        card.dataset.machineId=String(m.id);
 
         const fotoData = await obtenerFotoDB(m.id);
 
@@ -1269,10 +1253,8 @@
           card.innerHTML = `
             <div class="card-header">
               <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
-            </div>
-            <div class="form-group group-edit-select"><label>Grupo muscular:</label><select id="edit-grupo-${m.id}">${opcionesGrupo(m.grupoMuscular)}</select></div>
-            <div class="info-row">
-              <span>Series:</span>
+            </div><div class="form-group group-edit"><label>Grupo muscular:</label><select id="edit-grupo-${m.id}">${opcionesGrupo(m.grupoMuscular)}</select></div>
+            <div class="info-row"><span>Series:</span>
               <input type="text" inputmode="decimal" id="edit-series-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.series || '')}" placeholder="Series">
             </div>
             <div class="info-row">
@@ -1293,7 +1275,7 @@
           `;
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
-          destino.appendChild(card);
+          contenedor.appendChild(card);
 
           document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
@@ -1317,14 +1299,14 @@
           `;
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
-          destino.appendChild(card);
+          contenedor.appendChild(card);
 
           document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
         }
       }
-      }
+      agruparTarjetasDOM();
     }
 
     /* HISTORIAL AGRUPADO POR FECHA */
@@ -1408,7 +1390,6 @@
     function toggleGrupoHistorial(fechaClave) {
       gruposExpandidos[fechaClave] = !gruposExpandidos[fechaClave];
       renderizarHistorial();
-      renderizarAnalisisMuscular();
     }
 
     function eliminarSesionHistorial(id) {
@@ -1432,16 +1413,16 @@
         const historialPerfil = cargarHistorial(perfil);
         
         const datosHoja = [
-          ['Fecha y Hora', 'Grupo muscular', 'Máquina', 'Tipo', 'Series', 'Repeticiones', 'Peso', 'Tiempo', 'Velocidad', 'Inclinación', 'Pasos', 'Resistencia', 'Calorías']
+          ['Fecha y Hora','Grupo muscular','Máquina','Series','Repeticiones','Peso']
         ];
 
         if (historialPerfil.length > 0) {
           hayDatos = true;
           historialPerfil.forEach(s => {
-            datosHoja.push([s.fecha, grupoValido(s.grupoMuscular||detectarGrupoMuscular(s.maquina)), s.maquina, s.tipo||'fuerza', s.series||'-', s.reps||'-', s.peso||'-', s.tiempo||'-', s.velocidad||'-', s.inclinacion||'-', s.pasos||'-', s.resistencia||'-', Number(s.calorias)||0]);
+            datosHoja.push([s.fecha,grupoValido(s.grupoMuscular||detectarGrupoMuscular(s.maquina)),s.maquina,s.series||'-',s.reps||'-',s.peso||'-']);
           });
         } else {
-          datosHoja.push(['Sin registros','-','-','-','-','-','-','-','-','-','-','-',0]);
+          datosHoja.push(['Sin registros', '-', '-', '-', '-']);
         }
 
         const hoja = XLSX.utils.aoa_to_sheet(datosHoja);
@@ -1449,7 +1430,6 @@
         XLSX.utils.book_append_sheet(libro, hoja, nombrePestana);
       });
 
-      const resumen=[['Perfil','Grupo muscular','Registros','Porcentaje','Indicador']];perfiles.forEach(perfil=>{const h=cargarHistorial(perfil),c={};h.forEach(x=>{const g=grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina));c[g]=(c[g]||0)+1});const total=h.length;Object.entries(c).sort((a,b)=>b[1]-a[1]).forEach(([g,v])=>resumen.push([perfil,g,v,total?Math.round(v*1000/total)/10:0,v===Math.max(...Object.values(c))?'Más trabajado':v===Math.min(...Object.values(c))?'Menos trabajado':'']));});XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet(resumen),'Resumen Muscular');
       if (!hayDatos) {
         alert('No hay registros guardados en ningún perfil para exportar.');
         return;
@@ -1500,7 +1480,11 @@
               const fila = jsonSheet[i];
               if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
 
-              const fechaRaw=String(fila[0]||'').trim();const grupoMuscular=grupoValido(String(fila[1]||'Otro').trim());const maquina=String(fila[2]||'').trim();const tipo=String(fila[3]||'fuerza').trim();const series=String(fila[4]||'-').trim();const reps=String(fila[5]||'-').trim();const peso=String(fila[6]||'-').trim();const tiempo=String(fila[7]||'-').trim();const velocidad=String(fila[8]||'-').trim();const inclinacion=String(fila[9]||'-').trim();const pasos=String(fila[10]||'-').trim();const resistencia=String(fila[11]||'-').trim();const calorias=Number(fila[12])||0;
+              const fechaRaw = String(fila[0] || '').trim();
+              const maquina = String(fila[1] || '').trim();
+              const series = String(fila[2] || '-').trim();
+              const reps = String(fila[3] || '-').trim();
+              const peso = String(fila[4] || '-').trim();
 
               if (!fechaRaw || !maquina) continue;
 
@@ -1517,7 +1501,10 @@
                 historialExistente.unshift({
                   id: Date.now() + Math.random() + i,
                   fecha: fechaRaw,
-                  maquina, grupoMuscular, tipo, series, reps, peso, tiempo, velocidad, inclinacion, pasos, resistencia, calorias
+                  maquina: maquina,
+                  series: series,
+                  reps: reps,
+                  peso: peso
                 });
                 totalImportados++;
               } else {
@@ -1551,7 +1538,6 @@
                 maq = {
                   id: Date.now() + Math.random(),
                   nombre: sesion.maquina,
-                  grupoMuscular: grupoValido(sesion.grupoMuscular),
                   series: "",
                   peso: "",
                   reps: "",
@@ -1669,7 +1655,6 @@
 
     function activarEdicion(id) {
       maquinaExpandidaId=id; localStorage.setItem(claveMaquinaExpandida(),String(id));
-      const maqAbrir=maquinas.find(m=>m.id===id);if(maqAbrir){gruposMuscularesExpandidos[grupoValido(maqAbrir.grupoMuscular)]=true;localStorage.setItem(claveGruposMusculares(),JSON.stringify(gruposMuscularesExpandidos));}
       maquinaEditandoId = id;
       renderizarLista();
       setTimeout(() => {
@@ -1683,7 +1668,7 @@
       const inputSeries = document.getElementById(`edit-series-${id}`);
       const inputPeso = document.getElementById(`edit-peso-${id}`);
       const inputReps = document.getElementById(`edit-reps-${id}`);
-      const inputGrupo = document.getElementById(`edit-grupo-${id}`);
+      const inputGrupo=document.getElementById(`edit-grupo-${id}`);
 
       if (!inputNombre) return;
 
@@ -1699,12 +1684,7 @@
 
       const maquina = maquinas.find(m => m.id === id);
       if (maquina) {
-        const nombreAnterior=maquina.nombre;
-        const grupoNuevo=grupoValido(inputGrupo ? inputGrupo.value : maquina.grupoMuscular);
-        historialSesiones.forEach(x=>{if(normalizarNombre(x.maquina)===normalizarNombre(nombreAnterior)){x.maquina=nuevoNombre;x.grupoMuscular=grupoNuevo;}});
-        maquina.nombre = nuevoNombre;
-        maquina.grupoMuscular = grupoNuevo;
-        guardarHistorial();
+        const nombreAnterior=maquina.nombre;maquina.nombre=nuevoNombre;maquina.grupoMuscular=grupoValido(inputGrupo?inputGrupo.value:maquina.grupoMuscular);historialSesiones.forEach(x=>{if(x.maquinaId===id||normalizarNombre(x.maquina)===normalizarNombre(nombreAnterior)){x.maquina=nuevoNombre;x.maquinaId=id;x.grupoMuscular=maquina.grupoMuscular;}});guardarHistorial();
         maquina.series = nuevasSeries;
         maquina.peso = nuevoPeso;
         maquina.reps = nuevasReps;
@@ -1777,7 +1757,7 @@
       maquinas.push({
         id: Date.now(),
         nombre: nombre,
-        grupoMuscular: grupoValido(document.getElementById('grupo-nuevo').value||detectarGrupoMuscular(nombre)),
+        grupoMuscular:grupoValido(document.getElementById('grupo-nuevo').value||detectarGrupoMuscular(nombre)),
         series: "",
         peso: "",
         reps: "",
@@ -1804,23 +1784,19 @@
 
     abrirDB().then(() => {
       cargarMaquinaExpandida();
-      cargarEstadoGrupos();
+      cargarGrupos();poblarGrupos();
       cargarAjustesFuente();
-      poblarSelectsGrupo();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
-      renderizarAnalisisMuscular();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
-      cargarEstadoGrupos();
+      cargarGrupos();poblarGrupos();
       cargarAjustesFuente();
-      poblarSelectsGrupo();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
-      renderizarAnalisisMuscular();
     });
   </script>
 
