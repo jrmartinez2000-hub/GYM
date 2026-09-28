@@ -1,6 +1,9 @@
-## Registro Gimnasio V18.7
-- Basada íntegramente en la V18.6.
-- El Excel exportado mantiene los datos completos de cardio.
-- Se mantiene eliminado el recuadro «Mostrar grupo muscular».
-- Añade un control independiente de tamaño de letra para los logros mostrados junto al nombre de cada máquina.
-- Mantiene sin cambios el resto de funciones, perfiles, máquinas, fotografías, historial, grupos musculares y copias JSON.
+## Registro Gimnasio V18.8
+- Basada íntegramente en la V18.7.
+- Añade dentro de cada máquina la opción «Ver evolución».
+- Fuerza: evolución de peso máximo, volumen y repeticiones.
+- Cinta: tiempo, velocidad, inclinación y calorías.
+- Elíptica: tiempo, pasos y calorías.
+- Bicicleta: tiempo, velocidad y calorías.
+- La gráfica solo crea puntos para días con entrenamientos registrados; no genera días de descanso con valor cero.
+- Mantiene el Excel completo de cardio, el control de tamaño de logros y el resto de funciones.
