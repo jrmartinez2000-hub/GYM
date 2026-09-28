@@ -1,10 +1,5 @@
-# Registro Gimnasio V18.5
-
-- Número V18.5 visible junto al logotipo.
-- Grupos musculares con ID interno estable.
-- Permite renombrar grupos y cambiar su icono sin perder asociaciones.
-- Permite añadir grupos personalizados.
-- Impide eliminar grupos que todavía tengan máquinas asociadas.
-- Excel incluye hoja __GRUPOS__ y exporta ID y nombre actual del grupo.
-- Backup JSON conserva el catálogo de grupos.
-- Mantiene máquinas desplegables, registros de fuerza/cardio, fotos, perfiles, historial y calorías.
+## Registro Gimnasio V18.6
+- Basada íntegramente en la V18.5.
+- Único cambio funcional: el Excel exportado incluye los datos de cardio.
+- Añade al Excel: Tiempo, Velocidad, Inclinación, Pasos, Resistencia y Calorías estimadas.
+- Mantiene grupos musculares, máquinas desplegables, fuerza/cardio, fotos, perfiles, historial y calorías.
