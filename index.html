@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V18.8</title>
+  <title>Registro Gimnasio V18.9</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -697,7 +697,7 @@
     .machine-summary-name{font-size:calc(clamp(1.05rem,3.8vw,1.35rem) * var(--font-machines))}
     .machine-summary-record{font-size:calc(.78rem * var(--font-achievements))}
     .evolution-box{display:none;margin-top:10px;padding:10px;background:#0f172a;border:1px solid #475569;border-radius:10px}
-    .evolution-box.visible{display:block}.evolution-toolbar{display:flex;gap:7px;align-items:end;flex-wrap:wrap;margin-bottom:8px}.evolution-toolbar label{flex:1;min-width:170px;margin:0}.evolution-toolbar select{padding:8px}.evolution-chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}.evolution-chart{display:block;min-width:100%;height:250px}.evolution-empty{padding:18px;text-align:center;color:var(--text-muted)}.evolution-info{font-size:.78rem;color:var(--text-muted);margin-top:6px;text-align:center}.evolution-point{fill:#38bdf8;stroke:#f8fafc;stroke-width:1.5}.evolution-line{fill:none;stroke:#38bdf8;stroke-width:3}.evolution-grid{stroke:#334155;stroke-width:1}.evolution-label{fill:#cbd5e1;font-size:11px}.evolution-value{fill:#fbbf24;font-size:11px;font-weight:700}
+    .evolution-box.visible{display:block}.evolution-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.evolution-title{color:var(--accent);font-weight:900}.evolution-close{width:34px;height:34px;min-height:34px;padding:0;border-radius:50%;border:1.5px solid var(--danger);background:transparent;color:#fca5a5;font-size:1.15rem;font-weight:900;flex:0 0 34px}.evolution-toolbar{display:flex;gap:7px;align-items:end;flex-wrap:wrap;margin-bottom:8px}.evolution-toolbar label{flex:1;min-width:170px;margin:0}.evolution-toolbar select{padding:8px}.evolution-chart-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}.evolution-chart{display:block;min-width:100%;height:250px}.evolution-empty{padding:18px;text-align:center;color:var(--text-muted)}.evolution-info{font-size:.78rem;color:var(--text-muted);margin-top:6px;text-align:center}.evolution-point{fill:#38bdf8;stroke:#f8fafc;stroke-width:1.5}.evolution-line{fill:none;stroke:#38bdf8;stroke-width:3}.evolution-grid{stroke:#334155;stroke-width:1}.evolution-label{fill:#cbd5e1;font-size:11px}.evolution-value{fill:#fbbf24;font-size:11px;font-weight:700}
     .register-box label,.register-box input,.register-box select,.info-row,.edit-input-card{font-size:calc(1rem * var(--font-data))}
     .history-details,.history-machine-title,.history-details span,.history-section h2{font-size:calc(1rem * var(--font-history))}
     .fecha-badge,.history-date,.history-group-header,.calorie-badge,.badge-count{font-size:calc(.9rem * var(--font-datetime))}
@@ -719,7 +719,7 @@
 </head>
 <body>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.8</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.9</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -1254,7 +1254,8 @@
     }
     function datosEvolucion(m,metrica){
       const porDia=new Map();
-      historialSesiones.filter(x=>x.maquinaId===m.id||normalizarNombre(x.maquina)===normalizarNombre(m.nombre)).forEach(s=>{
+      const historialCompleto=cargarHistorial(perfilActual);
+      historialCompleto.filter(x=>x.maquinaId===m.id||normalizarNombre(x.maquina)===normalizarNombre(m.nombre)).forEach(s=>{
         const fecha=fechaSesionAClave(s.fecha),valor=valorEvolucion(s,metrica);if(!fecha||valor===null)return;
         const anterior=porDia.get(fecha);if(anterior===undefined||valor>anterior)porDia.set(fecha,valor);
       });
@@ -1332,6 +1333,7 @@
               </div>
             </div>
             <div class="evolution-box ${graficasEvolucionAbiertas[m.id]?'visible':''}" id="evolution-${m.id}">
+              <div class="evolution-header"><span class="evolution-title">📈 Evolución de ${escaparHTML(m.nombre)}</span><button type="button" class="evolution-close" aria-label="Cerrar gráfica" title="Cerrar gráfica" onclick="toggleEvolucion(${m.id})">✕</button></div>
               <div class="evolution-toolbar"><label>Métrica de evolución<select id="evolution-metric-${m.id}" onchange="dibujarGraficaEvolucion(${m.id})">${opcionesEvolucion(m).map((o,i)=>`<option value="${o.id}" ${i===0?'selected':''}>${o.nombre}${o.unidad?' ('+o.unidad+')':''}</option>`).join('')}</select></label></div>
               <div class="evolution-chart-scroll" id="evolution-chart-${m.id}"></div>
             </div>
@@ -1490,7 +1492,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V18.8_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V18.9_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
