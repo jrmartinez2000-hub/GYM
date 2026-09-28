@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V18.3</title>
+  <title>Registro Gimnasio V18.4</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -1403,184 +1403,56 @@
       }
     }
 
-    /* EXPORTACIÓN MULTI-PESTAÑA A EXCEL (.XLSX) */
-    function exportarExcelMultiPestana() {
-      if (typeof XLSX === 'undefined') {
-        alert('Cargando librería Excel, por favor intenta en unos segundos o conéctate a internet.');
-        return;
-      }
-
-      const libro = XLSX.utils.book_new();
-      let hayDatos = false;
-
-      perfiles.forEach(perfil => {
-        const historialPerfil = cargarHistorial(perfil);
-        
-        const datosHoja = [
-          ['Fecha y Hora','Grupo muscular','Máquina','Series','Repeticiones','Peso']
-        ];
-
-        if (historialPerfil.length > 0) {
-          hayDatos = true;
-          historialPerfil.forEach(s => {
-            datosHoja.push([s.fecha,grupoValido(s.grupoMuscular||detectarGrupoMuscular(s.maquina)),s.maquina,s.series||'-',s.reps||'-',s.peso||'-']);
-          });
-        } else {
-          datosHoja.push(['Sin registros','-','-','-','-','-']);
-        }
-
-        const hoja = XLSX.utils.aoa_to_sheet(datosHoja);
-        const nombrePestana = perfil.substring(0, 30).replace(/[:\\/?*\[\]]/g, '');
-        XLSX.utils.book_append_sheet(libro, hoja, nombrePestana);
+    /* V18.4: EXCEL COMPLETO - HISTORIAL, CATALOGO, PERFILES Y FOTOS */
+    function valorCelda(v,def='-'){return v===undefined||v===null||v===''?def:v;}
+    function nombreHojaPerfil(perfil,usados){let base=String(perfil).substring(0,24).replace(/[:\\/?*\[\]]/g,'')||'Perfil';let n=base,i=2;while(usados.has(n)){n=`${base.substring(0,20)}_${i++}`;}usados.add(n);return n;}
+    function fechaComparable(txt){const p=String(txt||'').split(' ')[0].split('/');return p.length===3?`${p[2]}-${String(p[1]).padStart(2,'0')}-${String(p[0]).padStart(2,'0')}`:String(txt||'');}
+    async function exportarExcelMultiPestana() {
+      if(typeof XLSX==='undefined'){alert('Librería Excel no lista. Comprueba tu conexión.');return;}
+      const libro=XLSX.utils.book_new(), usados=new Set(), fotos=await obtenerTodasFotosDB();
+      const perfilesRows=[['Perfil','Peso (kg)','Estatura (cm)','Perfil activo']];
+      const maquinasRows=[['Perfil','ID máquina','Nombre','Grupo muscular','Series','Repeticiones','Peso','Tiempo','Velocidad','Inclinación','Pasos','Resistencia','Fecha']];
+      perfiles.forEach(perfil=>{
+        const dp=cargarDatosPerfil(perfil);perfilesRows.push([perfil,valorCelda(dp.peso,''),valorCelda(dp.estatura,''),perfil===perfilActual?'Sí':'No']);
+        let catalogo=[];try{catalogo=JSON.parse(localStorage.getItem(`mis_maquinas_${perfil}`)||'[]');}catch(e){}
+        catalogo.forEach(m=>maquinasRows.push([perfil,String(m.id),m.nombre,grupoValido(m.grupoMuscular||detectarGrupoMuscular(m.nombre)),valorCelda(m.series),valorCelda(m.reps),valorCelda(m.peso),valorCelda(m.tiempo),valorCelda(m.velocidad),valorCelda(m.inclinacion),valorCelda(m.pasos),valorCelda(m.resistencia),valorCelda(m.fecha)]));
+        const cab=['Fecha y Hora','ID sesión','ID máquina','Grupo muscular','Máquina','Tipo','Series','Repeticiones','Peso','Tiempo','Velocidad','Inclinación','Pasos','Resistencia','Calorías'];
+        const filas=[cab];cargarHistorial(perfil).forEach(x=>filas.push([x.fecha,String(x.id),valorCelda(x.maquinaId,''),grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina)),x.maquina,valorCelda(x.tipo,'fuerza'),valorCelda(x.series),valorCelda(x.reps),valorCelda(x.peso),valorCelda(x.tiempo),valorCelda(x.velocidad),valorCelda(x.inclinacion),valorCelda(x.pasos),valorCelda(x.resistencia),Number(x.calorias)||0]));
+        if(filas.length===1)filas.push(['Sin registros','','','','','','','','','','','','','','']);
+        const h=XLSX.utils.aoa_to_sheet(filas);h['!cols']=[19,18,18,16,24,12,9,12,10,11,12,12,10,12,12].map(w=>({wch:w}));XLSX.utils.book_append_sheet(libro,h,nombreHojaPerfil(perfil,usados));
       });
-
-      if (!hayDatos) {
-        alert('No hay registros guardados en ningún perfil para exportar.');
-        return;
-      }
-
-      const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_${fechaHoy}.xlsx`);
+      XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet(perfilesRows),'__PERFILES__');
+      XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet(maquinasRows),'__MAQUINAS__');
+      const fotoRows=[['Perfil','ID máquina','Parte','Total partes','Datos imagen Base64']];
+      const CHUNK=30000;
+      perfiles.forEach(perfil=>{let ms=[];try{ms=JSON.parse(localStorage.getItem(`mis_maquinas_${perfil}`)||'[]');}catch(e){}ms.forEach(m=>{const data=fotos[String(m.id)];if(!data)return;const total=Math.ceil(data.length/CHUNK);for(let i=0;i<total;i++)fotoRows.push([perfil,String(m.id),i+1,total,data.slice(i*CHUNK,(i+1)*CHUNK)]);});});
+      XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet(fotoRows),'__FOTOS__');
+      const resumen=[['Perfil','Grupo muscular','Registros','Porcentaje']];perfiles.forEach(perfil=>{const h=cargarHistorial(perfil),c={};h.forEach(x=>{const g=grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina));c[g]=(c[g]||0)+1});Object.entries(c).sort((a,b)=>b[1]-a[1]).forEach(([g,v])=>resumen.push([perfil,g,v,h.length?Math.round(v*1000/h.length)/10:0]));});XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet(resumen),'Resumen Muscular');
+      XLSX.writeFile(libro,`Copia_Completa_Gimnasio_V18.4_${new Date().toISOString().slice(0,10)}.xlsx`);
+      mostrarToast('✅ Excel completo generado');
     }
 
-    /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
-    document.getElementById('input-excel-file').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      if (typeof XLSX === 'undefined') {
-        alert('Librería Excel no lista. Comprueba tu conexión a internet.');
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        try {
-          const data = new Uint8Array(evt.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-
-          let totalImportados = 0;
-          let totalOmitidos = 0;
-
-          workbook.SheetNames.forEach(sheetName => {
-            const worksheet = workbook.Sheets[sheetName];
-            const jsonSheet = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-            if (jsonSheet.length <= 1) return;
-
-            let perfilPestana = sheetName.trim();
-            
-            if (!perfiles.some(p => p.toLowerCase() === perfilPestana.toLowerCase())) {
-              perfiles.push(perfilPestana);
-              guardarPerfiles();
-            } else {
-              const pExistente = perfiles.find(p => p.toLowerCase() === perfilPestana.toLowerCase());
-              if (pExistente) perfilPestana = pExistente;
-            }
-
-            const historialExistente = cargarHistorial(perfilPestana);
-
-            for (let i = 1; i < jsonSheet.length; i++) {
-              const fila = jsonSheet[i];
-              if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
-
-              const fechaRaw = String(fila[0] || '').trim();
-              const maquina = String(fila[1] || '').trim();
-              const series = String(fila[2] || '-').trim();
-              const reps = String(fila[3] || '-').trim();
-              const peso = String(fila[4] || '-').trim();
-
-              if (!fechaRaw || !maquina) continue;
-
-              const fechaSolo = fechaRaw.split(' ')[0];
-
-              // EVITAR DUPLICADOS: Comprueba si ya existe un registro con la misma fecha y mismo ejercicio
-              const yaExiste = historialExistente.some(h => {
-                const hFechaSolo = h.fecha ? h.fecha.split(' ')[0] : '';
-                return hFechaSolo === fechaSolo && 
-                       h.maquina.toLowerCase() === maquina.toLowerCase();
-              });
-
-              if (!yaExiste) {
-                historialExistente.unshift({
-                  id: Date.now() + Math.random() + i,
-                  fecha: fechaRaw,
-                  maquina: maquina,
-                  series: series,
-                  reps: reps,
-                  peso: peso
-                });
-                totalImportados++;
-              } else {
-                totalOmitidos++;
-              }
-            }
-
-            // Ordenar el historial de más reciente a más antiguo
-            historialExistente.sort((a, b) => {
-              const parseDate = (dStr) => {
-                const parts = dStr.split(' ')[0].split('/');
-                if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
-                return new Date(0);
-              };
-              return parseDate(b.fecha) - parseDate(a.fecha);
-            });
-
-            localStorage.setItem(`historial_sesiones_${perfilPestana}`, JSON.stringify(historialExistente));
-
-            // Sincronizar las máquinas activas de este perfil con los últimos valores registrados si corresponde
-            let maquinasPerfil = [];
-            try {
-              const mData = localStorage.getItem(`mis_maquinas_${perfilPestana}`);
-              if (mData) maquinasPerfil = JSON.parse(mData);
-            } catch(err) {}
-
-            historialExistente.forEach(sesion => {
-              let maq = maquinasPerfil.find(m => m.nombre.toLowerCase() === sesion.maquina.toLowerCase());
-              if (!maq) {
-                // Si la máquina no existía en la lista activa del perfil, se añade automáticamente
-                maq = {
-                  id: Date.now() + Math.random(),
-                  nombre: sesion.maquina,
-                  series: "",
-                  peso: "",
-                  reps: "",
-                  fecha: "-"
-                };
-                maquinasPerfil.push(maq);
-              }
-              // Si la fecha de la sesión es más reciente o igual a la actual guardada en la máquina, actualizar vista rápida
-              const fechaMaq = maq.fecha ? maq.fecha.split(' ')[0] : '';
-              const fechaSes = sesion.fecha ? sesion.fecha.split(' ')[0] : '';
-              if (!maq.fecha || maq.fecha === '-' || fechaSes >= fechaMaq) {
-                maq.series = sesion.series;
-                maq.reps = sesion.reps;
-                maq.peso = sesion.peso;
-                maq.fecha = fechaSes;
-              }
-            });
-
-            localStorage.setItem(`mis_maquinas_${perfilPestana}`, JSON.stringify(maquinasPerfil));
-          });
-
-          // Actualizar variables y pantalla actual
-          perfiles = cargarPerfiles();
-          maquinas = cargarDatos();
-          historialSesiones = cargarHistorial(perfilActual);
-          renderizarPerfiles();
-          renderizarLista();
-          renderizarHistorial();
-
-          alert(`✅ Importación completada:\n\n• Nuevos registros añadidos: ${totalImportados}\n• Registros omitidos (duplicados): ${totalOmitidos}`);
-
-        } catch (err) {
-          console.error(err);
-          alert('Error procesando el archivo Excel.');
-        }
-      };
-
-      reader.readAsBuffer(file);
-      e.target.value = '';
+    document.getElementById('input-excel-file').addEventListener('change',function(e){
+      const file=e.target.files[0];if(!file)return;if(typeof XLSX==='undefined'){alert('Librería Excel no lista.');return;}
+      const reader=new FileReader();reader.onload=async function(evt){try{
+        const wb=XLSX.read(new Uint8Array(evt.target.result),{type:'array'});let nuevos=0,omitidos=0,maquinasCargadas=0,fotosCargadas=0;
+        const read=name=>wb.Sheets[name]?XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,defval:''}):[];
+        const perfilRows=read('__PERFILES__');
+        if(perfilRows.length>1)perfilRows.slice(1).forEach(r=>{const nombre=String(r[0]||'').trim();if(!nombre)return;if(!perfiles.some(p=>p.toLowerCase()===nombre.toLowerCase()))perfiles.push(nombre);const real=perfiles.find(p=>p.toLowerCase()===nombre.toLowerCase())||nombre;guardarDatosPerfil(real,{peso:r[1]||'',estatura:r[2]||''});if(String(r[3]).toLowerCase()==='sí'||String(r[3]).toLowerCase()==='si')perfilActual=real;});
+        const maquinasRows=read('__MAQUINAS__'), mapaId={};
+        if(maquinasRows.length>1)maquinasRows.slice(1).forEach(r=>{const perfil=String(r[0]||'').trim(),nombre=String(r[2]||'').trim();if(!perfil||!nombre)return;if(!perfiles.includes(perfil))perfiles.push(perfil);let ms=[];try{ms=JSON.parse(localStorage.getItem(`mis_maquinas_${perfil}`)||'[]');}catch(e){}const oldId=String(r[1]||'');let m=ms.find(x=>String(x.id)===oldId)||ms.find(x=>normalizarNombre(x.nombre)===normalizarNombre(nombre));if(!m){let proposed=Number(oldId);if(!Number.isFinite(proposed)||ms.some(x=>x.id===proposed))proposed=Date.now()+Math.random();m={id:proposed};ms.push(m);maquinasCargadas++;}Object.assign(m,{nombre,grupoMuscular:grupoValido(r[3]||detectarGrupoMuscular(nombre)),series:r[4]==='-'?'':r[4],reps:r[5]==='-'?'':r[5],peso:r[6]==='-'?'':r[6],tiempo:r[7]==='-'?'':r[7],velocidad:r[8]==='-'?'':r[8],inclinacion:r[9]==='-'?'':r[9],pasos:r[10]==='-'?'':r[10],resistencia:r[11]==='-'?'':r[11],fecha:r[12]||'-'});mapaId[`${perfil}|${oldId}`]=m.id;localStorage.setItem(`mis_maquinas_${perfil}`,JSON.stringify(ms));});
+        const reservadas=new Set(['__PERFILES__','__MAQUINAS__','__FOTOS__','Resumen Muscular']);
+        wb.SheetNames.filter(n=>!reservadas.has(n)).forEach(sheet=>{const rows=read(sheet);if(rows.length<=1)return;let perfil=sheet.trim();if(!perfiles.some(p=>p.toLowerCase()===perfil.toLowerCase()))perfiles.push(perfil);perfil=perfiles.find(p=>p.toLowerCase()===perfil.toLowerCase())||perfil;let hist=cargarHistorial(perfil),ms=[];try{ms=JSON.parse(localStorage.getItem(`mis_maquinas_${perfil}`)||'[]');}catch(e){}
+          const headers=rows[0].map(x=>String(x).trim());const pos=n=>headers.indexOf(n);const modern=pos('ID sesión')>=0;
+          rows.slice(1).forEach((r,i)=>{if(!r||r[0]==='Sin registros')return;const fecha=String(r[0]||'').trim();let ses;
+            if(modern){const oldMid=String(r[pos('ID máquina')]||'');ses={id:Number(r[pos('ID sesión')])||Date.now()+Math.random()+i,maquinaId:mapaId[`${perfil}|${oldMid}`]||Number(oldMid)||'',fecha,grupoMuscular:grupoValido(r[pos('Grupo muscular')]),maquina:String(r[pos('Máquina')]||'').trim(),tipo:r[pos('Tipo')]||'fuerza',series:r[pos('Series')],reps:r[pos('Repeticiones')],peso:r[pos('Peso')],tiempo:r[pos('Tiempo')],velocidad:r[pos('Velocidad')],inclinacion:r[pos('Inclinación')],pasos:r[pos('Pasos')],resistencia:r[pos('Resistencia')],calorias:Number(r[pos('Calorías')])||0};}
+            else{const hasGroup=String(headers[1]).toLowerCase().includes('grupo');ses={id:Date.now()+Math.random()+i,fecha,grupoMuscular:hasGroup?grupoValido(r[1]):detectarGrupoMuscular(r[1]),maquina:String(r[hasGroup?2:1]||'').trim(),tipo:'fuerza',series:r[hasGroup?3:2]||'-',reps:r[hasGroup?4:3]||'-',peso:r[hasGroup?5:4]||'-'};}
+            if(!ses.fecha||!ses.maquina)return;const dup=hist.some(x=>(String(x.id)===String(ses.id))||(x.fecha===ses.fecha&&normalizarNombre(x.maquina)===normalizarNombre(ses.maquina)&&String(x.series)===String(ses.series)&&String(x.peso)===String(ses.peso)));if(dup){omitidos++;return;}let m=ms.find(x=>String(x.id)===String(ses.maquinaId))||ms.find(x=>normalizarNombre(x.nombre)===normalizarNombre(ses.maquina));if(!m){m={id:ses.maquinaId||Date.now()+Math.random(),nombre:ses.maquina,grupoMuscular:ses.grupoMuscular,series:'',reps:'',peso:'',fecha:'-'};ms.push(m);maquinasCargadas++;}ses.maquinaId=m.id;ses.grupoMuscular=grupoValido(ses.grupoMuscular||m.grupoMuscular);hist.push(ses);nuevos++;});
+          hist.sort((a,b)=>fechaComparable(b.fecha).localeCompare(fechaComparable(a.fecha)));hist.forEach(x=>{const m=ms.find(y=>String(y.id)===String(x.maquinaId))||ms.find(y=>normalizarNombre(y.nombre)===normalizarNombre(x.maquina));if(m&&(!m.fecha||m.fecha==='-'||fechaComparable(x.fecha)>=fechaComparable(m.fecha))){Object.assign(m,{series:x.series==='-'?'':x.series,reps:x.reps==='-'?'':x.reps,peso:x.peso==='-'?'':x.peso,tiempo:x.tiempo==='-'?'':x.tiempo,velocidad:x.velocidad==='-'?'':x.velocidad,inclinacion:x.inclinacion==='-'?'':x.inclinacion,pasos:x.pasos==='-'?'':x.pasos,resistencia:x.resistencia==='-'?'':x.resistencia,fecha:String(x.fecha).split(' ')[0],grupoMuscular:x.grupoMuscular});}});localStorage.setItem(`historial_sesiones_${perfil}`,JSON.stringify(hist));localStorage.setItem(`mis_maquinas_${perfil}`,JSON.stringify(ms));
+        });
+        const fotoRows=read('__FOTOS__'),partes={};if(fotoRows.length>1)fotoRows.slice(1).forEach(r=>{const key=`${r[0]}|${r[1]}`;(partes[key]||(partes[key]=[]))[Number(r[2])-1]=String(r[4]||'');});for(const [key,chunks] of Object.entries(partes)){const [perfil,oldId]=key.split('|'),newId=mapaId[key]||Number(oldId);if(newId&&chunks.length){await guardarFotoDB(newId,chunks.join(''));fotosCargadas++;}}
+        guardarPerfiles();localStorage.setItem('perfil_activo',perfilActual);maquinas=cargarDatos();historialSesiones=cargarHistorial(perfilActual);cargarGrupos();poblarGrupos();renderizarPerfiles();renderizarLista();renderizarHistorial();renderizarAnalisisMuscular();alert(`✅ Restauración Excel completa:\n\n• Máquinas recuperadas: ${maquinasCargadas}\n• Registros añadidos: ${nuevos}\n• Duplicados omitidos: ${omitidos}\n• Fotos recuperadas: ${fotosCargadas}`);
+      }catch(err){console.error(err);alert('Error procesando el Excel completo: '+(err.message||err));}finally{e.target.value='';}};reader.readAsArrayBuffer(file);
     });
 
     /* BACKUP Y RESTAURACIÓN EN JSON */

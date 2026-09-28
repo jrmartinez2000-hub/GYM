@@ -1,3 +1,8 @@
-# Registro Gimnasio V18.3
+# Registro Gimnasio V18.4
 
-Reconstruida desde la base funcional anterior. Las tarjetas permanecen como hijos directos de la lista, sin mover nodos DOM. Los encabezados musculares solo muestran u ocultan tarjetas, conservando los eventos originales de despliegue y registro. Incluye registro de fuerza y cardio, grupos editables, filtro, análisis muscular, historial, Excel, fotos, perfiles, calorías, backup JSON y logo.
+- Excel completo con perfiles, catálogo de máquinas, historial, grupos musculares y fotos.
+- Las fotos se guardan en fragmentos compatibles con celdas Excel y se reconstruyen al importar.
+- La importación crea todas las máquinas del catálogo, incluso sin registros en el historial.
+- Restaura los últimos valores de fuerza y cardio de cada máquina.
+- Mantiene compatibilidad con archivos Excel antiguos sin fotos.
+- Conserva todas las funciones de la V18.3.

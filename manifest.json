@@ -1,7 +1,7 @@
 {
-  "name": "Registro Gimnasio V18.3",
+  "name": "Registro Gimnasio V18.4",
   "short_name": "Gimnasio",
-  "description": "Registro completo por grupos musculares con máquinas desplegables, cardio, historial y análisis",
+  "description": "Registro de gimnasio con copia Excel completa de perfiles, máquinas, historial y fotos",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
