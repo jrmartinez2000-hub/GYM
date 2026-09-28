@@ -1,7 +1,7 @@
 {
-  "name": "Registro Gimnasio V18.2",
+  "name": "Registro Gimnasio V18.3",
   "short_name": "Gimnasio",
-  "description": "Registro completo de fuerza y cardio con máquinas desplegables agrupadas por músculo",
+  "description": "Registro completo por grupos musculares con máquinas desplegables, cardio, historial y análisis",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
