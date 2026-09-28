@@ -1272,7 +1272,7 @@
       datos.forEach((d,i)=>{svg+=`<circle class="evolution-point" cx="${x(i)}" cy="${y(d.valor)}" r="5"><title>${escaparHTML(d.fecha)}: ${d.valor} ${escaparHTML(op.unidad)}</title></circle><text class="evolution-value" x="${x(i)}" y="${Math.max(14,y(d.valor)-10)}" text-anchor="middle">${Math.round(d.valor*10)/10}</text><text class="evolution-label" x="${x(i)}" y="${H-18}" text-anchor="middle">${escaparHTML(d.fecha.slice(0,5))}</text>`;});
       svg+='</svg>';zona.innerHTML=svg+`<div class="evolution-info">Solo se muestran días con entrenamiento registrado. Si hay varios registros el mismo día, se representa el valor máximo.</div>`;
     }
-    function toggleEvolucion(id){const box=document.getElementById(`evolution-${id}`),btn=document.getElementById(`btn-evolution-${id}`);if(!box)return;const visible=box.classList.toggle('visible');graficasEvolucionAbiertas[id]=visible;if(btn)btn.textContent=visible?'📈 Ocultar evolución':'📈 Ver evolución';if(visible)dibujarGraficaEvolucion(id);}
+    function toggleEvolucion(id){const box=document.getElementById(`evolution-${id}`),btn=document.getElementById(`btn-evolution-${id}`);if(!box)return;const visible=box.classList.toggle('visible');graficasEvolucionAbiertas[id]=visible;if(btn){btn.textContent='📈';btn.title=visible?'Ocultar evolución':'Ver evolución';btn.setAttribute('aria-label',btn.title);}if(visible)dibujarGraficaEvolucion(id);}
 
     async function renderizarLista() {
       const contenedor = document.getElementById('lista-maquinas');
@@ -1313,7 +1313,7 @@
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
                 <button class="btn-card btn-edit-toggle save" id="btn-save-${m.id}">✓ Guardar</button>
-                <button class="btn-delete" id="btn-del-${m.id}">🗑️ Máquina</button>
+                <button class="btn-delete" id="btn-del-${m.id}" title="Borrar máquina" aria-label="Borrar máquina">🗑️</button>
               </div>
             </div>
           `;
@@ -1341,9 +1341,9 @@
             <div class="card-footer">
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
-                <button class="btn-card" id="btn-evolution-${m.id}">${graficasEvolucionAbiertas[m.id]?'📈 Ocultar evolución':'📈 Ver evolución'}</button>
-                <button class="btn-card btn-edit-toggle" id="btn-edit-${m.id}">✏️ Editar</button>
-                <button class="btn-delete" id="btn-del-${m.id}">🗑️ Borrar máquina</button>
+                <button class="btn-card" id="btn-evolution-${m.id}" title="${graficasEvolucionAbiertas[m.id]?'Ocultar evolución':'Ver evolución'}" aria-label="${graficasEvolucionAbiertas[m.id]?'Ocultar evolución':'Ver evolución'}">📈</button>
+                <button class="btn-card btn-edit-toggle" id="btn-edit-${m.id}" title="Editar máquina" aria-label="Editar máquina">✏️</button>
+                <button class="btn-delete" id="btn-del-${m.id}" title="Borrar máquina" aria-label="Borrar máquina">🗑️</button>
               </div>
             </div>
           `;

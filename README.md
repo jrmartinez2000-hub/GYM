@@ -5,3 +5,4 @@
 - No se muestran días de descanso ni valores cero artificiales.
 - Mantiene la cruz para cerrar la gráfica y usa todos los registros del historial del perfil activo.
 - Mantiene las métricas diferenciadas para fuerza y cardio, el Excel completo y el resto de funciones.
+- Los botones Ver evolución, Editar y Borrar máquina muestran únicamente su icono, conservando descripción accesible.
