@@ -1,14 +1,18 @@
-# Registro Gimnasio V18
+# Registro Gimnasio V18.1
 
-- Máquinas agrupadas en categorías musculares plegables.
-- Grupo muscular siempre editable desde la edición de cada máquina.
-- Detección automática al crear máquinas, con selección manual.
-- Filtro rápido por grupo muscular.
-- Panel desplegable de análisis muscular: distribución, grupo más y menos trabajado.
-- Historial identifica el grupo muscular de cada ejercicio.
-- Excel ampliado con grupo muscular y datos completos de fuerza/cardio.
-- Pestaña Resumen Muscular en Excel.
-- Importación Excel y backup JSON conservan los grupos.
-- Eliminado el resumen de progreso anterior.
-- Logo Fitness aplicado a cabecera e iconos PWA.
-- Caché actualizada a registro-gym-v18.
+## Corrección principal
+- Recuperados y reforzados los formularios de registro de cada máquina.
+- Fuerza: series, repeticiones y peso.
+- Cinta: tiempo, velocidad e inclinación.
+- Elíptica: pasos, tiempo y resistencia.
+- Bicicleta: velocidad, tiempo y resistencia.
+- Botón Registrar ejercicio y actualización inmediata del historial.
+
+## Mejoras conservadas
+- Grupos musculares plegables, abiertos inicialmente para facilitar el acceso.
+- Cada máquina continúa siendo desplegable.
+- Grupo muscular editable y sincronizado con historial y Excel.
+- Filtro por grupo y análisis muscular.
+- Fotos, perfiles, calorías, Excel completo, importación y backup JSON.
+- Logo Fitness e iconos PWA.
+- Caché registro-gym-v18-1.
