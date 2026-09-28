@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V17.1</title>
+  <title>Registro Gimnasio V18</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -599,36 +599,28 @@
       cursor: pointer;
     }
 
-    /* V17: Toast centrado y seguro para móviles */
+    /* Toast Notification */
     .toast {
       position: fixed;
-      left: 50%; top: 50%; bottom: auto;
-      width: max-content; max-width: min(88vw, 420px);
-      transform: translate(-50%, -50%) scale(.92);
-      opacity: 0; visibility: hidden;
-      background: #16a34a; color: #07111f;
-      padding: 11px 16px; border-radius: 12px;
-      font-weight: 800; font-size: clamp(.86rem, 3.5vw, 1rem);
-      line-height: 1.25; text-align: center;
-      box-shadow: 0 10px 28px rgba(0,0,0,.48);
-      transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
-      z-index: 9999; pointer-events: none;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--success);
+      color: #0f172a;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+      z-index: 2000;
+      pointer-events: none;
     }
-    .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); transition-delay: 0s; }
-    /* V17: panel de estadísticas */
-    .dashboard{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;padding:12px;margin-bottom:12px}
-    .dashboard h2{color:var(--accent);font-size:1.2rem;margin-bottom:10px}
-    .kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    .kpi{background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:10px;text-align:center;min-width:0}
-    .kpi-value{display:block;color:#fbbf24;font-size:clamp(1.05rem,4vw,1.35rem);font-weight:900;overflow-wrap:anywhere}
-    .kpi-label{display:block;color:var(--text-muted);font-size:.78rem;margin-top:3px}
-    .chart-card{margin-top:10px;background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:8px}
-    .chart-title{color:var(--text);font-size:.9rem;font-weight:800;margin-bottom:6px;text-align:center}
-    .chart-wrap{position:relative;width:100%;height:180px}
-    .chart-wrap canvas{width:100%;height:100%;display:block}
-    .dashboard-note{color:var(--text-muted);font-size:.75rem;text-align:center;margin-top:8px}
-    @media(min-width:700px){.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
-    @media(max-width:420px){button,.btn-main,.btn-profile-action,.btn-card,.btn-delete,.btn-register,.btn-export,.btn-import,.btn-backup,.btn-submit{font-size:clamp(.78rem,4vw,1rem)!important;line-height:1.15}.profile-actions{display:grid;grid-template-columns:1fr 1fr}.profile-actions .delete{grid-column:1/-1}}
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* VERSION COMPACTA: MAQUINAS PLEGABLES */
     .card{padding:0;overflow:hidden}.machine-summary{width:100%;min-height:58px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:0;background:var(--card-bg);color:var(--text);cursor:pointer;text-align:left}.machine-summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.machine-arrow{color:var(--accent);font-size:1.15rem;width:22px;flex:0 0 22px;text-align:center;transition:transform .2s}.card.expanded .machine-arrow{transform:rotate(90deg)}.machine-summary-name{flex:1;min-width:0;color:var(--accent);font-size:1.25rem;font-weight:800;overflow-wrap:anywhere}.machine-details{display:none;padding:0 12px 12px;border-top:1px solid #334155}.card.expanded .machine-details{display:block}.machine-details .card-header{margin-top:10px}
     .advanced-tools{margin-top:14px;background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden}.advanced-tools-toggle{width:100%;min-height:54px;padding:11px 12px;display:flex;justify-content:space-between;align-items:center;border:0;background:var(--card-bg);color:var(--accent);font-weight:800;cursor:pointer}.advanced-tools-panel{display:none;padding:0 12px 12px}.advanced-tools-panel.visible{display:block}.advanced-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:10px;border-top:1px solid #334155}.advanced-tools-grid button{width:100%;min-height:52px;white-space:normal}
@@ -716,19 +708,14 @@
     @media(min-width:700px){.font-settings-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.font-control.global,.font-reset{grid-column:1/-1}}
     @media(max-width:420px){.font-control{grid-template-columns:minmax(0,1fr) 38px 58px 38px;gap:4px;padding:7px 5px}.font-control button{width:38px!important}.font-settings-panel{padding:7px}}
 
-    /* V17.1: cabecera y resumen de progreso desplegable */
-    .app-title{display:flex;align-items:center;justify-content:center;gap:10px}
-    .app-title-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1.5px solid var(--accent);background:#fff}
-    .dashboard{padding:0;overflow:hidden}
-    .dashboard-toggle{width:100%;min-height:58px;padding:10px 12px;display:flex;align-items:center;gap:9px;border:0;background:var(--card-bg);color:var(--accent);cursor:pointer;text-align:left}
-    .dashboard-arrow{width:22px;flex:0 0 22px;text-align:center;font-size:1.1rem;transition:transform .2s}
-    .dashboard.expanded .dashboard-arrow{transform:rotate(90deg)}
-    .dashboard-title{font-size:1.18rem;font-weight:900;flex:1}
-    .dashboard-compact{color:#fbbf24;font-size:.76rem;font-weight:800;text-align:right;white-space:nowrap}
-    .dashboard-content{display:none;padding:0 12px 12px;border-top:1px solid #334155}
-    .dashboard.expanded .dashboard-content{display:block}
-    .dashboard-content .kpi-grid{padding-top:10px}
-    @media(max-width:480px){.app-title-logo{width:44px;height:44px}.dashboard-toggle{gap:6px;padding:9px 8px}.dashboard-title{font-size:1rem}.dashboard-compact{font-size:.68rem;max-width:42%;white-space:normal;line-height:1.2}}
+    /* V18: grupos musculares y analisis */
+    .app-title{display:flex;align-items:center;justify-content:center;gap:10px}.app-title-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1.5px solid var(--accent);background:#fff}
+    select{width:100%;padding:10px;border-radius:8px;border:1.5px solid #475569;background:var(--input-bg);color:var(--text);font-size:1rem}
+    .muscle-filter{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;padding:10px;margin-bottom:12px}.muscle-filter label{color:var(--accent);font-weight:800}
+    .muscle-group{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden;margin-bottom:10px}.muscle-group-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-group-arrow{width:20px;transition:transform .2s}.muscle-group.expanded .muscle-group-arrow{transform:rotate(90deg)}.muscle-group-name{flex:1;font-size:1.08rem}.muscle-group-count{background:var(--bg);color:var(--text-muted);padding:3px 8px;border-radius:999px;font-size:.75rem}.muscle-group-content{display:none;padding:0 8px 8px}.muscle-group.expanded .muscle-group-content{display:flex;flex-direction:column;gap:10px}.muscle-group-content .card{margin:0}
+    .muscle-analysis{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;overflow:hidden;margin-bottom:12px}.muscle-analysis-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-analysis-arrow{width:20px;transition:transform .2s}.muscle-analysis.expanded .muscle-analysis-arrow{transform:rotate(90deg)}.muscle-analysis-content{display:none;padding:10px 12px 12px;border-top:1px solid #334155}.muscle-analysis.expanded .muscle-analysis-content{display:block}.muscle-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.muscle-kpi{background:var(--input-bg);border:1px solid #475569;border-radius:10px;padding:10px;text-align:center}.muscle-kpi strong{display:block;color:#fbbf24;font-size:1.05rem;margin-top:4px;overflow-wrap:anywhere}.muscle-bars{display:flex;flex-direction:column;gap:8px}.muscle-bar-row{display:grid;grid-template-columns:minmax(90px,1fr) 3fr 48px;gap:7px;align-items:center}.muscle-bar-name{font-size:.83rem;color:var(--text)}.muscle-bar-track{height:12px;border-radius:999px;background:#0b1120;overflow:hidden}.muscle-bar-fill{height:100%;border-radius:999px;background:var(--accent)}.muscle-bar-pct{text-align:right;color:#fbbf24;font-weight:800;font-size:.8rem}.muscle-empty{text-align:center;color:var(--text-muted);padding:10px}
+    .history-muscle{display:inline-block;color:#fbbf24;font-size:.75rem;font-weight:800;margin-bottom:3px}.group-edit-select{margin:8px 0}
+    @media(max-width:480px){.app-title-logo{width:44px;height:44px}.muscle-kpis{grid-template-columns:1fr}.muscle-bar-row{grid-template-columns:minmax(78px,1fr) 2fr 42px}}
   </style>
 </head>
 <body>
@@ -787,37 +774,20 @@
     <form id="form-nueva">
       <div class="form-group">
         <label for="nombre-nuevo">Nombre de la máquina:</label>
-        <input type="text" id="nombre-nuevo" placeholder="Ej: Prensa de piernas" required>
+        <input type="text" id="nombre-nuevo" placeholder="Ej: Prensa de piernas" required oninput="sugerirGrupoNuevaMaquina()">
       </div>
+      <div class="form-group"><label for="grupo-nuevo">Grupo muscular:</label><select id="grupo-nuevo"></select></div>
       <button type="submit" class="btn-submit">Añadir a la Lista</button>
     </form>
   </div>
 
-  <!-- Lista de Máquinas -->
+  <div class="muscle-filter"><label for="filtro-grupo">🔎 Mostrar grupo muscular</label><select id="filtro-grupo" onchange="cambiarFiltroGrupo(this.value)"></select></div>
+  <!-- Lista de Máquinas agrupada -->
   <div class="grid" id="lista-maquinas"></div>
 
-  <!-- V17: Dashboard de progreso -->
-  <section class="dashboard" id="dashboard">
-    <button type="button" class="dashboard-toggle" id="dashboard-toggle" aria-expanded="false" onclick="toggleDashboard()">
-      <span class="dashboard-arrow">▶</span><span class="dashboard-title">📈 Resumen de progreso</span><span class="dashboard-compact" id="dashboard-compact">🔥 0 kcal · 🏃 0 min · 🏆 0</span>
-    </button>
-    <div class="dashboard-content" id="dashboard-content">
-    <div class="kpi-grid">
-      <div class="kpi"><span class="kpi-value" id="kpi-kcal-semana">0</span><span class="kpi-label">kcal últimos 7 días</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-kcal-mes">0</span><span class="kpi-label">kcal este mes</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-cardio">0 min</span><span class="kpi-label">cardio últimos 7 días</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-imc">--</span><span class="kpi-label">IMC actual</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-frecuencia">0</span><span class="kpi-label">sesiones últimos 30 días</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-favorita">--</span><span class="kpi-label">máquina más utilizada</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-records">0</span><span class="kpi-label">récords personales</span></div>
-      <div class="kpi"><span class="kpi-value" id="kpi-peso-max">--</span><span class="kpi-label">mayor peso registrado</span></div>
-    </div>
-    <div class="charts-grid">
-      <div class="chart-card"><div class="chart-title">Calorías de los últimos 7 días</div><div class="chart-wrap"><canvas id="chart-calorias"></canvas></div></div>
-      <div class="chart-card"><div class="chart-title">Peso máximo por sesión de fuerza</div><div class="chart-wrap"><canvas id="chart-peso"></canvas></div></div>
-    </div>
-    <div class="dashboard-note">Las calorías son estimaciones orientativas basadas en los datos registrados.</div>
-    </div>
+  <section class="muscle-analysis" id="muscle-analysis">
+    <button type="button" class="muscle-analysis-toggle" aria-expanded="false" onclick="toggleAnalisisMuscular()"><span class="muscle-analysis-arrow">▶</span><span>📊 Análisis muscular</span></button>
+    <div class="muscle-analysis-content"><div class="muscle-kpis"><div class="muscle-kpi">🏆 Grupo más trabajado<strong id="muscle-most">--</strong></div><div class="muscle-kpi">⚠️ Grupo menos trabajado<strong id="muscle-least">--</strong></div></div><div class="muscle-bars" id="muscle-bars"></div><div class="dashboard-note">Distribución calculada por registros del historial del perfil activo.</div></div>
   </section>
   <!-- Historial Agrupado Desplegable -->
   <div class="history-section">
@@ -961,6 +931,18 @@
     function restaurarFuentes(){ajustesFuente={...FUENTES_PREDETERMINADAS};localStorage.setItem(claveFuente(),JSON.stringify(ajustesFuente));aplicarAjustesFuente();mostrarToast('♻ Tamaños restaurados');}
     function toggleAjustesFuente(){const p=document.getElementById('font-settings-panel'),b=document.getElementById('font-settings-toggle'),a=document.getElementById('font-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
 
+    const GRUPOS_MUSCULARES=['Piernas','Pecho','Espalda','Hombros','Bíceps','Tríceps','Core','Cardio','Otro'];
+    const ICONOS_GRUPO={Piernas:'🦵',Pecho:'🏋️',Espalda:'🫁',Hombros:'🔷','Bíceps':'💪','Tríceps':'💪',Core:'🔥',Cardio:'🫀',Otro:'📦'};
+    let filtroGrupo='Todos';let gruposMuscularesExpandidos={};
+    function grupoValido(g){return GRUPOS_MUSCULARES.includes(g)?g:'Otro';}
+    function detectarGrupoMuscular(nombre){const n=normalizarNombre(nombre);if(/cinta|treadmill|eliptica|bicicleta|bici|spinning|cardio|remo ergometro/.test(n))return 'Cardio';if(/pierna|leg|sentadilla|squat|prensa|femoral|cuadriceps|gemelo|aductor|abductor|glute|hip thrust/.test(n))return 'Piernas';if(/pecho|chest|banca|pectoral|apertura|press inclinado/.test(n))return 'Pecho';if(/espalda|back|jalon|dominada|remo|pullover|dorsal/.test(n))return 'Espalda';if(/hombro|shoulder|militar|elevacion lateral|deltoid/.test(n))return 'Hombros';if(/bicep|curl/.test(n))return 'Bíceps';if(/tricep|fondos|extension polea/.test(n))return 'Tríceps';if(/abdominal|core|plancha|crunch|lumbar/.test(n))return 'Core';return 'Otro';}
+    function opcionesGrupo(seleccionado){return GRUPOS_MUSCULARES.map(g=>`<option value="${g}" ${g===grupoValido(seleccionado)?'selected':''}>${ICONOS_GRUPO[g]} ${g}</option>`).join('');}
+    function poblarSelectsGrupo(){const n=document.getElementById('grupo-nuevo'),f=document.getElementById('filtro-grupo');if(n&&!n.options.length)n.innerHTML=opcionesGrupo('Otro');if(f){f.innerHTML='<option value="Todos">Todos los grupos</option>'+GRUPOS_MUSCULARES.map(g=>`<option value="${g}">${ICONOS_GRUPO[g]} ${g}</option>`).join('');f.value=filtroGrupo;}}
+    function sugerirGrupoNuevaMaquina(){const n=document.getElementById('nombre-nuevo'),g=document.getElementById('grupo-nuevo');if(n&&g)g.value=detectarGrupoMuscular(n.value);}
+    function cambiarFiltroGrupo(v){filtroGrupo=v;renderizarLista();}
+    function toggleGrupoMuscular(g){gruposMuscularesExpandidos[g]=!gruposMuscularesExpandidos[g];renderizarLista();}
+    function toggleAnalisisMuscular(){const e=document.getElementById('muscle-analysis');const v=e.classList.toggle('expanded');e.querySelector('button').setAttribute('aria-expanded',String(v));if(v)renderizarAnalisisMuscular();}
+    function renderizarAnalisisMuscular(){const cont=document.getElementById('muscle-bars');if(!cont)return;const c={};GRUPOS_MUSCULARES.forEach(g=>c[g]=0);historialSesiones.forEach(x=>c[grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina))]++);const total=Object.values(c).reduce((a,b)=>a+b,0),activos=Object.entries(c).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);document.getElementById('muscle-most').textContent=activos.length?`${ICONOS_GRUPO[activos[0][0]]} ${activos[0][0]}`:'--';document.getElementById('muscle-least').textContent=activos.length?`${ICONOS_GRUPO[activos[activos.length-1][0]]} ${activos[activos.length-1][0]}`:'--';cont.innerHTML=total?activos.map(([g,v])=>{const p=Math.round(v*100/total);return `<div class="muscle-bar-row"><span class="muscle-bar-name">${ICONOS_GRUPO[g]} ${g}</span><span class="muscle-bar-track"><span class="muscle-bar-fill" style="width:${p}%"></span></span><span class="muscle-bar-pct">${p}%</span></div>`}).join(''):'<div class="muscle-empty">Aún no hay entrenamientos registrados.</div>';}
     function cargarPerfiles() {
       try {
         const perfilesGuardados = localStorage.getItem('lista_perfiles');
@@ -993,14 +975,14 @@
     function cargarDatos() {
       try {
         const datos = localStorage.getItem(`mis_maquinas_${perfilActual}`);
-        if (datos) return JSON.parse(datos);
+        if (datos) return JSON.parse(datos).map(m=>({...m,grupoMuscular:grupoValido(m.grupoMuscular||detectarGrupoMuscular(m.nombre))}));
       } catch (e) {}
 
       const fechaHoy = obtenerFechaHoraActual().split(' ')[0];
 
       if (perfilActual === 'jr') {
         return [
-          { id: 1, nombre: "Prensa de piernas", series: "", peso: "", reps: "", fecha: fechaHoy }
+          { id: 1, nombre: "Prensa de piernas", grupoMuscular: "Piernas", series: "", peso: "", reps: "", fecha: fechaHoy }
         ];
       }
       return [];
@@ -1031,16 +1013,13 @@
       }
     }
 
-    let toastTimer = null;
     function mostrarToast(mensaje = '✅ Ejercicio registrado con éxito') {
       const toast = document.getElementById('toast');
-      if (!toast) return;
-      clearTimeout(toastTimer);
-      toast.classList.remove('show');
       toast.textContent = mensaje;
-      void toast.offsetWidth;
       toast.classList.add('show');
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
     }
 
     function cargarDatosPerfil(nombre=perfilActual){
@@ -1082,11 +1061,11 @@
       maquinaEditandoId = null;
       cargarMaquinaExpandida();
       cargarAjustesFuente();
+      poblarSelectsGrupo();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
-      renderizarDashboard();
-      aplicarEstadoDashboard();
+      renderizarAnalisisMuscular();
     }
 
     function mostrarPanelNuevoPerfil() {
@@ -1180,7 +1159,7 @@
     function calcularCaloriasSesion(x,peso){if(!peso)return 0;if(x.tipo==='cinta'||esCintaDeCorrer(x.maquina))return caloriasCinta(x,peso);let met=0,min=Number(x.tiempo)||0;if(x.tipo==='eliptica'||esEliptica(x.maquina))met=metPorResistencia('eliptica',x.resistencia);else if(x.tipo==='bici'||esBiciEstatica(x.maquina))met=metPorResistencia('bici',x.resistencia,x.velocidad);else{const series=Number(String(x.series||'').replace(',','.'))||0;min=series*2;met=3.5;}return Math.round(met*3.5*peso/200*min);}
 
     function registrarSerieDirecta(id) {
-      const maquina=maquinas.find(m=>m.id===id);if(!maquina)return;const fechaHora=obtenerFechaHoraActual();let sesion={id:Date.now(),fecha:fechaHora,maquina:maquina.nombre};
+      const maquina=maquinas.find(m=>m.id===id);if(!maquina)return;const fechaHora=obtenerFechaHoraActual();let sesion={id:Date.now(),fecha:fechaHora,maquina:maquina.nombre,grupoMuscular:grupoValido(maquina.grupoMuscular)};
       if(esCintaDeCorrer(maquina.nombre)){const tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,inclinacion=document.getElementById(`reg-inclinacion-${id}`)?.value||'0';if(!tiempo||!velocidad||Number(inclinacion)<0)return alert('Introduce tiempo, velocidad e inclinación válidos.');Object.assign(sesion,{tipo:'cinta',tiempo,velocidad,inclinacion,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{tiempo,velocidad,inclinacion});}
       else if(esEliptica(maquina.nombre)){const pasos=document.getElementById(`reg-pasos-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!pasos||!tiempo)return alert('Introduce pasos y tiempo.');Object.assign(sesion,{tipo:'eliptica',pasos,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{pasos,tiempo,resistencia});}
       else if(esBiciEstatica(maquina.nombre)){const velocidad=document.getElementById(`reg-velocidad-${id}`)?.value,tiempo=document.getElementById(`reg-tiempo-${id}`)?.value,resistencia=document.getElementById(`reg-resistencia-${id}`)?.value;if(!velocidad||!tiempo)return alert('Introduce velocidad y tiempo.');Object.assign(sesion,{tipo:'bici',velocidad,tiempo,resistencia,series:'-',reps:'-',peso:'-'});Object.assign(maquina,{velocidad,tiempo,resistencia});}
@@ -1263,7 +1242,9 @@
         return;
       }
 
-      for (const m of maquinas) {
+      const porGrupo={};visibles.forEach(m=>{const g=grupoValido(m.grupoMuscular);(porGrupo[g]||(porGrupo[g]=[])).push(m);});
+      for(const g of GRUPOS_MUSCULARES){if(!porGrupo[g])continue;const wrap=document.createElement('section');wrap.className=`muscle-group ${gruposMuscularesExpandidos[g]?'expanded':''}`;wrap.innerHTML=`<button type="button" class="muscle-group-toggle" onclick="toggleGrupoMuscular('${g}')"><span class="muscle-group-arrow">▶</span><span class="muscle-group-name">${ICONOS_GRUPO[g]} ${g}</span><span class="muscle-group-count">${porGrupo[g].length}</span></button><div class="muscle-group-content"></div>`;contenedor.appendChild(wrap);const destino=wrap.querySelector('.muscle-group-content');
+      for (const m of porGrupo[g]) {
         const card = document.createElement('div');
         const esEditando = (maquinaEditandoId === m.id);
         const estaExpandida = maquinaExpandidaId === m.id;
@@ -1276,6 +1257,7 @@
             <div class="card-header">
               <input type="text" id="edit-nombre-${m.id}" class="edit-input-card" value="${escaparHTML(m.nombre)}" placeholder="Nombre de máquina">
             </div>
+            <div class="form-group group-edit-select"><label>Grupo muscular:</label><select id="edit-grupo-${m.id}">${opcionesGrupo(m.grupoMuscular)}</select></div>
             <div class="info-row">
               <span>Series:</span>
               <input type="text" inputmode="decimal" id="edit-series-${m.id}" class="edit-input-card" style="width: 90px; text-align: right;" value="${escaparHTML(m.series || '')}" placeholder="Series">
@@ -1298,7 +1280,7 @@
           `;
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
-          contenedor.appendChild(card);
+          destino.appendChild(card);
 
           document.getElementById(`btn-save-${m.id}`).addEventListener('click', () => guardarEdicionDirecta(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
@@ -1322,57 +1304,15 @@
           `;
           const detalles=document.createElement('div');detalles.className='machine-details';while(card.firstChild)detalles.appendChild(card.firstChild);
           const resumen=crearResumenMaquina(m, estaExpandida, fotoData);card.appendChild(resumen);card.appendChild(detalles);
-          contenedor.appendChild(card);
+          destino.appendChild(card);
 
           document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
         }
       }
+      }
     }
-
-    function claveDashboard(){return `dashboard_expandido_v171_${perfilActual}`;}
-    function aplicarEstadoDashboard(){
-      const d=document.getElementById('dashboard'),b=document.getElementById('dashboard-toggle');if(!d||!b)return;
-      const abierto=localStorage.getItem(claveDashboard())==='1';d.classList.toggle('expanded',abierto);b.setAttribute('aria-expanded',String(abierto));
-      if(abierto)setTimeout(renderizarDashboard,30);
-    }
-    function toggleDashboard(){
-      const d=document.getElementById('dashboard'),b=document.getElementById('dashboard-toggle');if(!d||!b)return;
-      const abierto=d.classList.toggle('expanded');b.setAttribute('aria-expanded',String(abierto));localStorage.setItem(claveDashboard(),abierto?'1':'0');
-      if(abierto)setTimeout(renderizarDashboard,30);
-    }
-    /* V17: ESTADISTICAS Y GRAFICOS SIN LIBRERIAS EXTERNAS */
-    function fechaSesion(s){
-      const p=String(s.fecha||'').split(' ')[0].split('/');
-      return p.length===3?new Date(Number(p[2]),Number(p[1])-1,Number(p[0])):null;
-    }
-    function esCardioSesion(s){return ['cinta','eliptica','bici'].includes(s.tipo)||esCintaDeCorrer(s.maquina)||esEliptica(s.maquina)||esBiciEstatica(s.maquina);}
-    function renderizarDashboard(){
-      const ahora=new Date(), inicio7=new Date(ahora);inicio7.setHours(0,0,0,0);inicio7.setDate(inicio7.getDate()-6);
-      const inicio30=new Date(ahora);inicio30.setHours(0,0,0,0);inicio30.setDate(inicio30.getDate()-29);
-      const pesoPerfil=Number(cargarDatosPerfil().peso)||0;
-      const validas=historialSesiones.map(x=>({...x,_f:fechaSesion(x)})).filter(x=>x._f);
-      const ult7=validas.filter(x=>x._f>=inicio7&&x._f<=ahora), ult30=validas.filter(x=>x._f>=inicio30&&x._f<=ahora);
-      const kcal=x=>Number(x.calorias)||calcularCaloriasSesion(x,pesoPerfil)||0;
-      const kcal7=Math.round(ult7.reduce((t,x)=>t+kcal(x),0));
-      const kcalMes=Math.round(validas.filter(x=>x._f.getMonth()===ahora.getMonth()&&x._f.getFullYear()===ahora.getFullYear()).reduce((t,x)=>t+kcal(x),0));
-      const cardio=Math.round(ult7.filter(esCardioSesion).reduce((t,x)=>t+(Number(x.tiempo)||0),0));
-      const conteo={};validas.forEach(x=>conteo[x.maquina]=(conteo[x.maquina]||0)+1);const favorita=Object.entries(conteo).sort((a,b)=>b[1]-a[1])[0];
-      const estatura=Number(cargarDatosPerfil().estatura)/100;const imc=pesoPerfil&&estatura?pesoPerfil/(estatura*estatura):0;
-      const fuerza=validas.filter(x=>!esCardioSesion(x)).map(x=>({x,p:parseFloat(String(x.peso||'').replace(',','.'))})).filter(o=>Number.isFinite(o.p));
-      const records=new Set(validas.map(x=>normalizarNombre(x.maquina))).size;
-      const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-      set('kpi-kcal-semana',kcal7);set('kpi-kcal-mes',kcalMes);set('kpi-cardio',`${cardio} min`);set('kpi-imc',imc?imc.toFixed(1):'--');set('kpi-frecuencia',new Set(ult30.map(x=>x.fecha.split(' ')[0])).size);set('kpi-favorita',favorita?`${favorita[0]} · ${favorita[1]}`:'--');set('kpi-records',records);set('kpi-peso-max',fuerza.length?`${Math.max(...fuerza.map(o=>o.p))} kg`:'--');
-      set('dashboard-compact',`🔥 ${kcal7} kcal · 🏃 ${cardio} min · 🏆 ${records}`);
-      const dias=[];for(let i=0;i<7;i++){const d=new Date(inicio7);d.setDate(d.getDate()+i);dias.push(d);}
-      dibujarGrafico('chart-calorias',dias.map(d=>`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`),dias.map(d=>Math.round(validas.filter(x=>x._f.toDateString()===d.toDateString()).reduce((t,x)=>t+kcal(x),0))),'#fb923c');
-      const ultF=fuerza.slice(0,10).reverse();dibujarGrafico('chart-peso',ultF.map(o=>o.x.fecha.split(' ')[0].slice(0,5)),ultF.map(o=>o.p),'#38bdf8');
-    }
-    function dibujarGrafico(id,labels,values,color){
-      const c=document.getElementById(id);if(!c)return;const dpr=Math.max(1,window.devicePixelRatio||1),r=c.getBoundingClientRect();if(!r.width)return;c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);const x=c.getContext('2d');x.scale(dpr,dpr);const w=r.width,h=r.height,p={l:34,r:8,t:12,b:28},max=Math.max(1,...values)*1.12;x.clearRect(0,0,w,h);x.strokeStyle='#475569';x.fillStyle='#94a3b8';x.font='11px system-ui';x.textAlign='right';for(let i=0;i<=3;i++){const y=p.t+(h-p.t-p.b)*i/3;x.beginPath();x.moveTo(p.l,y);x.lineTo(w-p.r,y);x.stroke();x.fillText(Math.round(max*(1-i/3)),p.l-5,y+4);}if(!values.length)return;const step=(w-p.l-p.r)/Math.max(1,values.length-1);x.strokeStyle=color;x.lineWidth=3;x.beginPath();values.forEach((v,i)=>{const px=p.l+i*step,py=h-p.b-(v/max)*(h-p.t-p.b);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();x.fillStyle=color;values.forEach((v,i)=>{const px=p.l+i*step,py=h-p.b-(v/max)*(h-p.t-p.b);x.beginPath();x.arc(px,py,3.5,0,Math.PI*2);x.fill()});x.fillStyle='#94a3b8';x.textAlign='center';labels.forEach((v,i)=>{if(labels.length<=7||i%2===0)x.fillText(v,p.l+i*step,h-8)});
-    }
-    window.addEventListener('resize',()=>{clearTimeout(window._grafTimer);window._grafTimer=setTimeout(renderizarDashboard,120)});
 
     /* HISTORIAL AGRUPADO POR FECHA */
     function renderizarHistorial() {
@@ -1430,7 +1370,7 @@
 
           itemDiv.innerHTML = `
             <div class="history-details">
-              <div class="history-machine-title">🏋️ ${escaparHTML(s.maquina || 'Máquina')}</div>
+              <div class="history-muscle">${ICONOS_GRUPO[grupoValido(s.grupoMuscular||detectarGrupoMuscular(s.maquina))]} ${escaparHTML(grupoValido(s.grupoMuscular||detectarGrupoMuscular(s.maquina)))}</div><div class="history-machine-title">🏋️ ${escaparHTML(s.maquina || 'Máquina')}</div>
               ${s.tipo==='cinta'||esCintaDeCorrer(s.maquina)?`<span>Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | Inclinación: <strong>${escaparHTML(s.inclinacion||'0')}%</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='eliptica'||esEliptica(s.maquina)?`<span>Pasos: <strong>${escaparHTML(s.pasos||'-')}</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:s.tipo==='bici'||esBiciEstatica(s.maquina)?`<span>Velocidad: <strong>${escaparHTML(s.velocidad||'-')} km/h</strong> | Tiempo: <strong>${escaparHTML(s.tiempo||'-')} min</strong> | Resistencia: <strong>${escaparHTML(s.resistencia||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`:`<span>Series: <strong>${escaparHTML(s.series||'-')}</strong> | Reps: <strong>${escaparHTML(s.reps||'-')}</strong> | Peso: <strong>${escaparHTML(s.peso||'-')}</strong> | 🔥 ${s.calorias||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))} kcal</span>`}
               ${horaPart ? `<div class="history-date">🕒 ${escaparHTML(horaPart)}</div>` : ''}
             </div>
@@ -1455,8 +1395,7 @@
     function toggleGrupoHistorial(fechaClave) {
       gruposExpandidos[fechaClave] = !gruposExpandidos[fechaClave];
       renderizarHistorial();
-      renderizarDashboard();
-      aplicarEstadoDashboard();
+      renderizarAnalisisMuscular();
     }
 
     function eliminarSesionHistorial(id) {
@@ -1468,19 +1407,43 @@
 
     /* EXPORTACIÓN MULTI-PESTAÑA A EXCEL (.XLSX) */
     function exportarExcelMultiPestana() {
-      if (typeof XLSX === 'undefined') { alert('Librería Excel no lista. Comprueba la conexión.'); return; }
-      const libro=XLSX.utils.book_new();let hayDatos=false;
-      perfiles.forEach(perfil=>{
-        const historial=cargarHistorial(perfil);const pesoPerfil=Number(cargarDatosPerfil(perfil).peso)||0;
-        const cab=['Fecha y Hora','Máquina','Tipo','Series','Repeticiones','Peso (kg)','Tiempo (min)','Velocidad (km/h)','Inclinación (%)','Pasos','Resistencia','Calorías estimadas'];
-        const filas=[cab];
-        historial.forEach(s=>{hayDatos=true;filas.push([s.fecha,s.maquina,s.tipo||'fuerza',s.series||'-',s.reps||'-',s.peso||'-',s.tiempo||'-',s.velocidad||'-',s.inclinacion||'-',s.pasos||'-',s.resistencia||'-',Number(s.calorias)||calcularCaloriasSesion(s,pesoPerfil)||0]);});
-        if(!historial.length)filas.push(['Sin registros','-','-','-','-','-','-','-','-','-','-',0]);
-        const hoja=XLSX.utils.aoa_to_sheet(filas);hoja['!cols']=[18,24,12,10,14,12,13,16,15,10,14,20].map(w=>({wch:w}));
-        XLSX.utils.book_append_sheet(libro,hoja,perfil.substring(0,30).replace(/[:\\/?*\[\]]/g,''));
+      if (typeof XLSX === 'undefined') {
+        alert('Cargando librería Excel, por favor intenta en unos segundos o conéctate a internet.');
+        return;
+      }
+
+      const libro = XLSX.utils.book_new();
+      let hayDatos = false;
+
+      perfiles.forEach(perfil => {
+        const historialPerfil = cargarHistorial(perfil);
+        
+        const datosHoja = [
+          ['Fecha y Hora', 'Grupo muscular', 'Máquina', 'Tipo', 'Series', 'Repeticiones', 'Peso', 'Tiempo', 'Velocidad', 'Inclinación', 'Pasos', 'Resistencia', 'Calorías']
+        ];
+
+        if (historialPerfil.length > 0) {
+          hayDatos = true;
+          historialPerfil.forEach(s => {
+            datosHoja.push([s.fecha, grupoValido(s.grupoMuscular||detectarGrupoMuscular(s.maquina)), s.maquina, s.tipo||'fuerza', s.series||'-', s.reps||'-', s.peso||'-', s.tiempo||'-', s.velocidad||'-', s.inclinacion||'-', s.pasos||'-', s.resistencia||'-', Number(s.calorias)||0]);
+          });
+        } else {
+          datosHoja.push(['Sin registros','-','-','-','-','-','-','-','-','-','-','-',0]);
+        }
+
+        const hoja = XLSX.utils.aoa_to_sheet(datosHoja);
+        const nombrePestana = perfil.substring(0, 30).replace(/[:\\/?*\[\]]/g, '');
+        XLSX.utils.book_append_sheet(libro, hoja, nombrePestana);
       });
-      if(!hayDatos){alert('No hay registros para exportar.');return;}
-      XLSX.writeFile(libro,`Informe_Gimnasio_V17_${new Date().toISOString().slice(0,10)}.xlsx`);
+
+      const resumen=[['Perfil','Grupo muscular','Registros','Porcentaje','Indicador']];perfiles.forEach(perfil=>{const h=cargarHistorial(perfil),c={};h.forEach(x=>{const g=grupoValido(x.grupoMuscular||detectarGrupoMuscular(x.maquina));c[g]=(c[g]||0)+1});const total=h.length;Object.entries(c).sort((a,b)=>b[1]-a[1]).forEach(([g,v])=>resumen.push([perfil,g,v,total?Math.round(v*1000/total)/10:0,v===Math.max(...Object.values(c))?'Más trabajado':v===Math.min(...Object.values(c))?'Menos trabajado':'']));});XLSX.utils.book_append_sheet(libro,XLSX.utils.aoa_to_sheet(resumen),'Resumen Muscular');
+      if (!hayDatos) {
+        alert('No hay registros guardados en ningún perfil para exportar.');
+        return;
+      }
+
+      const fechaHoy = new Date().toISOString().slice(0, 10);
+      XLSX.writeFile(libro, `Informe_Gimnasio_${fechaHoy}.xlsx`);
     }
 
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
@@ -1524,13 +1487,7 @@
               const fila = jsonSheet[i];
               if (!fila || fila.length === 0 || fila[0] === 'Sin registros') continue;
 
-              const fechaRaw = String(fila[0] || '').trim();
-              const maquina = String(fila[1] || '').trim();
-              const tipo=String(fila[2]||'fuerza').trim();
-              const series=String(fila[3]||'-').trim();
-              const reps=String(fila[4]||'-').trim();
-              const peso=String(fila[5]||'-').trim();
-              const tiempo=String(fila[6]||'-').trim(),velocidad=String(fila[7]||'-').trim(),inclinacion=String(fila[8]||'-').trim(),pasos=String(fila[9]||'-').trim(),resistencia=String(fila[10]||'-').trim(),calorias=Number(fila[11])||0;
+              const fechaRaw=String(fila[0]||'').trim();const grupoMuscular=grupoValido(String(fila[1]||'Otro').trim());const maquina=String(fila[2]||'').trim();const tipo=String(fila[3]||'fuerza').trim();const series=String(fila[4]||'-').trim();const reps=String(fila[5]||'-').trim();const peso=String(fila[6]||'-').trim();const tiempo=String(fila[7]||'-').trim();const velocidad=String(fila[8]||'-').trim();const inclinacion=String(fila[9]||'-').trim();const pasos=String(fila[10]||'-').trim();const resistencia=String(fila[11]||'-').trim();const calorias=Number(fila[12])||0;
 
               if (!fechaRaw || !maquina) continue;
 
@@ -1547,10 +1504,7 @@
                 historialExistente.unshift({
                   id: Date.now() + Math.random() + i,
                   fecha: fechaRaw,
-                  maquina: maquina,
-                  series: series,
-                  reps: reps,
-                  peso, tipo, tiempo, velocidad, inclinacion, pasos, resistencia, calorias
+                  maquina, grupoMuscular, tipo, series, reps, peso, tiempo, velocidad, inclinacion, pasos, resistencia, calorias
                 });
                 totalImportados++;
               } else {
@@ -1584,6 +1538,7 @@
                 maq = {
                   id: Date.now() + Math.random(),
                   nombre: sesion.maquina,
+                  grupoMuscular: grupoValido(sesion.grupoMuscular),
                   series: "",
                   peso: "",
                   reps: "",
@@ -1714,6 +1669,7 @@
       const inputSeries = document.getElementById(`edit-series-${id}`);
       const inputPeso = document.getElementById(`edit-peso-${id}`);
       const inputReps = document.getElementById(`edit-reps-${id}`);
+      const inputGrupo = document.getElementById(`edit-grupo-${id}`);
 
       if (!inputNombre) return;
 
@@ -1729,12 +1685,9 @@
 
       const maquina = maquinas.find(m => m.id === id);
       if (maquina) {
-        const nombreAnterior = maquina.nombre;
-        if (normalizarNombre(nombreAnterior) !== normalizarNombre(nuevoNombre)) {
-          historialSesiones.forEach(s => { if (normalizarNombre(s.maquina) === normalizarNombre(nombreAnterior)) s.maquina = nuevoNombre; });
-          localStorage.setItem(`historial_sesiones_${perfilActual}`, JSON.stringify(historialSesiones));
-        }
         maquina.nombre = nuevoNombre;
+        maquina.grupoMuscular = grupoValido(inputGrupo ? inputGrupo.value : maquina.grupoMuscular);
+        historialSesiones.forEach(x=>{if(normalizarNombre(x.maquina)===normalizarNombre(nuevoNombre))x.grupoMuscular=maquina.grupoMuscular;});guardarHistorial();
         maquina.series = nuevasSeries;
         maquina.peso = nuevoPeso;
         maquina.reps = nuevasReps;
@@ -1807,6 +1760,7 @@
       maquinas.push({
         id: Date.now(),
         nombre: nombre,
+        grupoMuscular: grupoValido(document.getElementById('grupo-nuevo').value||detectarGrupoMuscular(nombre)),
         series: "",
         peso: "",
         reps: "",
@@ -1834,20 +1788,20 @@
     abrirDB().then(() => {
       cargarMaquinaExpandida();
       cargarAjustesFuente();
+      poblarSelectsGrupo();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
-      renderizarDashboard();
-      aplicarEstadoDashboard();
+      renderizarAnalisisMuscular();
     }).catch(err => {
       console.error(err);
       cargarMaquinaExpandida();
       cargarAjustesFuente();
+      poblarSelectsGrupo();
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
-      renderizarDashboard();
-      aplicarEstadoDashboard();
+      renderizarAnalisisMuscular();
     });
   </script>
 

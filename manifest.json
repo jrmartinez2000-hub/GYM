@@ -1,7 +1,7 @@
 {
-  "name": "Registro Gimnasio V17.1",
+  "name": "Registro Gimnasio V18",
   "short_name": "Gimnasio",
-  "description": "Registro de gimnasio con panel de progreso desplegable, cardio, calorías, estadísticas e historial",
+  "description": "Registro de gimnasio agrupado por grupos musculares, con análisis, historial, cardio y Excel",
   "lang": "es",
   "start_url": "./index.html",
   "scope": "./",
