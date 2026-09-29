@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V18.10</title>
+  <title>Registro Gimnasio V18.11</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -719,7 +719,7 @@
 </head>
 <body>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.10</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V18.11</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -1184,6 +1184,17 @@
       mostrarToast('🧹 Registro limpiado');
     }
 
+    function fechaHoraSesionMs(fecha){
+      const texto=String(fecha||'').trim(),partes=texto.split(' '),f=(partes[0]||'').split('/'),h=(partes[1]||'00:00').split(':');
+      if(f.length===3){const d=new Date(Number(f[2]),Number(f[1])-1,Number(f[0]),Number(h[0])||0,Number(h[1])||0);return d.getTime();}
+      const t=Date.parse(texto);return Number.isFinite(t)?t:0;
+    }
+    function ultimoRegistroMaquina(m){
+      const historial=cargarHistorial(perfilActual);
+      const coincidencias=historial.filter(x=>x.maquinaId===m.id||normalizarNombre(x.maquina)===normalizarNombre(m.nombre));
+      coincidencias.sort((a,b)=>fechaHoraSesionMs(b.fecha)-fechaHoraSesionMs(a.fecha)||(Number(b.id)||0)-(Number(a.id)||0));
+      return coincidencias[0]||null;
+    }
     function obtenerLogroMaquina(nombreMaquina) {
       const nombreNormalizado=normalizarNombre(nombreMaquina);
       const sesiones=historialSesiones.filter(x=>normalizarNombre(x.maquina)===nombreNormalizado);
@@ -1292,6 +1303,8 @@
         card.className = `card ${esEditando ? 'editing' : ''} ${estaExpandida ? 'expanded' : ''} ${grupoAbierto(grupoId)?'':'muscle-hidden'}`;card.dataset.groupId=grupoId;
 
         const fotoData = await obtenerFotoDB(m.id);
+        const ultimoRegistro = ultimoRegistroMaquina(m);
+        const valoresRegistro = ultimoRegistro || {};
 
         if (esEditando) {
           card.innerHTML = `
@@ -1327,7 +1340,7 @@
         } else {
           card.innerHTML = `
             <div class="register-box">
-              ${esCintaDeCorrer(m.nombre) ? `<div class="cardio-inputs"><div><label>Tiempo (min)</label><input type="number" min="0" step="0.1" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Velocidad (km/h)</label><input type="number" min="0" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Inclinación (%)</label><input type="number" min="0" max="40" step="0.5" id="reg-inclinacion-${m.id}" value="${escaparHTML(m.inclinacion||'0')}"></div></div>` : esEliptica(m.nombre) ? `<div class="cardio-inputs"><div><label>Pasos</label><input type="number" id="reg-pasos-${m.id}" value="${escaparHTML(m.pasos||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : esBiciEstatica(m.nombre) ? `<div class="cardio-inputs"><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(m.velocidad||'')}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(m.tiempo||'')}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${m.resistencia===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : `<div class="register-inputs"><div><label>Series</label><input type="text" id="reg-series-${m.id}" value="${escaparHTML(m.series||'')}"></div><div><label>Reps</label><input type="text" id="reg-reps-${m.id}" value="${escaparHTML(m.reps||'')}"></div><div><label>Peso</label><input type="text" id="reg-peso-${m.id}" value="${escaparHTML(m.peso||'')}"></div></div>`}
+              ${esCintaDeCorrer(m.nombre) ? `<div class="cardio-inputs"><div><label>Tiempo (min)</label><input type="number" min="0" step="0.1" id="reg-tiempo-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.tiempo||'') : (m.tiempo||''))}"></div><div><label>Velocidad (km/h)</label><input type="number" min="0" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.velocidad||'') : (m.velocidad||''))}"></div><div><label>Inclinación (%)</label><input type="number" min="0" max="40" step="0.5" id="reg-inclinacion-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.inclinacion??'0') : (m.inclinacion||'0'))}"></div></div>` : esEliptica(m.nombre) ? `<div class="cardio-inputs"><div><label>Pasos</label><input type="number" id="reg-pasos-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.pasos||'') : (m.pasos||''))}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.tiempo||'') : (m.tiempo||''))}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${(ultimoRegistro ? valoresRegistro.resistencia : m.resistencia)===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : esBiciEstatica(m.nombre) ? `<div class="cardio-inputs"><div><label>Velocidad (km/h)</label><input type="number" step="0.1" id="reg-velocidad-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.velocidad||'') : (m.velocidad||''))}"></div><div><label>Tiempo (min)</label><input type="number" id="reg-tiempo-${m.id}" value="${escaparHTML(ultimoRegistro ? (valoresRegistro.tiempo||'') : (m.tiempo||''))}"></div><div><label>Resistencia</label><select id="reg-resistencia-${m.id}">${['baja','media','alta'].map(r=>`<option value="${r}" ${(ultimoRegistro ? valoresRegistro.resistencia : m.resistencia)===r?'selected':''}>${r[0].toUpperCase()+r.slice(1)}</option>`).join('')}</select></div></div>` : `<div class="register-inputs"><div><label>Series</label><input type="text" id="reg-series-${m.id}" value="${escaparHTML(ultimoRegistro ? ((valoresRegistro.series&&valoresRegistro.series!=='-')?valoresRegistro.series:'') : (m.series||''))}"></div><div><label>Reps</label><input type="text" id="reg-reps-${m.id}" value="${escaparHTML(ultimoRegistro ? ((valoresRegistro.reps&&valoresRegistro.reps!=='-')?valoresRegistro.reps:'') : (m.reps||''))}"></div><div><label>Peso</label><input type="text" id="reg-peso-${m.id}" value="${escaparHTML(ultimoRegistro ? ((valoresRegistro.peso&&valoresRegistro.peso!=='-')?valoresRegistro.peso:'') : (m.peso||''))}"></div></div>`}
               <div class="register-actions-row">
                 <button class="btn-register" id="btn-reg-${m.id}">✅ Registrar Ejercicio</button>
               </div>
@@ -1492,7 +1505,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V18.10_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V18.11_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {

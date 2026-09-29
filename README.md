@@ -1,8 +1,7 @@
-## Registro Gimnasio V18.10
-- Basada íntegramente en la V18.9.
-- La vista inicial de cada gráfica muestra hasta 8 puntos de entrenamiento.
-- Si existen más de 8 puntos, se mantienen todos y se consultan mediante desplazamiento horizontal.
-- No se muestran días de descanso ni valores cero artificiales.
-- Mantiene la cruz para cerrar la gráfica y usa todos los registros del historial del perfil activo.
-- Mantiene las métricas diferenciadas para fuerza y cardio, el Excel completo y el resto de funciones.
-- Los botones Ver evolución, Editar y Borrar máquina muestran únicamente su icono, conservando descripción accesible.
+## Registro Gimnasio V18.11
+- Basada íntegramente en la V18.10 con botones de iconos.
+- Al desplegar una máquina, los campos se rellenan desde el registro más reciente de esa máquina en el historial del perfil activo.
+- La búsqueda prioriza el ID de máquina y mantiene compatibilidad por nombre para registros antiguos o importados.
+- Compatible con fuerza, cinta de correr, elíptica y bicicleta estática.
+- Los valores precargados siguen siendo editables y las calorías se recalculan al registrar el nuevo ejercicio.
+- Mantiene las gráficas, los ocho puntos visibles, el Excel completo de cardio y el resto de funciones.
