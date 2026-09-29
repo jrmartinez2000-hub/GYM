@@ -7,3 +7,4 @@
 - Añade opción para mantener la pantalla encendida durante la cuenta atrás cuando el navegador lo permite.
 - Al finalizar, libera el bloqueo de pantalla, muestra un aviso rojo durante 5 segundos, sonido, vibración y mensaje visual.
 - Mantiene sin cambios acordeones, máquinas, historial, gráficas, Excel, perfiles, fotos y copias JSON.
+- El botón ⏱️ se coloca en la misma línea, inmediatamente después de «Añadir nueva máquina», para reducir la altura de la pantalla principal.
