@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V19.9</title>
+  <title>Registro Gimnasio V20</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -581,13 +581,18 @@
       display: flex;
     }
 
-    .modal-img {
+    .modal-photo-viewport{width:100%;height:min(76vh,760px);overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none;position:relative;border-radius:12px;background:#020617}.modal-img {
       max-width: 95%;
-      max-height: 80vh;
+      max-height: 76vh;
       border-radius: 12px;
       border: 2px solid var(--accent);
       object-fit: contain;
-    }
+      transform-origin:center center;
+      will-change:transform;
+      touch-action:none;
+      user-select:none;
+      -webkit-user-drag:none;
+    }.modal-zoom-hint{color:var(--text-muted);font-size:.78rem;text-align:center}
 
     .modal-close-btn {
       position: absolute;
@@ -729,7 +734,7 @@
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.9</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V20</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -844,7 +849,7 @@
   <div class="modal-overlay" id="modal-foto" onclick="cerrarFotoModal()">
     <button class="modal-close-btn" type="button" onclick="cerrarFotoModal()">✕</button>
     <div class="modal-photo-content" onclick="event.stopPropagation()">
-      <img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada">
+      <div class="modal-photo-viewport" id="modal-photo-viewport"><img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada" draggable="false"></div><div class="modal-zoom-hint">Pellizca con dos dedos para ampliar · Arrastra para mover · Doble toque para alternar zoom</div>
       <div class="modal-photo-actions">
         <button type="button" class="modal-change-photo" onclick="cambiarFotoDesdeModal()">📷 Cambiar foto</button>
         <button type="button" class="modal-delete-photo" onclick="eliminarFotoDesdeModal()">🗑️ Eliminar foto</button>
@@ -939,7 +944,7 @@
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V19.9',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V20',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1559,7 +1564,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V19.9_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V20_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
@@ -1826,9 +1831,15 @@
       });
     }
 
-    let maquinaFotoModalId=null;
-    function abrirFotoModal(src,id) { maquinaFotoModalId=id; document.getElementById('img-modal-fullscreen').src=src; document.getElementById('modal-foto').classList.add('active'); }
-    function cerrarFotoModal() { document.getElementById('modal-foto').classList.remove('active'); document.getElementById('img-modal-fullscreen').src=''; maquinaFotoModalId=null; }
+    let maquinaFotoModalId=null,zoomFoto=1,zoomFotoX=0,zoomFotoY=0,zoomFotoPunteros=new Map(),zoomFotoDistancia=0,zoomFotoBase=1,zoomFotoUltimoToque=0;
+    function aplicarZoomFoto(){const img=document.getElementById('img-modal-fullscreen');if(img)img.style.transform=`translate3d(${zoomFotoX}px,${zoomFotoY}px,0) scale(${zoomFoto})`;}
+    function limitarDesplazamientoFoto(){if(zoomFoto<=1){zoomFotoX=0;zoomFotoY=0;return;}const v=document.getElementById('modal-photo-viewport'),img=document.getElementById('img-modal-fullscreen');if(!v||!img)return;const maxX=Math.max(0,(img.clientWidth*zoomFoto-v.clientWidth)/2),maxY=Math.max(0,(img.clientHeight*zoomFoto-v.clientHeight)/2);zoomFotoX=Math.max(-maxX,Math.min(maxX,zoomFotoX));zoomFotoY=Math.max(-maxY,Math.min(maxY,zoomFotoY));}
+    function resetZoomFoto(){zoomFoto=1;zoomFotoX=0;zoomFotoY=0;zoomFotoPunteros.clear();zoomFotoDistancia=0;aplicarZoomFoto();}
+    function abrirFotoModal(src,id){maquinaFotoModalId=id;const img=document.getElementById('img-modal-fullscreen');img.src=src;resetZoomFoto();document.getElementById('modal-foto').classList.add('active');}
+    function cerrarFotoModal(){document.getElementById('modal-foto').classList.remove('active');resetZoomFoto();document.getElementById('img-modal-fullscreen').src='';maquinaFotoModalId=null;}
+    function distanciaPunterosFoto(){const p=[...zoomFotoPunteros.values()];return p.length<2?0:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);}
+    function prepararZoomFotos(){const zona=document.getElementById('modal-photo-viewport');if(!zona)return;zona.addEventListener('pointerdown',e=>{e.preventDefault();zona.setPointerCapture?.(e.pointerId);zoomFotoPunteros.set(e.pointerId,{x:e.clientX,y:e.clientY,px:e.clientX,py:e.clientY});if(zoomFotoPunteros.size===2){zoomFotoDistancia=distanciaPunterosFoto();zoomFotoBase=zoomFoto;}if(zoomFotoPunteros.size===1){const ahora=Date.now();if(ahora-zoomFotoUltimoToque<300){zoomFoto=zoomFoto>1?1:2.5;limitarDesplazamientoFoto();aplicarZoomFoto();zoomFotoUltimoToque=0;}else zoomFotoUltimoToque=ahora;}});zona.addEventListener('pointermove',e=>{const p=zoomFotoPunteros.get(e.pointerId);if(!p)return;e.preventDefault();p.px=p.x;p.py=p.y;p.x=e.clientX;p.y=e.clientY;if(zoomFotoPunteros.size===2&&zoomFotoDistancia>0){const d=distanciaPunterosFoto();zoomFoto=Math.max(1,Math.min(5,zoomFotoBase*d/zoomFotoDistancia));limitarDesplazamientoFoto();aplicarZoomFoto();}else if(zoomFotoPunteros.size===1&&zoomFoto>1){zoomFotoX+=p.x-p.px;zoomFotoY+=p.y-p.py;limitarDesplazamientoFoto();aplicarZoomFoto();}});const fin=e=>{zoomFotoPunteros.delete(e.pointerId);if(zoomFotoPunteros.size<2){zoomFotoDistancia=0;zoomFotoBase=zoomFoto;}if(zoomFoto<=1.02)resetZoomFoto();};['pointerup','pointercancel','lostpointercapture'].forEach(t=>zona.addEventListener(t,fin));}
+    prepararZoomFotos();
     function cambiarFotoDesdeModal(){ if(!maquinaFotoModalId)return; const id=maquinaFotoModalId; cerrarFotoModal(); tomarFoto(id); }
     async function eliminarFotoDesdeModal(){ if(!maquinaFotoModalId)return; const id=maquinaFotoModalId; if(!confirm('¿Eliminar la foto de esta máquina?'))return; await eliminarFotoDB(id); cerrarFotoModal(); renderizarLista(); mostrarToast('🗑️ Foto eliminada'); }
 
