@@ -1,9 +1,9 @@
-## Registro Gimnasio V19
-- Basada en la V18.12 con temporizador, precarga del último ejercicio, gráficas y botones compactos.
-- Añade el acordeón principal «Ejercicios y máquinas».
-- Dentro se mantienen los acordeones por grupo muscular y por máquina.
-- El análisis muscular se integra dentro de «Ejercicios y máquinas».
-- Añade el acordeón principal «Historial de sesiones finalizadas».
-- Dentro se mantienen los acordeones de cada fecha y sus ejercicios.
-- Los dos acordeones principales comienzan cerrados y recuerdan su estado por perfil.
-- Mantiene sin cambios el temporizador, Excel de cardio, fotos, perfiles, historial y copias JSON.
+## Registro Gimnasio V19.1
+- Basada íntegramente en la V19.
+- El botón principal del temporizador muestra únicamente el icono ⏱️.
+- Al pulsarlo, inicia directamente el tiempo predeterminado definido en Ajustes del temporizador.
+- Mientras está activo, muestra el tiempo restante y un botón ✕ para cancelar.
+- Ajustes del temporizador está organizado como acordeón dentro de Herramientas avanzadas.
+- Añade opción para mantener la pantalla encendida durante la cuenta atrás cuando el navegador lo permite.
+- Al finalizar, libera el bloqueo de pantalla, muestra un aviso rojo durante 5 segundos, sonido, vibración y mensaje visual.
+- Mantiene sin cambios acordeones, máquinas, historial, gráficas, Excel, perfiles, fotos y copias JSON.
