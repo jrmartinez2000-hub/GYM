@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V19.3</title>
+  <title>Registro Gimnasio V19.4</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -724,7 +724,7 @@
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.3</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.4</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -1522,7 +1522,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V19.3_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V19.4_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
@@ -1884,7 +1884,8 @@
     function avanzarFaseTemporizador(){const a=cargarAjustesTemporizador();avisarCambioTemporizador();if(timerState.phase==='initial'){activarFase('exercise',a.exerciseSeconds);return;}if(timerState.phase==='exercise'){activarFase('rest',a.restSeconds);if(a.restSeconds===0)setTimeout(avanzarFaseTemporizador,0);return;}if(timerState.phase==='rest'){if(timerState.seriesCurrent>=timerState.seriesTotal){finalizarTemporizador();return;}timerState.seriesCurrent++;activarFase('exercise',a.exerciseSeconds);return;}}
     function cancelarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState={running:false,phase:'idle',seriesCurrent:0,seriesTotal:cargarAjustesTemporizador().series,remaining:0,endAt:0};guardarEstadoTemporizador();liberarWakeLock();actualizarTemporizador();mostrarToast('✕ Temporizador cancelado');}
     function parpadearPantallaTemporizador(){const capa=document.getElementById('timer-finish-flash');if(!capa)return;capa.classList.remove('active');void capa.offsetWidth;capa.classList.add('active');setTimeout(()=>capa.classList.remove('active'),5000);}
-    function avisarCambioTemporizador(){parpadearPantallaTemporizador();const a=cargarAjustesTemporizador();if(a.vibration&&navigator.vibrate)navigator.vibrate([180,100,180]);if(a.sound){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.setValueAtTime(.13,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.55);o.start();o.stop(c.currentTime+.55)}catch(e){}}}
+    function reproducirPitidosTemporizador(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C();if(c.state==='suspended')c.resume();const master=c.createGain();master.gain.setValueAtTime(.85,c.currentTime);master.connect(c.destination);[0,.32,.64,.96].forEach((retraso,i)=>{const o=c.createOscillator(),g=c.createGain(),inicio=c.currentTime+retraso;o.type='square';o.frequency.setValueAtTime(i===3?1250:1050,inicio);g.gain.setValueAtTime(.0001,inicio);g.gain.exponentialRampToValueAtTime(.75,inicio+.015);g.gain.setValueAtTime(.75,inicio+.18);g.gain.exponentialRampToValueAtTime(.0001,inicio+.28);o.connect(g);g.connect(master);o.start(inicio);o.stop(inicio+.3);});setTimeout(()=>c.close().catch(()=>{}),1600);}catch(e){}}
+    function avisarCambioTemporizador(){parpadearPantallaTemporizador();const a=cargarAjustesTemporizador();if(a.vibration&&navigator.vibrate)navigator.vibrate([700,180,700,180,700,180,1000]);if(a.sound)reproducirPitidosTemporizador();}
     function finalizarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState.running=false;timerState.phase='idle';timerState.remaining=0;guardarEstadoTemporizador();liberarWakeLock();actualizarTemporizador();mostrarToast('✅ Ejercicio completo finalizado');}
     function restaurarTemporizador(){cargarAjustesTemporizador();try{timerState={...timerState,...JSON.parse(localStorage.getItem(TIMER_KEY)||'{}')}}catch(e){}if(timerState.running){iniciarRelojTemporizador();solicitarWakeLock();actualizarTemporizador()}else actualizarTemporizador();}
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&timerState.running)solicitarWakeLock();});
