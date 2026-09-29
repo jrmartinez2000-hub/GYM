@@ -1,6 +1,8 @@
-## Registro Gimnasio V19.5
-- Basada íntegramente en la V19.4.
-- Añade un control de volumen del aviso entre el 10 % y el 100 %.
-- El valor se guarda junto con los demás ajustes del temporizador.
-- El control modifica la ganancia de los cuatro pitidos dentro de los límites del navegador y del volumen multimedia del dispositivo.
-- Mantiene vibración reforzada, parpadeo rojo, temporizador por series, historial mensual y resto de funciones.
+## Registro Gimnasio V19.7
+- Basada íntegramente en la V19.6.
+- Crea automáticamente una copia interna completa tras cualquier cambio persistente.
+- La copia incluye todos los datos de localStorage y las fotografías de IndexedDB.
+- Al arrancar o actualizar la aplicación, restaura primero la última copia automática y después carga la interfaz.
+- Mantiene los botones manuales «Guardar copia JSON» y «Restaurar copia JSON».
+- Al restaurar manualmente un JSON, actualiza también la copia automática interna.
+- Mantiene temporizador por series, pausa, volumen, avisos, historial mensual y resto de funciones.

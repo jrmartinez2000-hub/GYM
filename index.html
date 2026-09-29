@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V19.5</title>
+  <title>Registro Gimnasio V19.7</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -717,14 +717,14 @@
     .app-title{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}.app-title-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;border:1.5px solid var(--accent);background:#fff}.version-badge{font-size:.7rem;color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);padding:4px 8px;border-radius:999px;white-space:nowrap}
     select{width:100%;padding:10px;border-radius:8px;border:1.5px solid #475569;background:var(--input-bg);color:var(--text);font-size:1rem}.muscle-filter,.muscle-analysis{background:var(--card-bg);border:1.5px solid #334155;border-radius:12px;margin-bottom:12px}.muscle-filter{padding:10px}.muscle-filter label{color:var(--accent);font-weight:800}.muscle-header{width:100%;min-height:55px;padding:10px 12px;border:1.5px solid #334155;border-radius:12px;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer;font-weight:900}.muscle-header-arrow{width:20px;transition:transform .2s}.muscle-header.open .muscle-header-arrow{transform:rotate(90deg)}.muscle-header-name{flex:1}.muscle-header-count{background:var(--bg);color:var(--text-muted);padding:3px 8px;border-radius:999px}.card.muscle-hidden{display:none!important}.group-edit{margin:8px 0}.history-muscle{color:#fbbf24;font-size:.75rem;font-weight:800}.group-manager{grid-column:1/-1;border:1px solid #475569;border-radius:10px;overflow:hidden}.group-manager-toggle{width:100%;min-height:50px;border:0;background:#334155;color:var(--accent);font-weight:800;padding:10px 12px;text-align:left}.group-manager-panel{display:none;padding:10px}.group-manager-panel.visible{display:block}.group-row{display:grid;grid-template-columns:42px 1fr auto;gap:7px;align-items:center;padding:7px;background:var(--card-bg);border-radius:8px;margin-bottom:7px}.group-row input{padding:7px}.group-icon{width:42px;text-align:center}.group-actions{display:flex;gap:5px}.group-actions button{padding:7px;min-height:38px;border-radius:7px}.btn-group-save{border:1px solid var(--accent);background:transparent;color:var(--accent)}.btn-group-delete{border:1px solid var(--danger);background:transparent;color:var(--danger)}.group-add{display:grid;grid-template-columns:64px 1fr auto;gap:7px;margin-top:10px}.group-add button{border:0;background:var(--accent);color:#0f172a;border-radius:8px;font-weight:800}.muscle-analysis-toggle{width:100%;min-height:54px;padding:10px 12px;border:0;background:var(--card-bg);color:var(--accent);text-align:left;font-weight:900}.muscle-analysis-content{display:none;padding:10px}.muscle-analysis.expanded .muscle-analysis-content{display:block}.muscle-bar{display:grid;grid-template-columns:100px 1fr 45px;gap:7px;align-items:center;margin:7px 0}.muscle-track{height:12px;background:#0b1120;border-radius:999px;overflow:hidden}.muscle-fill{height:100%;background:var(--accent)}
     .main-accordion{margin-bottom:12px;border:1.5px solid #334155;border-radius:12px;background:var(--card-bg);overflow:hidden}.main-accordion-toggle{width:100%;min-height:56px;padding:11px 12px;border:0;background:var(--card-bg);color:var(--accent);display:flex;align-items:center;gap:9px;font-weight:900;text-align:left;cursor:pointer}.main-accordion-arrow{width:20px;transition:transform .2s}.main-accordion.open>.main-accordion-toggle .main-accordion-arrow{transform:rotate(90deg)}.main-accordion-title{flex:1}.main-accordion-count{background:var(--bg);color:var(--text-muted);padding:3px 9px;border-radius:999px;font-size:.78rem}.main-accordion-content{display:none;padding:0 10px 10px}.main-accordion.open>.main-accordion-content{display:block}.main-accordion-content>.grid{margin:0}.main-accordion-content>.history-section{border:0;padding:0;background:transparent}.main-accordion-content>.muscle-analysis{margin-top:10px;margin-bottom:0}
-    .timer-launch-row{display:grid;grid-template-columns:56px;gap:7px;align-items:center}.timer-launch-row:has(.timer-inline-status.active){grid-template-columns:56px minmax(74px,110px) 48px}.timer-main-btn{width:56px;min-height:48px;padding:8px;border-radius:10px;border:1.5px solid #fbbf24;background:var(--card-bg);color:#fbbf24;font-size:1.35rem;font-weight:900;cursor:pointer}.timer-inline-status{display:none;min-height:48px;align-items:center;justify-content:center;border:1px solid #475569;border-radius:10px;background:var(--card-bg);color:#fbbf24;font-size:1.25rem;font-weight:900}.timer-inline-status.active{display:flex}.timer-inline-status{flex-direction:column;line-height:1.08}.timer-phase-label{font-size:.68rem;color:var(--text-muted);font-weight:800}.timer-series-label{font-size:.65rem;color:#fbbf24;font-weight:800}.timer-cancel-btn{display:none;width:48px;min-height:48px;padding:8px;border-radius:10px;border:1.5px solid var(--danger);background:transparent;color:#fca5a5;font-size:1.2rem;font-weight:900}.timer-cancel-btn.active{display:block}.rest-timer{display:none;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2500;width:min(94vw,520px);padding:12px;border-radius:14px;border:1.5px solid #fbbf24;background:#111827;box-shadow:0 10px 28px rgba(0,0,0,.55)}.rest-timer.visible{display:block}.rest-timer-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.rest-timer-value{font-size:2rem;font-weight:900;color:#fbbf24;letter-spacing:.05em}.rest-timer.done .rest-timer-value{color:var(--success)}.rest-timer-presets,.rest-timer-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.rest-timer button{flex:1;min-width:58px;min-height:40px;border-radius:8px;border:1px solid var(--accent);background:var(--input-bg);color:var(--accent);font-weight:800}.rest-timer .timer-close{flex:0 0 36px;min-width:36px;border-color:var(--danger);color:#fca5a5;background:transparent}.timer-custom{display:flex;gap:6px;margin-top:8px}.timer-custom input{flex:1}.timer-custom button{flex:0 0 auto}.timer-settings{grid-column:1/-1;border:1px solid #475569;border-radius:10px;padding:10px;background:var(--input-bg)}.timer-settings h3{color:var(--accent);font-size:1rem;margin-bottom:8px}.timer-settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.timer-settings-grid label{margin:0}.timer-settings-grid input,.timer-settings-grid select{margin-top:4px}.timer-settings{padding:0;overflow:hidden}.timer-settings-toggle{width:100%;min-height:50px;padding:10px 12px;border:0;background:#334155;color:var(--accent);font-weight:800;display:flex;justify-content:space-between;align-items:center}.timer-settings-panel{display:none;padding:10px}.timer-settings-panel.visible{display:block}.timer-finish-flash{position:fixed;inset:0;z-index:4000;pointer-events:none;background:rgba(239,68,68,.5);display:none}.timer-finish-flash.active{display:block;animation:timerRedFlash 1s step-end 5}@keyframes timerRedFlash{0%,49%{opacity:1}50%,100%{opacity:0}}@media(prefers-reduced-motion:reduce){.timer-finish-flash.active{animation:timerRedSafe 5s ease-out 1}@keyframes timerRedSafe{0%{opacity:.75}100%{opacity:0}}}@media(max-width:480px){.timer-settings-grid{grid-template-columns:1fr}.rest-timer-value{font-size:1.65rem}}
-    @media(max-width:420px){.action-buttons{grid-template-columns:minmax(0,1fr) auto;gap:6px}.btn-main{padding:10px 6px;font-size:.92rem}.timer-launch-row:has(.timer-inline-status.active){grid-column:1/-1;grid-template-columns:56px minmax(0,1fr) 48px}}@media(max-width:480px){.app-title-logo{width:44px;height:44px}.group-row{grid-template-columns:36px 1fr}.group-actions{grid-column:1/-1}.group-add{grid-template-columns:54px 1fr}.group-add button{grid-column:1/-1;min-height:42px}}
+    .timer-launch-row{display:grid;grid-template-columns:56px;gap:7px;align-items:center}.timer-launch-row:has(.timer-inline-status.active){grid-template-columns:56px minmax(74px,110px) 48px 48px}.timer-main-btn{width:56px;min-height:48px;padding:8px;border-radius:10px;border:1.5px solid #fbbf24;background:var(--card-bg);color:#fbbf24;font-size:1.35rem;font-weight:900;cursor:pointer}.timer-inline-status{display:none;min-height:48px;align-items:center;justify-content:center;border:1px solid #475569;border-radius:10px;background:var(--card-bg);color:#fbbf24;font-size:1.25rem;font-weight:900}.timer-inline-status.active{display:flex}.timer-inline-status{flex-direction:column;line-height:1.08}.timer-phase-label{font-size:.68rem;color:var(--text-muted);font-weight:800}.timer-series-label{font-size:.65rem;color:#fbbf24;font-weight:800}.timer-pause-btn{display:none;width:48px;min-height:48px;padding:8px;border-radius:10px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-size:1.2rem;font-weight:900}.timer-pause-btn.active{display:block}.timer-cancel-btn{display:none;width:48px;min-height:48px;padding:8px;border-radius:10px;border:1.5px solid var(--danger);background:transparent;color:#fca5a5;font-size:1.2rem;font-weight:900}.timer-cancel-btn.active{display:block}.rest-timer{display:none;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2500;width:min(94vw,520px);padding:12px;border-radius:14px;border:1.5px solid #fbbf24;background:#111827;box-shadow:0 10px 28px rgba(0,0,0,.55)}.rest-timer.visible{display:block}.rest-timer-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.rest-timer-value{font-size:2rem;font-weight:900;color:#fbbf24;letter-spacing:.05em}.rest-timer.done .rest-timer-value{color:var(--success)}.rest-timer-presets,.rest-timer-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.rest-timer button{flex:1;min-width:58px;min-height:40px;border-radius:8px;border:1px solid var(--accent);background:var(--input-bg);color:var(--accent);font-weight:800}.rest-timer .timer-close{flex:0 0 36px;min-width:36px;border-color:var(--danger);color:#fca5a5;background:transparent}.timer-custom{display:flex;gap:6px;margin-top:8px}.timer-custom input{flex:1}.timer-custom button{flex:0 0 auto}.timer-settings{grid-column:1/-1;border:1px solid #475569;border-radius:10px;padding:10px;background:var(--input-bg)}.timer-settings h3{color:var(--accent);font-size:1rem;margin-bottom:8px}.timer-settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.timer-settings-grid label{margin:0}.timer-settings-grid input,.timer-settings-grid select{margin-top:4px}.timer-settings{padding:0;overflow:hidden}.timer-settings-toggle{width:100%;min-height:50px;padding:10px 12px;border:0;background:#334155;color:var(--accent);font-weight:800;display:flex;justify-content:space-between;align-items:center}.timer-settings-panel{display:none;padding:10px}.timer-settings-panel.visible{display:block}.timer-finish-flash{position:fixed;inset:0;z-index:4000;pointer-events:none;background:rgba(239,68,68,.5);display:none}.timer-finish-flash.active{display:block;animation:timerRedFlash 1s step-end 5}@keyframes timerRedFlash{0%,49%{opacity:1}50%,100%{opacity:0}}@media(prefers-reduced-motion:reduce){.timer-finish-flash.active{animation:timerRedSafe 5s ease-out 1}@keyframes timerRedSafe{0%{opacity:.75}100%{opacity:0}}}@media(max-width:480px){.timer-settings-grid{grid-template-columns:1fr}.rest-timer-value{font-size:1.65rem}}
+    @media(max-width:420px){.action-buttons{grid-template-columns:minmax(0,1fr) auto;gap:6px}.btn-main{padding:10px 6px;font-size:.92rem}.timer-launch-row:has(.timer-inline-status.active){grid-column:1/-1;grid-template-columns:56px minmax(0,1fr) 48px 48px}}@media(max-width:480px){.app-title-logo{width:44px;height:44px}.group-row{grid-template-columns:36px 1fr}.group-actions{grid-column:1/-1}.group-add{grid-template-columns:54px 1fr}.group-add button{grid-column:1/-1;min-height:42px}}
   </style>
 </head>
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.5</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.7</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -770,7 +770,7 @@
   <!-- Botones de Acción -->
   <div class="action-buttons">
     <button class="btn-main" onclick="togglePanelNueva()">➕ Añadir Nueva Máquina</button>
-    <div class="timer-launch-row"><button class="timer-main-btn" id="timer-main-btn" onclick="iniciarTemporizadorPrincipal()" title="Iniciar temporizador" aria-label="Iniciar temporizador">⏱️</button><div class="timer-inline-status" id="timer-inline-status" aria-live="polite">01:30</div><button class="timer-cancel-btn" id="timer-cancel-btn" onclick="cancelarTemporizador()" title="Cancelar temporizador" aria-label="Cancelar temporizador">✕</button></div>
+    <div class="timer-launch-row"><button class="timer-main-btn" id="timer-main-btn" onclick="iniciarTemporizadorPrincipal()" title="Iniciar temporizador" aria-label="Iniciar temporizador">⏱️</button><div class="timer-inline-status" id="timer-inline-status" aria-live="polite">01:30</div><button class="timer-pause-btn" id="timer-pause-btn" onclick="pausarReanudarTemporizador()" title="Pausar temporizador" aria-label="Pausar temporizador">⏸️</button><button class="timer-cancel-btn" id="timer-cancel-btn" onclick="cancelarTemporizador()" title="Cancelar temporizador" aria-label="Cancelar temporizador">✕</button></div>
   </div>
 
   <!-- Panel: Nueva Máquina -->
@@ -852,7 +852,7 @@
        SISTEMA INDEXEDDB PARA GUARDAR FOTOS DE FORMA EFICIENTE
        ======================================================== */
     const DB_NAME = 'GymAppDB';
-    const DB_VERSION = 1;
+    const DB_VERSION = 2;
     let db = null;
 
     function abrirDB() {
@@ -863,6 +863,9 @@
           if (!dbInstance.objectStoreNames.contains('fotos')) {
             dbInstance.createObjectStore('fotos');
           }
+          if (!dbInstance.objectStoreNames.contains('copiasAutomaticas')) {
+            dbInstance.createObjectStore('copiasAutomaticas');
+          }
         };
         req.onsuccess = (e) => {
           db = e.target.result;
@@ -872,7 +875,7 @@
       });
     }
 
-    function guardarFotoDB(id, base64) {
+    function guardarFotoDB(id, base64, crearBackup=true) {
       return new Promise((resolve, reject) => {
         if (!db) return reject('DB no lista');
         const tx = db.transaction('fotos', 'readwrite');
@@ -900,7 +903,7 @@
         const tx = db.transaction('fotos', 'readwrite');
         const store = tx.objectStore('fotos');
         store.delete(String(id));
-        tx.oncomplete = () => resolve();
+        tx.oncomplete = () => { programarCopiaAutomatica(); resolve(); };
       });
     }
 
@@ -924,6 +927,20 @@
       });
     }
 
+    /* ========================================================
+       COPIA AUTOMATICA INTERNA Y RESTAURACION AL ARRANCAR
+       ======================================================== */
+    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v197';
+    let autoBackupTimer=null,autoBackupSuspendido=false;
+    const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
+    function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V19.7',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
+    function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
+    async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
+    Storage.prototype.setItem=function(k,v){localStorageSetOriginal.call(this,k,v);if(this===localStorage)programarCopiaAutomatica();};
+    Storage.prototype.removeItem=function(k){localStorageRemoveOriginal.call(this,k);if(this===localStorage)programarCopiaAutomatica();};
+    Storage.prototype.clear=function(){localStorageClearOriginal.call(this);if(this===localStorage)programarCopiaAutomatica();};
     /* ========================================================
        LOGICA PRINCIPAL DE LA APLICACION
        ======================================================== */
@@ -1522,7 +1539,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V19.5_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V19.7_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
@@ -1730,6 +1747,7 @@
             }
 
             cambiarPerfil(data.perfilActual || perfiles[0]);
+            await crearCopiaAutomatica();
             alert('✅ Copia de seguridad restaurada correctamente.');
           }
         } catch (err) {
@@ -1868,7 +1886,7 @@
       }
     }
 
-    const TIMER_KEY='gym_interval_timer_v193',TIMER_SETTINGS_KEY='gym_interval_timer_settings_v193';let timerInterval=null,wakeLockSentinel=null,timerState={running:false,phase:'idle',seriesCurrent:0,seriesTotal:3,remaining:0,endAt:0};
+    const TIMER_KEY='gym_interval_timer_v193',TIMER_SETTINGS_KEY='gym_interval_timer_settings_v193';let timerInterval=null,wakeLockSentinel=null,timerState={running:false,paused:false,phase:'idle',seriesCurrent:0,seriesTotal:3,remaining:0,endAt:0};
     function toggleAjustesTemporizador(){const p=document.getElementById('timer-settings-panel'),b=document.getElementById('timer-settings-toggle'),a=document.getElementById('timer-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
     function cargarAjustesTemporizador(){let a={series:3,initialSeconds:15,exerciseSeconds:45,restSeconds:90,volume:85,sound:true,vibration:true,wakeLock:true};try{a={...a,...JSON.parse(localStorage.getItem(TIMER_SETTINGS_KEY)||'{}')}}catch(e){}const ids={series:'timer-series',initialSeconds:'timer-initial',exerciseSeconds:'timer-exercise',restSeconds:'timer-rest'};Object.entries(ids).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=a[k]});const vo=document.getElementById('timer-volume'),vov=document.getElementById('timer-volume-value'),so=document.getElementById('timer-sound'),vi=document.getElementById('timer-vibration'),wa=document.getElementById('timer-wakelock');if(vo)vo.value=a.volume;if(vov)vov.textContent=a.volume+'%';if(so)so.value=a.sound?'1':'0';if(vi)vi.value=a.vibration?'1':'0';if(wa)wa.value=a.wakeLock?'1':'0';return a;}
     function guardarAjustesTemporizador(){const a={series:Math.max(1,Number(document.getElementById('timer-series')?.value)||3),initialSeconds:Math.max(0,Number(document.getElementById('timer-initial')?.value)||0),exerciseSeconds:Math.max(5,Number(document.getElementById('timer-exercise')?.value)||45),restSeconds:Math.max(0,Number(document.getElementById('timer-rest')?.value)||0),volume:Math.min(100,Math.max(10,Number(document.getElementById('timer-volume')?.value)||85)),sound:document.getElementById('timer-sound')?.value!=='0',vibration:document.getElementById('timer-vibration')?.value!=='0',wakeLock:document.getElementById('timer-wakelock')?.value!=='0'};localStorage.setItem(TIMER_SETTINGS_KEY,JSON.stringify(a));return a;}
@@ -1878,33 +1896,33 @@
     async function solicitarWakeLock(){const a=cargarAjustesTemporizador();if(!a.wakeLock||!('wakeLock'in navigator)||document.visibilityState!=='visible')return;try{wakeLockSentinel=await navigator.wakeLock.request('screen');wakeLockSentinel.addEventListener('release',()=>wakeLockSentinel=null);}catch(e){wakeLockSentinel=null;}}
     async function liberarWakeLock(){if(wakeLockSentinel){try{await wakeLockSentinel.release()}catch(e){}wakeLockSentinel=null;}}
     function activarFase(fase,segundos){timerState.phase=fase;timerState.remaining=Math.max(0,segundos);timerState.endAt=Date.now()+timerState.remaining*1000;guardarEstadoTemporizador();actualizarTemporizador();}
-    function iniciarTemporizadorPrincipal(){if(timerState.running)return;const a=cargarAjustesTemporizador();timerState={running:true,phase:'initial',seriesCurrent:1,seriesTotal:a.series,remaining:a.initialSeconds,endAt:Date.now()+a.initialSeconds*1000};guardarEstadoTemporizador();solicitarWakeLock();iniciarRelojTemporizador();actualizarTemporizador();if(a.initialSeconds===0)avanzarFaseTemporizador();}
+    function iniciarTemporizadorPrincipal(){if(timerState.running)return;const a=cargarAjustesTemporizador();timerState={running:true,paused:false,phase:'initial',seriesCurrent:1,seriesTotal:a.series,remaining:a.initialSeconds,endAt:Date.now()+a.initialSeconds*1000};guardarEstadoTemporizador();solicitarWakeLock();iniciarRelojTemporizador();actualizarTemporizador();if(a.initialSeconds===0)avanzarFaseTemporizador();}
     function iniciarRelojTemporizador(){if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(actualizarTemporizador,200);}
-    function actualizarTemporizador(){if(timerState.running)timerState.remaining=Math.max(0,(timerState.endAt-Date.now())/1000);const inline=document.getElementById('timer-inline-status'),cancel=document.getElementById('timer-cancel-btn');if(inline){inline.innerHTML=`<span class="timer-phase-label">${etiquetaFase(timerState.phase)}</span><span>${formatoTemporizador(timerState.remaining)}</span><span class="timer-series-label">Serie ${timerState.seriesCurrent||1}/${timerState.seriesTotal||1}</span>`;inline.classList.toggle('active',timerState.running);}if(cancel)cancel.classList.toggle('active',timerState.running);if(timerState.running&&timerState.remaining<=0){avanzarFaseTemporizador();return;}guardarEstadoTemporizador();}
+    function actualizarTemporizador(){if(timerState.running&&!timerState.paused)timerState.remaining=Math.max(0,(timerState.endAt-Date.now())/1000);const activo=timerState.running||timerState.paused,inline=document.getElementById('timer-inline-status'),pause=document.getElementById('timer-pause-btn'),cancel=document.getElementById('timer-cancel-btn');if(inline){inline.innerHTML=`<span class="timer-phase-label">${timerState.paused?'PAUSA · ':''}${etiquetaFase(timerState.phase)}</span><span>${formatoTemporizador(timerState.remaining)}</span><span class="timer-series-label">Serie ${timerState.seriesCurrent||1}/${timerState.seriesTotal||1}</span>`;inline.classList.toggle('active',activo);}if(pause){pause.classList.toggle('active',activo);pause.textContent=timerState.paused?'▶️':'⏸️';pause.title=timerState.paused?'Reanudar temporizador':'Pausar temporizador';pause.setAttribute('aria-label',pause.title);}if(cancel)cancel.classList.toggle('active',activo);if(timerState.running&&!timerState.paused&&timerState.remaining<=0){avanzarFaseTemporizador();return;}guardarEstadoTemporizador();}
     function avanzarFaseTemporizador(){const a=cargarAjustesTemporizador();avisarCambioTemporizador();if(timerState.phase==='initial'){activarFase('exercise',a.exerciseSeconds);return;}if(timerState.phase==='exercise'){activarFase('rest',a.restSeconds);if(a.restSeconds===0)setTimeout(avanzarFaseTemporizador,0);return;}if(timerState.phase==='rest'){if(timerState.seriesCurrent>=timerState.seriesTotal){finalizarTemporizador();return;}timerState.seriesCurrent++;activarFase('exercise',a.exerciseSeconds);return;}}
-    function cancelarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState={running:false,phase:'idle',seriesCurrent:0,seriesTotal:cargarAjustesTemporizador().series,remaining:0,endAt:0};guardarEstadoTemporizador();liberarWakeLock();actualizarTemporizador();mostrarToast('✕ Temporizador cancelado');}
+    function pausarReanudarTemporizador(){if(!timerState.running&&!timerState.paused)return;if(!timerState.paused){timerState.remaining=Math.max(0,(timerState.endAt-Date.now())/1000);timerState.paused=true;timerState.running=false;if(timerInterval){clearInterval(timerInterval);timerInterval=null;}liberarWakeLock();mostrarToast('⏸️ Temporizador pausado');}else{timerState.paused=false;timerState.running=true;timerState.endAt=Date.now()+timerState.remaining*1000;iniciarRelojTemporizador();solicitarWakeLock();mostrarToast('▶️ Temporizador reanudado');}guardarEstadoTemporizador();actualizarTemporizador();}
+    function cancelarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState={running:false,paused:false,phase:'idle',seriesCurrent:0,seriesTotal:cargarAjustesTemporizador().series,remaining:0,endAt:0};guardarEstadoTemporizador();liberarWakeLock();actualizarTemporizador();mostrarToast('✕ Temporizador cancelado');}
     function parpadearPantallaTemporizador(){const capa=document.getElementById('timer-finish-flash');if(!capa)return;capa.classList.remove('active');void capa.offsetWidth;capa.classList.add('active');setTimeout(()=>capa.classList.remove('active'),5000);}
     function reproducirPitidosTemporizador(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C();if(c.state==='suspended')c.resume();const master=c.createGain();const volumen=Math.min(1,Math.max(.1,(cargarAjustesTemporizador().volume||85)/100));master.gain.setValueAtTime(volumen,c.currentTime);master.connect(c.destination);[0,.32,.64,.96].forEach((retraso,i)=>{const o=c.createOscillator(),g=c.createGain(),inicio=c.currentTime+retraso;o.type='square';o.frequency.setValueAtTime(i===3?1250:1050,inicio);g.gain.setValueAtTime(.0001,inicio);g.gain.exponentialRampToValueAtTime(.75,inicio+.015);g.gain.setValueAtTime(.75,inicio+.18);g.gain.exponentialRampToValueAtTime(.0001,inicio+.28);o.connect(g);g.connect(master);o.start(inicio);o.stop(inicio+.3);});setTimeout(()=>c.close().catch(()=>{}),1600);}catch(e){}}
     function avisarCambioTemporizador(){parpadearPantallaTemporizador();const a=cargarAjustesTemporizador();if(a.vibration&&navigator.vibrate)navigator.vibrate([700,180,700,180,700,180,1000]);if(a.sound)reproducirPitidosTemporizador();}
-    function finalizarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState.running=false;timerState.phase='idle';timerState.remaining=0;guardarEstadoTemporizador();liberarWakeLock();actualizarTemporizador();mostrarToast('✅ Ejercicio completo finalizado');}
-    function restaurarTemporizador(){cargarAjustesTemporizador();try{timerState={...timerState,...JSON.parse(localStorage.getItem(TIMER_KEY)||'{}')}}catch(e){}if(timerState.running){iniciarRelojTemporizador();solicitarWakeLock();actualizarTemporizador()}else actualizarTemporizador();}
+    function finalizarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState.running=false;timerState.paused=false;timerState.phase='idle';timerState.remaining=0;guardarEstadoTemporizador();liberarWakeLock();actualizarTemporizador();mostrarToast('✅ Ejercicio completo finalizado');}
+    function restaurarTemporizador(){cargarAjustesTemporizador();try{timerState={...timerState,...JSON.parse(localStorage.getItem(TIMER_KEY)||'{}')}}catch(e){}if(timerState.running&&!timerState.paused){iniciarRelojTemporizador();solicitarWakeLock();actualizarTemporizador()}else actualizarTemporizador();}
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&timerState.running)solicitarWakeLock();});
     restaurarTemporizador();
-    cargarCatalogoGrupos();
-    abrirDB().then(() => {
+    async function arrancarAplicacion(){
+      await abrirDB();
+      if(sessionStorage.getItem(AUTO_BACKUP_RELOAD)!=='1'){
+        const restaurada=await restaurarCopiaAutomaticaAlArrancar();
+        sessionStorage.setItem(AUTO_BACKUP_RELOAD,'1');
+        if(restaurada){location.reload();return;}
+      }
+      cargarCatalogoGrupos();
+      perfiles=cargarPerfiles();perfilActual=localStorage.getItem('perfil_activo')||perfiles[0];maquinas=cargarDatos();historialSesiones=cargarHistorial();
       cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();
-      cargarAjustesFuente();
-      renderizarPerfiles();
-      renderizarLista();
-      renderizarHistorial();
-    }).catch(err => {
-      console.error(err);
-      cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();
-      cargarAjustesFuente();
-      renderizarPerfiles();
-      renderizarLista();
-      renderizarHistorial();
-    });
+      cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();
+      await crearCopiaAutomatica();
+    }
+    arrancarAplicacion().catch(err=>{console.error(err);cargarCatalogoGrupos();cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();});
   </script>
 
   <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
