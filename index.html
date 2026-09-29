@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V19.7</title>
+  <title>Registro Gimnasio V19.8</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -614,13 +614,18 @@
       font-weight: bold;
       font-size: 0.95rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s linear 0.3s;
+      opacity: 0;
+      visibility: hidden;
       z-index: 2000;
       pointer-events: none;
     }
 
     .toast.show {
       transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
     }
 
     /* VERSION COMPACTA: MAQUINAS PLEGABLES */
@@ -724,7 +729,7 @@
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.7</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.8</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -1053,14 +1058,29 @@
       }
     }
 
-    function mostrarToast(mensaje = '✅ Ejercicio registrado con éxito') {
-      const toast = document.getElementById('toast');
-      toast.textContent = mensaje;
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
+    let toastOcultarTimer=null,toastLimpiezaTimer=null;
+    function ocultarToastInmediato(){
+      const toast=document.getElementById('toast');
+      if(!toast)return;
+      toast.classList.remove('show');
+      toast.style.opacity='0';
+      toast.style.visibility='hidden';
+      toast.style.transform='translateX(-50%) translateY(100px)';
     }
+    function mostrarToast(mensaje='✅ Ejercicio registrado con éxito'){
+      const toast=document.getElementById('toast');
+      if(!toast)return;
+      clearTimeout(toastOcultarTimer);clearTimeout(toastLimpiezaTimer);
+      ocultarToastInmediato();
+      toast.textContent=mensaje;
+      void toast.offsetWidth;
+      toast.style.opacity='';toast.style.visibility='';toast.style.transform='';
+      toast.classList.add('show');
+      toastOcultarTimer=setTimeout(()=>toast.classList.remove('show'),2200);
+      toastLimpiezaTimer=setTimeout(ocultarToastInmediato,2800);
+    }
+    window.addEventListener('pageshow',()=>setTimeout(ocultarToastInmediato,0));
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!toastOcultarTimer)ocultarToastInmediato();});
 
     function cargarDatosPerfil(nombre=perfilActual){
       try{return JSON.parse(localStorage.getItem(`datos_perfil_${nombre}`))||{peso:'',estatura:''};}catch(e){return {peso:'',estatura:''};}
@@ -1539,7 +1559,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V19.7_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V19.8_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
