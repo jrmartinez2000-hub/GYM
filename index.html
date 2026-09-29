@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V19.8</title>
+  <title>Registro Gimnasio V19.9</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -729,7 +729,7 @@
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.8</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.9</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -886,7 +886,7 @@
         const tx = db.transaction('fotos', 'readwrite');
         const store = tx.objectStore('fotos');
         store.put(base64, String(id));
-        tx.oncomplete = () => resolve();
+        tx.oncomplete = () => { if(crearBackup) programarCopiaAutomatica(); resolve(); };
         tx.onerror = () => reject('Error guardando foto');
       });
     }
@@ -935,11 +935,11 @@
     /* ========================================================
        COPIA AUTOMATICA INTERNA Y RESTAURACION AL ARRANCAR
        ======================================================== */
-    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v197';
+    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v199';
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V19.7',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V19.9',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1559,7 +1559,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V19.8_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V19.9_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
@@ -1932,19 +1932,18 @@
     async function arrancarAplicacion(){
       await abrirDB();
       if(sessionStorage.getItem(AUTO_BACKUP_RELOAD)!=='1'){
-        const restaurada=await restaurarCopiaAutomaticaAlArrancar();
+        await restaurarCopiaAutomaticaAlArrancar();
         sessionStorage.setItem(AUTO_BACKUP_RELOAD,'1');
-        if(restaurada){location.reload();return;}
       }
       cargarCatalogoGrupos();
       perfiles=cargarPerfiles();perfilActual=localStorage.getItem('perfil_activo')||perfiles[0];maquinas=cargarDatos();historialSesiones=cargarHistorial();
       cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();
-      cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();
+      cargarAjustesFuente();cargarAjustesTemporizador();renderizarPerfiles();renderizarLista();renderizarHistorial();
       await crearCopiaAutomatica();
     }
     arrancarAplicacion().catch(err=>{console.error(err);cargarCatalogoGrupos();cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();});
   </script>
 
-  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});await r.update();}catch(e){console.error(e);}});}</script>
 </body>
 </html>
