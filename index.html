@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V19.1</title>
+  <title>Registro Gimnasio V19.2</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -471,6 +471,7 @@
     }
 
     /* Historial Agrupado Desplegable */
+    .history-month{margin-bottom:9px;border:1px solid #475569;border-radius:10px;overflow:hidden;background:#0f172a}.history-month-header{width:100%;padding:11px 12px;border:0;background:#263449;color:var(--accent);display:flex;align-items:center;gap:8px;text-align:left;font-weight:900;cursor:pointer}.history-month-arrow{width:20px;transition:transform .2s}.history-month.open>.history-month-header .history-month-arrow{transform:rotate(90deg)}.history-month-title{flex:1;text-transform:capitalize}.history-month-count{background:var(--bg);color:#fbbf24;padding:3px 9px;border-radius:999px;font-size:.78rem;white-space:nowrap}.history-month-content{display:none;padding:8px}.history-month.open>.history-month-content{display:block}.history-month-content .history-group:last-child{margin-bottom:0}
     .history-section {
       background-color: var(--card-bg);
       border-radius: 12px;
@@ -723,7 +724,7 @@
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.1</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V19.2</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -1380,7 +1381,11 @@
       }
     }
 
-    /* HISTORIAL AGRUPADO POR FECHA */
+    /* HISTORIAL AGRUPADO POR MES Y FECHA */
+    let mesesHistorialExpandidos={};
+    function toggleMesHistorial(clave){mesesHistorialExpandidos[clave]=!mesesHistorialExpandidos[clave];renderizarHistorial();}
+    function nombreMesHistorial(clave){const [a,m]=clave.split('-').map(Number);return new Intl.DateTimeFormat('es-ES',{month:'long',year:'numeric'}).format(new Date(a,m-1,1));}
+
     function renderizarHistorial() {
       actualizarContadoresPrincipales();
       const contenedor = document.getElementById('lista-historial');
@@ -1457,6 +1462,11 @@
           }
         });
       });
+      const gruposDiarios=[...contenedor.children];
+      const meses=new Map();
+      gruposDiarios.forEach(grupo=>{const txt=grupo.querySelector('.history-header-date')?.textContent||'';const match=txt.match(/(\d{2})\/(\d{2})\/(\d{4})/);const clave=match?`${match[3]}-${match[2]}`:'0000-00';if(!meses.has(clave))meses.set(clave,[]);meses.get(clave).push(grupo);});
+      contenedor.innerHTML='';
+      [...meses.entries()].sort((a,b)=>b[0].localeCompare(a[0])).forEach(([clave,gruposMes])=>{const sec=document.createElement('section'),abierto=!!mesesHistorialExpandidos[clave];sec.className=`history-month ${abierto?'open':''}`;const btn=document.createElement('button');btn.type='button';btn.className='history-month-header';btn.setAttribute('aria-expanded',String(abierto));const nombre=clave==='0000-00'?'Sin fecha':nombreMesHistorial(clave);btn.innerHTML=`<span class="history-month-arrow">▶</span><span class="history-month-title">📆 ${escaparHTML(nombre)}</span><span class="history-month-count">${gruposMes.length} ${gruposMes.length===1?'sesión':'sesiones'}</span>`;btn.onclick=()=>toggleMesHistorial(clave);const contenido=document.createElement('div');contenido.className='history-month-content';gruposMes.forEach(g=>contenido.appendChild(g));sec.append(btn,contenido);contenedor.appendChild(sec);});
     }
 
     function toggleGrupoHistorial(fechaClave) {
@@ -1513,7 +1523,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V19.1_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V19.2_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
