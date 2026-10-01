@@ -1,1 +1,1 @@
-V23: al tocar los datos de un ejercicio, el formulario pasa a primer plano mostrando únicamente el nombre de la máquina y sus campos de registro. Conserva bloqueo de temporizador y edición del historial.
+V23.1: al tocar directamente el nombre de una máquina, su formulario de registro pasa inmediatamente a primer plano. Ya no es necesario tocar primero los campos del formulario. Conserva la edición del historial y el bloqueo del temporizador.

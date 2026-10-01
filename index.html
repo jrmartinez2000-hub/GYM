@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V23</title>
+  <title>Registro Gimnasio V23.1</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -732,7 +732,7 @@
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div><section class="timer-touch-lock" id="timer-touch-lock"><div class="timer-lock-card"><div>🔒</div><div class="timer-lock-phase" id="timer-lock-phase">PREPARACIÓN</div><div class="timer-lock-time" id="timer-lock-time">00:00</div><div id="timer-lock-series">Serie 1/1</div><button class="timer-lock-hold" id="timer-lock-hold"><span class="timer-lock-progress"></span><span class="timer-lock-label">Mantén pulsado 2 segundos para desbloquear</span></button><div class="timer-lock-controls"><button id="timer-lock-pause" onclick="pausarReanudarTemporizador()">⏸️</button><button onclick="bloquearControlesTemporizador()">🔒</button><button onclick="cancelarTemporizador()">✕</button></div></div></section><section class="entry-focus" id="entry-focus"><div class="entry-focus-card"><div class="entry-focus-head"><div class="entry-focus-title" id="entry-focus-title"></div><button class="entry-focus-close" onclick="cerrarModoRegistro()">✕</button></div><div class="entry-focus-body" id="entry-focus-body"></div></div></section>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V23</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V23.1</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -939,11 +939,11 @@
     /* ========================================================
        COPIA AUTOMATICA INTERNA Y RESTAURACION AL ARRANCAR
        ======================================================== */
-    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v23';
+    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v231';
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V23',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V23.1',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1262,9 +1262,9 @@
       botonDesplegar.type = 'button';
       botonDesplegar.style.cssText = 'display:flex;align-items:center;gap:10px;flex:1 1 auto;min-width:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;padding:0;';
       botonDesplegar.setAttribute('aria-expanded', String(estaExpandida));
-      botonDesplegar.setAttribute('aria-label', `${estaExpandida ? 'Cerrar' : 'Abrir'} ${m.nombre}`);
-      botonDesplegar.innerHTML = `<span class="machine-arrow">▶</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;
-      botonDesplegar.addEventListener('click', () => toggleMaquina(m.id));
+      botonDesplegar.setAttribute('aria-label', `Registrar ejercicio en ${m.nombre}`);
+      botonDesplegar.innerHTML = `<span class="machine-arrow">✍️</span><span class="machine-summary-name">${escaparHTML(m.nombre)}</span>`;
+      botonDesplegar.addEventListener('click', () => abrirModoRegistro(m.id));
       resumen.appendChild(botonDesplegar);
 
       const logro = obtenerLogroMaquina(m.nombre);
@@ -1565,7 +1565,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V23_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V23.1_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
