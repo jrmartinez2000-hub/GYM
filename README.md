@@ -1,1 +1,1 @@
-V23.1: al tocar directamente el nombre de una máquina, su formulario de registro pasa inmediatamente a primer plano. Ya no es necesario tocar primero los campos del formulario. Conserva la edición del historial y el bloqueo del temporizador.
+V23.2: añade al resumen de cada máquina de fuerza las series y repeticiones del último registro, junto al logro y la fotografía. El tamaño de letra de logro, series y repeticiones se controla conjuntamente desde el ajuste Logros de máquinas.

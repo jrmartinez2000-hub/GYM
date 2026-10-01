@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V23.1</title>
+  <title>Registro Gimnasio V23.2</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -727,12 +727,15 @@
   
 /* V23: bloqueo de temporizador, edición y registro enfocado */
 .timer-touch-lock,.entry-focus{display:none;position:fixed;inset:0;z-index:5000;background:rgba(2,6,23,.96);padding:18px;align-items:center;justify-content:center}.timer-touch-lock.active,.entry-focus.active{display:flex}.timer-lock-card{display:flex;flex-direction:column;align-items:center;gap:15px;text-align:center}.timer-lock-phase{font-size:1.6rem;color:#38bdf8;font-weight:900}.timer-lock-time{font-size:clamp(4rem,22vw,8rem);color:#fbbf24;font-weight:950}.timer-lock-hold{position:relative;overflow:hidden;width:min(88vw,360px);min-height:62px;border:2px solid #38bdf8;border-radius:999px;background:#0f172a;color:#fff;font-weight:900}.timer-lock-progress{position:absolute;inset:0 auto 0 0;width:0;background:#38bdf855}.timer-lock-hold.holding .timer-lock-progress{width:100%;transition:width 2s linear}.timer-lock-label{position:relative}.timer-lock-controls{display:none;gap:8px}.timer-touch-lock.unlocked .timer-lock-hold{display:none}.timer-touch-lock.unlocked .timer-lock-controls{display:flex}.timer-lock-controls button{min-width:70px;min-height:54px;border-radius:10px;background:#1e293b;color:#fff}.history-item-actions{display:flex;gap:6px}.btn-history-edit{border:1px solid var(--accent);background:transparent;color:var(--accent);padding:6px 10px;border-radius:7px}.history-edit-modal{display:none;position:fixed;inset:0;z-index:6000;background:#020617ee;padding:14px;align-items:center;justify-content:center}.history-edit-modal.active{display:flex}.history-edit-card{width:min(96vw,620px);max-height:94vh;overflow:auto;background:#1e293b;border:1px solid #38bdf8;border-radius:14px;padding:14px}.history-edit-head,.entry-focus-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.history-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.history-edit-calories{margin:10px 0;padding:10px;border:1px solid #fb923c;border-radius:9px;color:#fb923c;text-align:center;font-weight:900}.history-edit-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.history-edit-actions button{min-height:46px;border-radius:8px}.history-edit-save{background:var(--success);border:0}.entry-focus{z-index:5500;align-items:flex-start;overflow:auto}.entry-focus-card{width:min(96vw,600px);margin:auto;background:#1e293b;border:2px solid #38bdf8;border-radius:16px;padding:14px}.entry-focus-title{color:#38bdf8;font-size:clamp(1.3rem,6vw,2rem);font-weight:900;overflow-wrap:anywhere}.entry-focus-close{width:44px;height:44px;border-radius:50%;border:1px solid #ef4444;background:transparent;color:#fca5a5;font-size:1.2rem}.entry-focus-body{margin-top:14px}.entry-focus-body .register-box{margin:0;padding:14px}.entry-focus-body .register-inputs,.entry-focus-body .cardio-inputs{gap:10px}.entry-focus-body input,.entry-focus-body select{min-height:50px;font-size:1.1rem}.entry-focus-body .btn-register{min-height:54px;font-size:1.05rem}@media(max-width:480px){.history-edit-grid{grid-template-columns:1fr}.history-item-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}}
+
+    /* V23.2: series y repeticiones en el resumen de máquina */
+    .machine-summary-indicators{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap;flex:0 1 auto}.machine-summary-metric{color:#e2e8f0;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.30);border-radius:999px;padding:4px 7px;font-size:calc(.78rem * var(--font-achievements));font-weight:800;white-space:nowrap}.machine-summary-record{font-size:calc(.78rem * var(--font-achievements))!important}@media(max-width:520px){.machine-summary{gap:7px;flex-wrap:wrap}.machine-summary>button:first-child{flex-basis:calc(100% - 62px)!important}.machine-summary-indicators{order:3;width:calc(100% - 62px);justify-content:flex-start;padding-left:29px}.machine-summary-photo-button{margin-left:auto}.machine-summary-metric,.machine-summary-record{padding:3px 6px}}
 </style>
 </head>
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div><section class="timer-touch-lock" id="timer-touch-lock"><div class="timer-lock-card"><div>🔒</div><div class="timer-lock-phase" id="timer-lock-phase">PREPARACIÓN</div><div class="timer-lock-time" id="timer-lock-time">00:00</div><div id="timer-lock-series">Serie 1/1</div><button class="timer-lock-hold" id="timer-lock-hold"><span class="timer-lock-progress"></span><span class="timer-lock-label">Mantén pulsado 2 segundos para desbloquear</span></button><div class="timer-lock-controls"><button id="timer-lock-pause" onclick="pausarReanudarTemporizador()">⏸️</button><button onclick="bloquearControlesTemporizador()">🔒</button><button onclick="cancelarTemporizador()">✕</button></div></div></section><section class="entry-focus" id="entry-focus"><div class="entry-focus-card"><div class="entry-focus-head"><div class="entry-focus-title" id="entry-focus-title"></div><button class="entry-focus-close" onclick="cerrarModoRegistro()">✕</button></div><div class="entry-focus-body" id="entry-focus-body"></div></div></section>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V23.1</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V23.2</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -939,11 +942,11 @@
     /* ========================================================
        COPIA AUTOMATICA INTERNA Y RESTAURACION AL ARRANCAR
        ======================================================== */
-    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v231';
+    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v232';
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V23.1',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V23.2',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1267,14 +1270,36 @@
       botonDesplegar.addEventListener('click', () => abrirModoRegistro(m.id));
       resumen.appendChild(botonDesplegar);
 
+      const indicadores = document.createElement('div');
+      indicadores.className = 'machine-summary-indicators';
       const logro = obtenerLogroMaquina(m.nombre);
       if (logro) {
         const recordBadge = document.createElement('span');
         recordBadge.className = 'machine-summary-record';
         recordBadge.textContent = `🏆 ${logro.valor}${logro.unidad ? ' ' + logro.unidad : ''}`;
         recordBadge.title = logro.titulo;
-        resumen.appendChild(recordBadge);
+        indicadores.appendChild(recordBadge);
       }
+      const ultimoResumen = ultimoRegistroMaquina(m);
+      if (ultimoResumen && !esCintaDeCorrer(m.nombre) && !esEliptica(m.nombre) && !esBiciEstatica(m.nombre)) {
+        const seriesValor = ultimoResumen.series && ultimoResumen.series !== '-' ? ultimoResumen.series : (m.series || '');
+        const repsValor = ultimoResumen.reps && ultimoResumen.reps !== '-' ? ultimoResumen.reps : (m.reps || '');
+        if (seriesValor) {
+          const seriesBadge = document.createElement('span');
+          seriesBadge.className = 'machine-summary-metric';
+          seriesBadge.textContent = `S: ${seriesValor}`;
+          seriesBadge.title = 'Series del último registro';
+          indicadores.appendChild(seriesBadge);
+        }
+        if (repsValor) {
+          const repsBadge = document.createElement('span');
+          repsBadge.className = 'machine-summary-metric';
+          repsBadge.textContent = `R: ${repsValor}`;
+          repsBadge.title = 'Repeticiones del último registro';
+          indicadores.appendChild(repsBadge);
+        }
+      }
+      if (indicadores.children.length) resumen.appendChild(indicadores);
 
       const botonFoto = document.createElement('button');
       botonFoto.type = 'button';
@@ -1565,7 +1590,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V23.1_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V23.2_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
