@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V23.2</title>
+  <title>Registro Gimnasio V24</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -730,12 +730,16 @@
 
     /* V23.2: series y repeticiones en el resumen de máquina */
     .machine-summary-indicators{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex-wrap:wrap;flex:0 1 auto}.machine-summary-metric{color:#e2e8f0;background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.30);border-radius:999px;padding:4px 7px;font-size:calc(.78rem * var(--font-achievements));font-weight:800;white-space:nowrap}.machine-summary-record{font-size:calc(.78rem * var(--font-achievements))!important}@media(max-width:520px){.machine-summary{gap:7px;flex-wrap:wrap}.machine-summary>button:first-child{flex-basis:calc(100% - 62px)!important}.machine-summary-indicators{order:3;width:calc(100% - 62px);justify-content:flex-start;padding-left:29px}.machine-summary-photo-button{margin-left:auto}.machine-summary-metric,.machine-summary-record{padding:3px 6px}}
+
+    /* V24: evolución en primer plano y orientación horizontal */
+    .evolution-box{display:none!important}.evolution-focus{display:none;position:fixed;inset:0;z-index:5700;background:#020617;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));overflow:auto}.evolution-focus.active{display:block}.evolution-focus-card{width:100%;min-height:100%;display:flex;flex-direction:column;background:#0f172a;border:1.5px solid #38bdf8;border-radius:14px;padding:12px}.evolution-focus-head{display:flex;align-items:center;gap:10px}.evolution-focus-titles{flex:1;min-width:0}.evolution-focus-title{color:#38bdf8;font-size:clamp(1.1rem,4vw,1.6rem);font-weight:900;overflow-wrap:anywhere}.evolution-focus-subtitle{color:#94a3b8;font-size:.8rem;margin-top:2px}.evolution-focus-close{width:44px;height:44px;min-height:44px;border-radius:50%;border:1.5px solid #ef4444;background:transparent;color:#fca5a5;font-size:1.2rem;font-weight:900}.evolution-focus-toolbar{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin:10px 0}.evolution-focus-toolbar label{flex:1;min-width:170px;margin:0}.evolution-range-buttons{display:flex;gap:5px;flex-wrap:wrap}.evolution-range-btn{min-height:42px;padding:7px 11px;border:1px solid #64748b;border-radius:8px;background:#1e293b;color:#cbd5e1;font-weight:800}.evolution-range-btn.active{border-color:#fbbf24;color:#0f172a;background:#fbbf24}.evolution-focus-chart{flex:1;min-height:260px;overflow:auto;border:1px solid #334155;border-radius:10px;background:#0b1120}.evolution-focus-chart .evolution-chart{height:min(62vh,430px)}.evolution-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:9px}.evolution-stat{padding:8px;border-radius:8px;background:#1e293b;text-align:center}.evolution-stat small{display:block;color:#94a3b8}.evolution-stat strong{color:#fbbf24}.evolution-point{cursor:pointer}.evolution-point.selected{fill:#fbbf24;stroke-width:3}.evolution-point-detail{min-height:38px;margin-top:8px;color:#e2e8f0;text-align:center}.evolution-rotate-note{display:none;color:#fbbf24;text-align:center;font-size:.82rem;margin:5px 0}@media(orientation:portrait) and (max-width:700px){.evolution-rotate-note{display:block}}@media(max-width:640px){.evolution-summary{grid-template-columns:1fr 1fr}.evolution-focus-card{padding:9px}}
 </style>
 </head>
 <body>
   <div class="timer-finish-flash" id="timer-finish-flash" aria-hidden="true"></div><section class="timer-touch-lock" id="timer-touch-lock"><div class="timer-lock-card"><div>🔒</div><div class="timer-lock-phase" id="timer-lock-phase">PREPARACIÓN</div><div class="timer-lock-time" id="timer-lock-time">00:00</div><div id="timer-lock-series">Serie 1/1</div><button class="timer-lock-hold" id="timer-lock-hold"><span class="timer-lock-progress"></span><span class="timer-lock-label">Mantén pulsado 2 segundos para desbloquear</span></button><div class="timer-lock-controls"><button id="timer-lock-pause" onclick="pausarReanudarTemporizador()">⏸️</button><button onclick="bloquearControlesTemporizador()">🔒</button><button onclick="cancelarTemporizador()">✕</button></div></div></section><section class="entry-focus" id="entry-focus"><div class="entry-focus-card"><div class="entry-focus-head"><div class="entry-focus-title" id="entry-focus-title"></div><button class="entry-focus-close" onclick="cerrarModoRegistro()">✕</button></div><div class="entry-focus-body" id="entry-focus-body"></div></div></section>
 
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V23.2</span></h1>
+  <section class="evolution-focus" id="evolution-focus" aria-modal="true" role="dialog"><div class="evolution-focus-card"><div class="evolution-focus-head"><div class="evolution-focus-titles"><div class="evolution-focus-title" id="evolution-focus-title">📈 Evolución</div><div class="evolution-focus-subtitle" id="evolution-focus-subtitle"></div></div><button class="evolution-focus-close" onclick="cerrarEvolucionPrimerPlano()" aria-label="Cerrar evolución">✕</button></div><div class="evolution-rotate-note">↻ Si la pantalla no gira automáticamente, gira el teléfono manualmente.</div><div class="evolution-focus-toolbar"><label>Métrica<select id="evolution-focus-metric" onchange="dibujarEvolucionPrimerPlano()"></select></label><div class="evolution-range-buttons"><button class="evolution-range-btn" data-range="30" onclick="cambiarIntervaloEvolucion(30)">30 días</button><button class="evolution-range-btn" data-range="90" onclick="cambiarIntervaloEvolucion(90)">90 días</button><button class="evolution-range-btn" data-range="365" onclick="cambiarIntervaloEvolucion(365)">1 año</button><button class="evolution-range-btn" data-range="total" onclick="cambiarIntervaloEvolucion('total')">Total</button></div></div><div class="evolution-focus-chart" id="evolution-focus-chart"></div><div class="evolution-point-detail" id="evolution-point-detail">Toca un punto para ver sus detalles.</div><div class="evolution-summary" id="evolution-summary"></div></div></section>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V24</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -942,11 +946,11 @@
     /* ========================================================
        COPIA AUTOMATICA INTERNA Y RESTAURACION AL ARRANCAR
        ======================================================== */
-    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v232';
+    const AUTO_BACKUP_KEY='ultima_copia_completa',AUTO_BACKUP_RELOAD='gym_auto_backup_restored_v24';
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V23.2',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V24',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1301,6 +1305,8 @@
       }
       if (indicadores.children.length) resumen.appendChild(indicadores);
 
+      const botonEvolucion = document.createElement('button');
+      botonEvolucion.type='button';botonEvolucion.className='btn-card';botonEvolucion.textContent='📈';botonEvolucion.title='Ver evolución';botonEvolucion.setAttribute('aria-label',`Ver evolución de ${m.nombre}`);botonEvolucion.addEventListener('click',e=>{e.stopPropagation();abrirEvolucionPrimerPlano(m.id);});resumen.appendChild(botonEvolucion);
       const botonFoto = document.createElement('button');
       botonFoto.type = 'button';
       botonFoto.className = 'machine-summary-photo-button';
@@ -1323,43 +1329,21 @@
       return resumen;
     }
 
-    const graficasEvolucionAbiertas={};
+    let evolucionActualId=null,evolucionIntervalo='total';
     function fechaSesionAClave(fecha){return String(fecha||'').split(' ')[0];}
     function fechaAOrden(fecha){const p=String(fecha||'').split('/');return p.length===3?new Date(Number(p[2]),Number(p[1])-1,Number(p[0])).getTime():Date.parse(fecha)||0;}
-    function opcionesEvolucion(m){
-      if(esCintaDeCorrer(m.nombre))return [{id:'tiempo',nombre:'Tiempo',unidad:'min'},{id:'velocidad',nombre:'Velocidad',unidad:'km/h'},{id:'inclinacion',nombre:'Inclinación',unidad:'%'},{id:'calorias',nombre:'Calorías',unidad:'kcal'}];
-      if(esEliptica(m.nombre))return [{id:'tiempo',nombre:'Tiempo',unidad:'min'},{id:'pasos',nombre:'Pasos',unidad:''},{id:'calorias',nombre:'Calorías',unidad:'kcal'}];
-      if(esBiciEstatica(m.nombre))return [{id:'tiempo',nombre:'Tiempo',unidad:'min'},{id:'velocidad',nombre:'Velocidad',unidad:'km/h'},{id:'calorias',nombre:'Calorías',unidad:'kcal'}];
-      return [{id:'peso',nombre:'Peso máximo',unidad:'kg'},{id:'volumen',nombre:'Volumen',unidad:'kg'},{id:'reps',nombre:'Repeticiones',unidad:''}];
-    }
-    function valorEvolucion(s,metrica){
-      const numero=v=>{const n=Number(String(v??'').replace(',','.').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:null;};
-      if(metrica==='volumen'){const a=numero(s.series),b=numero(s.reps),c=numero(s.peso);return a!==null&&b!==null&&c!==null?a*b*c:null;}
-      if(metrica==='calorias')return numero(s.calorias)||calcularCaloriasSesion(s,Number(cargarDatosPerfil().peso))||null;
-      return numero(s[metrica]);
-    }
-    function datosEvolucion(m,metrica){
-      const porDia=new Map();
-      const historialCompleto=cargarHistorial(perfilActual);
-      historialCompleto.filter(x=>x.maquinaId===m.id||normalizarNombre(x.maquina)===normalizarNombre(m.nombre)).forEach(s=>{
-        const fecha=fechaSesionAClave(s.fecha),valor=valorEvolucion(s,metrica);if(!fecha||valor===null)return;
-        const anterior=porDia.get(fecha);if(anterior===undefined||valor>anterior)porDia.set(fecha,valor);
-      });
-      return [...porDia.entries()].map(([fecha,valor])=>({fecha,valor,orden:fechaAOrden(fecha)})).sort((a,b)=>a.orden-b.orden);
-    }
-    function dibujarGraficaEvolucion(id){
-      const m=maquinas.find(x=>x.id===id),box=document.getElementById(`evolution-${id}`),sel=document.getElementById(`evolution-metric-${id}`);if(!m||!box||!sel)return;
-      const metrica=sel.value,op=opcionesEvolucion(m).find(x=>x.id===metrica),datos=datosEvolucion(m,metrica),zona=document.getElementById(`evolution-chart-${id}`);
-      if(!datos.length){zona.innerHTML='<div class="evolution-empty">Todavía no hay datos registrados para esta evolución.</div>';return;}
-      const H=250,L=48,R=24,T=30,B=48,anchoVisible=Math.max(300,zona.parentElement.clientWidth||620),espacioPunto=(anchoVisible-L-R)/7,W=Math.max(anchoVisible,L+R+espacioPunto*Math.max(0,datos.length-1)),max=Math.max(...datos.map(x=>x.valor)),min=Math.min(...datos.map(x=>x.valor)),rango=max-min||Math.max(max,1),x=i=>datos.length===1?L+(anchoVisible-L-R)/2:L+i*espacioPunto,y=v=>T+(max-v)*(H-T-B)/rango;
-      let svg=`<svg class="evolution-chart" style="width:${W}px" viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de ${escaparHTML(op.nombre)}">`;
-      for(let i=0;i<4;i++){const yy=T+i*(H-T-B)/3,val=max-i*rango/3;svg+=`<line class="evolution-grid" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text class="evolution-label" x="${L-6}" y="${yy+4}" text-anchor="end">${Math.round(val*10)/10}</text>`;}
-      svg+=`<polyline class="evolution-line" points="${datos.map((d,i)=>`${x(i)},${y(d.valor)}`).join(' ')}"/>`;
-      datos.forEach((d,i)=>{svg+=`<circle class="evolution-point" cx="${x(i)}" cy="${y(d.valor)}" r="5"><title>${escaparHTML(d.fecha)}: ${d.valor} ${escaparHTML(op.unidad)}</title></circle><text class="evolution-value" x="${x(i)}" y="${Math.max(14,y(d.valor)-10)}" text-anchor="middle">${Math.round(d.valor*10)/10}</text><text class="evolution-label" x="${x(i)}" y="${H-18}" text-anchor="middle">${escaparHTML(d.fecha.slice(0,5))}</text>`;});
-      svg+='</svg>';zona.innerHTML=svg+`<div class="evolution-info">Solo se muestran días con entrenamiento registrado. Si hay varios registros el mismo día, se representa el valor máximo.</div>`;
-    }
-    function toggleEvolucion(id){const box=document.getElementById(`evolution-${id}`),btn=document.getElementById(`btn-evolution-${id}`);if(!box)return;const visible=box.classList.toggle('visible');graficasEvolucionAbiertas[id]=visible;if(btn){btn.textContent='📈';btn.title=visible?'Ocultar evolución':'Ver evolución';btn.setAttribute('aria-label',btn.title);}if(visible)dibujarGraficaEvolucion(id);}
-
+    function opcionesEvolucion(m){if(esCintaDeCorrer(m.nombre)||esEliptica(m.nombre)||esBiciEstatica(m.nombre))return [{id:'tiempo',nombre:'Tiempo',unidad:'min'}];return [{id:'peso',nombre:'Peso',unidad:'kg'}];}
+    function numeroEvolucion(v){const n=Number(String(v??'').replace(',','.').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:null;}
+    function datosEvolucion(m,metrica){const porDia=new Map(),esCardio=metrica==='tiempo';cargarHistorial(perfilActual).filter(x=>x.maquinaId===m.id||normalizarNombre(x.maquina)===normalizarNombre(m.nombre)).forEach(r=>{const fecha=fechaSesionAClave(r.fecha),valor=numeroEvolucion(r[metrica]);if(!fecha||valor===null)return;const anterior=porDia.get(fecha);if(!anterior)porDia.set(fecha,{fecha,valor,orden:fechaAOrden(fecha),registros:[r]});else{anterior.registros.push(r);anterior.valor=esCardio?anterior.valor+valor:Math.max(anterior.valor,valor);}});let datos=[...porDia.values()].sort((a,b)=>a.orden-b.orden);if(evolucionIntervalo!=='total'){const limite=Date.now()-Number(evolucionIntervalo)*86400000;datos=datos.filter(x=>x.orden>=limite);}return datos;}
+    async function solicitarHorizontalEvolucion(){try{if(screen.orientation?.lock)await screen.orientation.lock('landscape');}catch(e){}}
+    async function restaurarVerticalEvolucion(){try{if(screen.orientation?.unlock)screen.orientation.unlock();if(screen.orientation?.lock)await screen.orientation.lock('portrait');}catch(e){}}
+    function abrirEvolucionPrimerPlano(id){const m=maquinas.find(x=>x.id===id);if(!m)return;evolucionActualId=id;evolucionIntervalo=localStorage.getItem('evolucion_intervalo_v24')||'total';document.getElementById('evolution-focus-title').textContent=`📈 ${esCintaDeCorrer(m.nombre)||esEliptica(m.nombre)||esBiciEstatica(m.nombre)?'Evolución de tiempo':'Evolución de peso'}`;document.getElementById('evolution-focus-subtitle').textContent=m.nombre;document.getElementById('evolution-focus-metric').innerHTML=opcionesEvolucion(m).map(o=>`<option value="${o.id}">${o.nombre} (${o.unidad})</option>`).join('');document.getElementById('evolution-focus').classList.add('active');document.body.style.overflow='hidden';actualizarBotonesIntervalo();solicitarHorizontalEvolucion().finally(()=>setTimeout(dibujarEvolucionPrimerPlano,150));}
+    function cerrarEvolucionPrimerPlano(){document.getElementById('evolution-focus').classList.remove('active');document.body.style.overflow='';evolucionActualId=null;restaurarVerticalEvolucion();}
+    function cambiarIntervaloEvolucion(v){evolucionIntervalo=v;localStorage.setItem('evolucion_intervalo_v24',String(v));actualizarBotonesIntervalo();dibujarEvolucionPrimerPlano();}
+    function actualizarBotonesIntervalo(){document.querySelectorAll('.evolution-range-btn').forEach(b=>b.classList.toggle('active',String(b.dataset.range)===String(evolucionIntervalo)));}
+    function detallePuntoEvolucion(indice){const m=maquinas.find(x=>x.id===evolucionActualId),metrica=document.getElementById('evolution-focus-metric').value,d=datosEvolucion(m,metrica)[indice],el=document.getElementById('evolution-point-detail');if(!d||!el)return;document.querySelectorAll('#evolution-focus-chart .evolution-point').forEach((p,i)=>p.classList.toggle('selected',i===indice));if(metrica==='peso'){const r=d.registros.slice().sort((a,b)=>numeroEvolucion(b.peso)-numeroEvolucion(a.peso))[0];el.textContent=`${d.fecha} · ${d.valor} kg · ${r.series||'-'} series · ${r.reps||'-'} repeticiones`;}else{const r=d.registros[d.registros.length-1]||{};let extra='';if(esCintaDeCorrer(m.nombre))extra=` · ${r.velocidad||'-'} km/h · ${r.inclinacion||0}%`;else if(esEliptica(m.nombre))extra=` · ${r.pasos||'-'} pasos · ${r.resistencia||'-'}`;else extra=` · ${r.velocidad||'-'} km/h · ${r.resistencia||'-'}`;el.textContent=`${d.fecha} · ${d.valor} min${extra}`;}}
+    function dibujarEvolucionPrimerPlano(){const m=maquinas.find(x=>x.id===evolucionActualId),zona=document.getElementById('evolution-focus-chart'),sel=document.getElementById('evolution-focus-metric');if(!m||!zona||!sel)return;const op=opcionesEvolucion(m).find(x=>x.id===sel.value),datos=datosEvolucion(m,sel.value);document.getElementById('evolution-point-detail').textContent='Toca un punto para ver sus detalles.';if(!datos.length){zona.innerHTML='<div class="evolution-empty">No hay registros en el intervalo seleccionado.</div>';document.getElementById('evolution-summary').innerHTML='';return;}const H=360,L=58,R=26,T=35,B=56,ancho=Math.max(640,zona.clientWidth||640),paso=Math.max(72,(ancho-L-R)/Math.max(1,datos.length-1)),W=Math.max(ancho,L+R+paso*Math.max(0,datos.length-1)),max=Math.max(...datos.map(x=>x.valor)),min=Math.min(...datos.map(x=>x.valor)),rango=max-min||Math.max(max,1),x=i=>datos.length===1?W/2:L+i*paso,y=v=>T+(max-v)*(H-T-B)/rango;let svg=`<svg class="evolution-chart" style="width:${W}px" viewBox="0 0 ${W} ${H}">`;for(let i=0;i<5;i++){const yy=T+i*(H-T-B)/4,val=max-i*rango/4;svg+=`<line class="evolution-grid" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text class="evolution-label" x="${L-7}" y="${yy+4}" text-anchor="end">${Math.round(val*10)/10}</text>`;}svg+=`<polyline class="evolution-line" points="${datos.map((d,i)=>`${x(i)},${y(d.valor)}`).join(' ')}"/>`;datos.forEach((d,i)=>{svg+=`<circle class="evolution-point" cx="${x(i)}" cy="${y(d.valor)}" r="7" onclick="detallePuntoEvolucion(${i})"><title>${escaparHTML(d.fecha)}: ${d.valor} ${op.unidad}</title></circle><text class="evolution-value" x="${x(i)}" y="${Math.max(18,y(d.valor)-12)}" text-anchor="middle">${Math.round(d.valor*10)/10}</text><text class="evolution-label" x="${x(i)}" y="${H-20}" text-anchor="middle">${escaparHTML(d.fecha.slice(0,5))}</text>`;});svg+='</svg>';zona.innerHTML=svg;const primero=datos[0].valor,ultimo=datos[datos.length-1].valor,dif=Math.round((ultimo-primero)*10)/10;document.getElementById('evolution-summary').innerHTML=`<div class="evolution-stat"><small>Inicial</small><strong>${primero} ${op.unidad}</strong></div><div class="evolution-stat"><small>Último</small><strong>${ultimo} ${op.unidad}</strong></div><div class="evolution-stat"><small>Diferencia</small><strong>${dif>0?'+':''}${dif} ${op.unidad}</strong></div><div class="evolution-stat"><small>Días</small><strong>${datos.length}</strong></div>`;}
+    window.addEventListener('resize',()=>{if(evolucionActualId)setTimeout(dibujarEvolucionPrimerPlano,100)});
     async function renderizarLista() {
       actualizarContadoresPrincipales();
       const contenedor = document.getElementById('lista-maquinas');
@@ -1420,16 +1404,9 @@
                 <button class="btn-register" id="btn-reg-${m.id}">✅ Registrar Ejercicio</button>
               </div>
             </div>
-            <div class="evolution-box ${graficasEvolucionAbiertas[m.id]?'visible':''}" id="evolution-${m.id}">
-              <div class="evolution-header"><span class="evolution-title">📈 Evolución de ${escaparHTML(m.nombre)}</span><button type="button" class="evolution-close" aria-label="Cerrar gráfica" title="Cerrar gráfica" onclick="toggleEvolucion(${m.id})">✕</button></div>
-              <div class="evolution-toolbar"><label>Métrica de evolución<select id="evolution-metric-${m.id}" onchange="dibujarGraficaEvolucion(${m.id})">${opcionesEvolucion(m).map((o,i)=>`<option value="${o.id}" ${i===0?'selected':''}>${o.nombre}${o.unidad?' ('+o.unidad+')':''}</option>`).join('')}</select></label></div>
-              <div class="evolution-chart-scroll" id="evolution-chart-${m.id}"></div>
-            </div>
-
             <div class="card-footer">
               <div class="fecha-badge">📅 <strong>${escaparHTML(m.fecha || '-')}</strong></div>
               <div class="card-actions">
-                <button class="btn-card" id="btn-evolution-${m.id}" title="${graficasEvolucionAbiertas[m.id]?'Ocultar evolución':'Ver evolución'}" aria-label="${graficasEvolucionAbiertas[m.id]?'Ocultar evolución':'Ver evolución'}">📈</button>
                 <button class="btn-card btn-edit-toggle" id="btn-edit-${m.id}" title="Editar máquina" aria-label="Editar máquina">✏️</button>
                 <button class="btn-delete" id="btn-del-${m.id}" title="Borrar máquina" aria-label="Borrar máquina">🗑️</button>
               </div>
@@ -1440,8 +1417,6 @@
           contenedor.appendChild(card);
 
           document.getElementById(`btn-reg-${m.id}`).addEventListener('click', () => registrarSerieDirecta(m.id));const cajaRegistro=card.querySelector('.register-box');if(cajaRegistro)cajaRegistro.addEventListener('focusin',()=>abrirModoRegistro(m.id),{once:true});
-          document.getElementById(`btn-evolution-${m.id}`).addEventListener('click', () => toggleEvolucion(m.id));
-          if(graficasEvolucionAbiertas[m.id])dibujarGraficaEvolucion(m.id);
           document.getElementById(`btn-edit-${m.id}`).addEventListener('click', () => activarEdicion(m.id));
           document.getElementById(`btn-del-${m.id}`).addEventListener('click', () => eliminarMaquina(m.id));
         }
@@ -1590,7 +1565,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V23.2_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V24_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
