@@ -1,8 +1,7 @@
-## Registro Gimnasio V20
-- Basada íntegramente en la V19.9.
-- Añade zoom táctil de 1× a 5× en las fotografías ampliadas de cada máquina.
-- Permite pellizcar con dos dedos para ampliar o reducir.
-- Permite arrastrar la imagen con un dedo cuando está ampliada.
-- El doble toque alterna entre 1× y 2,5×.
-- Al cerrar la fotografía se restablecen zoom y posición.
-- Mantiene cambiar foto, eliminar foto, copia automática, temporizador, historial mensual y resto de funciones.
+## Registro Gimnasio V21
+- Añade bloqueo táctil automático configurable durante el temporizador.
+- Muestra fase, tiempo y serie en pantalla completa.
+- Desbloqueo mediante pulsación mantenida durante 2 segundos.
+- Tras desbloquear permite pausar/reanudar, cancelar o volver a bloquear.
+- El bloqueo se retira automáticamente al finalizar o cancelar.
+- Mantiene Wake Lock, sonido, vibración, perfiles, máquinas, historial, fotos, copias y exportaciones.
