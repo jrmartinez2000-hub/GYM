@@ -1947,7 +1947,7 @@
     function avisarCambioTemporizador(){parpadearPantallaTemporizador();const a=cargarAjustesTemporizador();if(a.vibration&&navigator.vibrate)navigator.vibrate([700,180,700,180,700,180,1000]);if(a.sound)reproducirPitidosTemporizador();}
     function finalizarTemporizador(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerState.running=false;timerState.paused=false;timerState.phase='idle';timerState.remaining=0;guardarEstadoTemporizador();liberarWakeLock();ocultarBloqueoTemporizador();actualizarTemporizador();mostrarToast('✅ Ejercicio completo finalizado');}
     function restaurarTemporizador(){cargarAjustesTemporizador();try{timerState={...timerState,...JSON.parse(localStorage.getItem(TIMER_KEY)||'{}')}}catch(e){}if(timerState.running&&!timerState.paused){iniciarRelojTemporizador();solicitarWakeLock();actualizarTemporizador();mostrarBloqueoTemporizador()}else{actualizarTemporizador();if(timerState.paused)mostrarBloqueoTemporizador();}}
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(timerState.running||timerState.paused)){if(timerState.running)solicitarWakeLock();timerState.remaining=timerState.running?Math.max(0,(timerState.endAt-Date.now())/1000):timerState.remaining;actualizarTemporizador();mostrarBloqueoTemporizador();}});
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&timerState.running)solicitarWakeLock();});
     restaurarTemporizador();
     async function arrancarAplicacion(){
       await abrirDB();
