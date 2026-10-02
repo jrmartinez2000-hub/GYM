@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V26.4</title>
+  <title>Registro Gimnasio V26.5</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -745,6 +745,9 @@
 
 /* V26.4: crear o importar maquinas desde otro perfil */
 .add-machine-menu{display:none;background:var(--card-bg);border:1.5px solid var(--accent);border-radius:12px;padding:10px;margin-bottom:12px;grid-template-columns:1fr 1fr;gap:8px}.add-machine-menu.visible{display:grid}.add-machine-choice{min-height:52px;border-radius:9px;border:1.5px solid var(--accent);background:var(--input-bg);color:var(--accent);font-weight:900;padding:9px}.add-machine-choice.import{border-color:#fbbf24;color:#fbbf24}.machine-import-overlay{display:none;position:fixed;inset:0;z-index:6500;background:#020617f2;padding:10px;align-items:flex-start;justify-content:center;overflow:auto}.machine-import-overlay.active{display:flex}.machine-import-card{width:min(96vw,680px);margin:auto;background:var(--card-bg);border:2px solid var(--accent);border-radius:15px;padding:12px}.machine-import-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.machine-import-title{flex:1;color:var(--accent);font-size:1.25rem;font-weight:950}.machine-import-close{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--danger);background:transparent;color:#fca5a5;font-size:1.2rem}.machine-import-select-all{display:flex;align-items:center;gap:9px;margin:10px 0;padding:10px;border:1px solid #475569;border-radius:9px;background:#0f172a;color:#fbbf24;font-weight:900}.machine-import-select-all input,.machine-import-checkbox{width:22px;height:22px;flex:0 0 22px}.machine-import-list{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto}.machine-import-item{display:grid;grid-template-columns:24px 58px minmax(0,1fr);gap:9px;align-items:center;padding:9px;border:1px solid #475569;border-radius:10px;background:#0f172a}.machine-import-item.duplicate{opacity:.55}.machine-import-photo{width:58px;height:58px;border-radius:9px;object-fit:cover;border:1px solid var(--accent);background:var(--input-bg)}.machine-import-photo-placeholder{width:58px;height:58px;border-radius:9px;border:1px dashed #64748b;display:flex;align-items:center;justify-content:center;font-size:1.4rem}.machine-import-name{font-weight:900;color:var(--accent);overflow-wrap:anywhere}.machine-import-group{font-size:.82rem;color:#fbbf24;margin-top:3px}.machine-import-note{font-size:.75rem;color:var(--text-muted);margin-top:3px}.machine-import-empty{padding:20px;text-align:center;color:var(--text-muted)}.machine-import-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-top:12px}.machine-import-actions button{min-height:48px;border-radius:9px;font-weight:900}.machine-import-cancel{border:1px solid #64748b;background:transparent;color:var(--text-muted)}.machine-import-confirm{border:0;background:var(--success);color:#0f172a}.machine-import-confirm:disabled{opacity:.45}@media(max-width:440px){.add-machine-menu{grid-template-columns:1fr}.machine-import-actions{grid-template-columns:1fr}.machine-import-item{grid-template-columns:24px 52px minmax(0,1fr)}.machine-import-photo,.machine-import-photo-placeholder{width:52px;height:52px}}
+
+/* V26.5: cronometro y salida a los lados del perfil, con altura exactamente igual */
+.profile-access-row{display:grid;grid-template-columns:60px minmax(0,1fr) 60px;gap:8px;align-items:stretch;width:100%;margin-bottom:12px}.profile-access-row>.profiles-section{grid-column:2;margin:0;align-self:stretch;height:100%}.profile-side-button{width:60px;height:100%;min-height:100%;padding:0;border-radius:12px;background:var(--card-bg);display:flex;align-items:center;justify-content:center;font-size:1.55rem;font-weight:900;cursor:pointer;align-self:stretch}.profile-timer-button{grid-column:1;grid-row:1;border:2px solid #fbbf24;color:#fbbf24}.profile-exit-button{grid-column:3;grid-row:1;border:2px solid var(--danger);color:#fca5a5}.profile-timer-status{display:none}.top-quick-actions{display:none!important}@media(max-width:390px){.profile-access-row{grid-template-columns:54px minmax(0,1fr) 54px;gap:6px}.profile-side-button{width:54px;font-size:1.4rem}.profiles-section{padding:8px}.profile-actions{gap:4px}.btn-profile-action{padding:5px 3px}}
 </style>
 </head>
 <body>
@@ -752,18 +755,9 @@
 
 <section class="evolution-focus" id="evolution-focus"><div class="evolution-focus-card"><div class="evolution-focus-head"><div class="evolution-focus-titles"><div class="evolution-focus-title" id="evolution-focus-title">📈 Evolución</div><div class="evolution-focus-subtitle" id="evolution-focus-subtitle"></div></div><button class="evolution-focus-close" onclick="cerrarEvolucionPrimerPlano()">✕</button></div><div class="evolution-rotate-note">↻ Gira el teléfono si no cambia automáticamente.</div><div class="evolution-focus-toolbar"><div class="evolution-range-buttons"><button class="evolution-range-btn" data-range="30" onclick="cambiarIntervaloEvolucion(30)">30 días</button><button class="evolution-range-btn" data-range="90" onclick="cambiarIntervaloEvolucion(90)">90 días</button><button class="evolution-range-btn" data-range="365" onclick="cambiarIntervaloEvolucion(365)">1 año</button><button class="evolution-range-btn" data-range="total" onclick="cambiarIntervaloEvolucion('total')">Total</button></div><div class="evolution-font-controls"><span>Texto</span><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(-.1)">A−</button><output class="evolution-font-output" id="evolution-font-output">130%</output><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(.1)">A+</button></div></div><div class="evolution-focus-chart" id="evolution-focus-chart"></div><div class="evolution-point-detail" id="evolution-point-detail">Toca un punto para ver sus detalles.</div><div class="evolution-summary" id="evolution-summary"></div></div></section>
   <section class="group-focus" id="group-focus" aria-hidden="true"><div class="group-focus-card"><header class="group-focus-head"><button type="button" class="group-focus-back" onclick="cerrarGrupoPrimerPlano()" aria-label="Volver">←</button><div class="group-focus-titles"><div class="group-focus-title" id="group-focus-title">Grupo muscular</div><div class="group-focus-subtitle" id="group-focus-subtitle"></div></div></header><div class="group-focus-list" id="group-focus-list"></div></div></section>
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V26.4</span></h1>
-  <div class="top-quick-actions" aria-label="Accesos rápidos">
-    <div class="top-timer-area">
-      <button class="top-timer-btn" id="timer-main-btn-top" onclick="iniciarTemporizadorPrincipal()" title="Iniciar temporizador" aria-label="Iniciar temporizador">⏱️</button>
-      <div class="timer-inline-status" id="timer-inline-status-top" aria-live="polite">01:30</div>
-      <button class="timer-pause-btn" id="timer-pause-btn-top" onclick="pausarReanudarTemporizador()" title="Pausar temporizador" aria-label="Pausar temporizador">⏸️</button>
-      <button class="timer-cancel-btn" id="timer-cancel-btn-top" onclick="cancelarTemporizador()" title="Cancelar temporizador" aria-label="Cancelar temporizador">✕</button>
-    </div>
-    <button class="top-exit-btn" onclick="salirAplicacion()" title="Salir de la aplicación" aria-label="Salir de la aplicación">🚪</button>
-  </div>
-
-  <!-- Perfiles -->
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V26.5</span></h1>
+  <div class="profile-access-row" id="profile-access-row">
+    <button class="profile-side-button profile-timer-button" id="timer-main-btn-top" onclick="iniciarTemporizadorPrincipal()" title="Iniciar temporizador" aria-label="Iniciar temporizador">⏱️</button>
   <div class="profiles-section">
     <div class="profiles-header">
       <div class="profiles-title-row">
@@ -779,6 +773,13 @@
     <div class="profile-tabs" id="profile-tabs"></div><div class="profile-data-summary" id="profile-data-summary"></div>
   </div>
 
+    <button class="profile-side-button profile-exit-button" onclick="salirAplicacion()" title="Salir de la aplicación" aria-label="Salir de la aplicación">🚪</button>
+  </div>
+  <div class="profile-timer-status" aria-hidden="true">
+    <div class="timer-inline-status" id="timer-inline-status-top" aria-live="polite">01:30</div>
+    <button class="timer-pause-btn" id="timer-pause-btn-top" onclick="pausarReanudarTemporizador()">⏸️</button>
+    <button class="timer-cancel-btn" id="timer-cancel-btn-top" onclick="cancelarTemporizador()">✕</button>
+  </div>
   <!-- Panel: Crear Perfil -->
   <div class="panel" id="panel-nuevo-perfil">
     <h2>Crear nuevo perfil</h2>
@@ -987,7 +988,7 @@
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V26.4',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V26.5',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1646,7 +1647,7 @@ behavior: 'smooth'
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V26.4_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V26.5_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {

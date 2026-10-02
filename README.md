@@ -1,6 +1,5 @@
-## Registro Gimnasio V26.4
-- El botón Añadir Nueva Máquina permite crear una máquina o importarla desde otro perfil.
-- Permite elegir máquinas individualmente o seleccionar todas las disponibles.
-- Copia nombre, configuración, grupo muscular y fotografía con un identificador independiente.
-- No copia historial, calorías ni evolución del perfil de origen.
-- Omite automáticamente las máquinas que ya existen en el perfil actual.
+## Registro Gimnasio V26.5
+- Coloca el cronómetro a la izquierda, el perfil en el centro y salir a la derecha.
+- Cronómetro y salir tienen el mismo ancho reducido: 60 px.
+- Los tres elementos comparten la misma fila y los botones laterales se estiran exactamente a la altura real del recuadro de perfiles.
+- Mantiene la importación individual o completa de máquinas, fotografías y grupos musculares de la V26.4.
