@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V25</title>
+  <title>Registro Gimnasio V25.1</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -743,7 +743,7 @@
 
 <section class="evolution-focus" id="evolution-focus"><div class="evolution-focus-card"><div class="evolution-focus-head"><div class="evolution-focus-titles"><div class="evolution-focus-title" id="evolution-focus-title">📈 Evolución</div><div class="evolution-focus-subtitle" id="evolution-focus-subtitle"></div></div><button class="evolution-focus-close" onclick="cerrarEvolucionPrimerPlano()">✕</button></div><div class="evolution-rotate-note">↻ Gira el teléfono si no cambia automáticamente.</div><div class="evolution-focus-toolbar"><div class="evolution-range-buttons"><button class="evolution-range-btn" data-range="30" onclick="cambiarIntervaloEvolucion(30)">30 días</button><button class="evolution-range-btn" data-range="90" onclick="cambiarIntervaloEvolucion(90)">90 días</button><button class="evolution-range-btn" data-range="365" onclick="cambiarIntervaloEvolucion(365)">1 año</button><button class="evolution-range-btn" data-range="total" onclick="cambiarIntervaloEvolucion('total')">Total</button></div><div class="evolution-font-controls"><span>Texto</span><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(-.1)">A−</button><output class="evolution-font-output" id="evolution-font-output">130%</output><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(.1)">A+</button></div></div><div class="evolution-focus-chart" id="evolution-focus-chart"></div><div class="evolution-point-detail" id="evolution-point-detail">Toca un punto para ver sus detalles.</div><div class="evolution-summary" id="evolution-summary"></div></div></section>
   <section class="group-focus" id="group-focus" aria-hidden="true"><div class="group-focus-card"><header class="group-focus-head"><button type="button" class="group-focus-back" onclick="cerrarGrupoPrimerPlano()" aria-label="Volver">←</button><div class="group-focus-titles"><div class="group-focus-title" id="group-focus-title">Grupo muscular</div><div class="group-focus-subtitle" id="group-focus-subtitle"></div></div></header><div class="group-focus-list" id="group-focus-list"></div></div></section>
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V25</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V25.1</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -954,7 +954,7 @@
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V25',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V25.1',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1003,7 +1003,7 @@
       grupoPrimerPlanoId=id;document.getElementById('group-focus-title').textContent=`${g.icono} ${g.nombre}`;
       const cantidad=maquinas.filter(m=>normalizarGrupoId(m.grupoId||m.grupoMuscular)===id).length;document.getElementById('group-focus-subtitle').textContent=`${cantidad} ${cantidad===1?'máquina asociada':'máquinas asociadas'}`;
       lista.innerHTML='';panel.classList.add('active');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
-      await renderizarLista();moverTarjetasGrupoAlPrimerPlano();
+      await renderizarLista();
     }
     function moverTarjetasGrupoAlPrimerPlano(){if(!grupoPrimerPlanoId)return;const lista=document.getElementById('group-focus-list'),origen=document.getElementById('lista-maquinas');lista.innerHTML='';[...origen.querySelectorAll(`.card[data-group-id="${grupoPrimerPlanoId}"]`)].forEach(c=>{c.classList.remove('muscle-hidden');lista.appendChild(c)});if(!lista.children.length)lista.innerHTML='<div class="group-focus-empty">No hay máquinas asociadas a este grupo.</div>';}
     function cerrarGrupoPrimerPlano(){const panel=document.getElementById('group-focus');panel.classList.remove('active');panel.setAttribute('aria-hidden','true');grupoPrimerPlanoId=null;document.body.style.overflow=grupoPrimerPlanoId?'hidden':'';renderizarLista();}
@@ -1578,7 +1578,7 @@
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V25_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V25.1_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
