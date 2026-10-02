@@ -1,8 +1,8 @@
-## Registro Gimnasio V24.4
-- Conserva las funciones y gráficas de V24.3.
-- Antes de cada fase de ejercicio suena una cuenta atrás a 3, 2 y 1 segundos.
-- Los tonos suben progresivamente: 750, 850 y 950 Hz.
-- Al comenzar el ejercicio suenan tres pulsos rápidos a 1200 Hz.
-- La vibración acompaña la cuenta atrás y la salida si está activada.
-- El final se mantiene con tono continuo y vibración de 5 segundos.
-- No existe descanso después de la última serie.
+## Registro Gimnasio V24.5
+- Conserva toda la V24.4.
+- Pitido corto cada 15 segundos transcurridos durante ejercicio.
+- Pitido corto cada 30 segundos transcurridos durante descanso.
+- Los avisos intermedios no vibran y se omiten en los últimos 3 segundos.
+- Al comenzar cada ejercicio mantiene los tres pulsos rápidos y anuncia por voz “Comienzo serie uno”, “Comienzo serie dos”, etc., hasta la serie treinta.
+- Muestra temporalmente “COMIENZO SERIE N” en la pantalla.
+- Mantiene el final continuo de 5 segundos y no añade descanso tras la última serie.
