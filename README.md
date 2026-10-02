@@ -1,7 +1,7 @@
-# Registro Gimnasio V24.6
+# Registro Gimnasio V25
 
-- Voz «Descanso» al comenzar cada fase de descanso.
-- Voz «Fin de ejercicio» al terminar la última serie.
-- Control independiente de volumen de voz del 0% al 100%.
-- Mantiene separado el volumen de pitidos y el volumen de síntesis de voz.
-- Conserva el resto de funciones de V24.5.
+- La pantalla principal muestra los grupos musculares de forma compacta.
+- Al pulsar un grupo se abre una vista a pantalla completa con solo sus máquinas asociadas.
+- Incluye cabecera fija con botón Volver, nombre, icono y número de máquinas.
+- Dentro del grupo se conservan registro, edición, fotografía, logros y evolución.
+- Mantiene sin cambios el temporizador, historial, calorías, copias y ajustes de V24.6.
