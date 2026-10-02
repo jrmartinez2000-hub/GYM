@@ -1,2 +1,4 @@
-## Registro Gimnasio V26.1 REAL
-Incluye ocultar, restaurar y eliminar definitivamente máquinas.
+## Registro Gimnasio V26.2
+- Corrige la visibilidad de las acciones de máquina.
+- Los botones 📦 Ocultar y ❌ Eliminar aparecen siempre en la fila principal de cada máquina.
+- Conserva Máquinas ocultas en Herramientas avanzadas para restaurar máquinas.
