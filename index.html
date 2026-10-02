@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V25.2</title>
+  <title>Registro Gimnasio V26</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -736,6 +736,9 @@
 
 /* V25: grupos musculares en primer plano */
 .group-focus{display:none;position:fixed;inset:0;z-index:5400;background:#020617;padding:10px;overflow:auto}.group-focus.active{display:block}.group-focus-card{min-height:100%;width:min(100%,900px);margin:auto;background:#0f172a;border:2px solid var(--accent);border-radius:14px;padding:12px}.group-focus-head{position:sticky;top:-10px;z-index:3;margin:-12px -12px 10px;padding:12px;background:#0f172af5;border-bottom:1px solid #334155;display:flex;align-items:center;gap:10px}.group-focus-back{width:46px;height:46px;flex:0 0 46px;border:1.5px solid var(--accent);border-radius:50%;background:#1e293b;color:var(--accent);font-size:1.35rem;font-weight:900}.group-focus-titles{flex:1;min-width:0}.group-focus-title{color:var(--accent);font-size:clamp(1.35rem,5vw,2rem);font-weight:950;overflow-wrap:anywhere}.group-focus-subtitle{color:var(--text-muted);font-size:.88rem}.group-focus-list{display:flex;flex-direction:column;gap:12px}.group-focus-list .card{display:block!important}.group-focus-list .muscle-header{display:none}.muscle-header{border-color:#475569}.muscle-header-arrow{transform:none!important}.group-focus-empty{padding:30px 12px;text-align:center;color:var(--text-muted)}
+
+/* V26: archivado, restauracion y eliminacion definitiva de maquinas */
+.archived-manager{grid-column:1/-1;border:1px solid #475569;border-radius:10px;overflow:hidden}.archived-manager-toggle{width:100%;min-height:50px;border:0;background:#334155;color:var(--accent);font-weight:800;padding:10px 12px;text-align:left;display:flex;justify-content:space-between;align-items:center}.archived-manager-panel{display:none;padding:10px}.archived-manager-panel.visible{display:block}.archived-empty{padding:14px;text-align:center;color:var(--text-muted)}.archived-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px;background:var(--card-bg);border-radius:8px;margin-bottom:8px}.archived-name{font-weight:900;color:var(--accent);overflow-wrap:anywhere}.archived-meta{font-size:.78rem;color:var(--text-muted);margin-top:3px}.archived-actions{display:flex;gap:6px}.btn-archive,.btn-restore,.btn-delete-forever{padding:7px 9px;border-radius:7px;font-weight:800;cursor:pointer}.btn-archive,.btn-restore{border:1px solid #fbbf24;background:transparent;color:#fbbf24}.btn-delete-forever{border:1px solid var(--danger);background:transparent;color:#fca5a5}@media(max-width:520px){.archived-row{grid-template-columns:1fr}.archived-actions{display:grid;grid-template-columns:1fr 1fr}.archived-actions button{width:100%}}
 </style>
 </head>
 <body>
@@ -743,7 +746,7 @@
 
 <section class="evolution-focus" id="evolution-focus"><div class="evolution-focus-card"><div class="evolution-focus-head"><div class="evolution-focus-titles"><div class="evolution-focus-title" id="evolution-focus-title">📈 Evolución</div><div class="evolution-focus-subtitle" id="evolution-focus-subtitle"></div></div><button class="evolution-focus-close" onclick="cerrarEvolucionPrimerPlano()">✕</button></div><div class="evolution-rotate-note">↻ Gira el teléfono si no cambia automáticamente.</div><div class="evolution-focus-toolbar"><div class="evolution-range-buttons"><button class="evolution-range-btn" data-range="30" onclick="cambiarIntervaloEvolucion(30)">30 días</button><button class="evolution-range-btn" data-range="90" onclick="cambiarIntervaloEvolucion(90)">90 días</button><button class="evolution-range-btn" data-range="365" onclick="cambiarIntervaloEvolucion(365)">1 año</button><button class="evolution-range-btn" data-range="total" onclick="cambiarIntervaloEvolucion('total')">Total</button></div><div class="evolution-font-controls"><span>Texto</span><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(-.1)">A−</button><output class="evolution-font-output" id="evolution-font-output">130%</output><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(.1)">A+</button></div></div><div class="evolution-focus-chart" id="evolution-focus-chart"></div><div class="evolution-point-detail" id="evolution-point-detail">Toca un punto para ver sus detalles.</div><div class="evolution-summary" id="evolution-summary"></div></div></section>
   <section class="group-focus" id="group-focus" aria-hidden="true"><div class="group-focus-card"><header class="group-focus-head"><button type="button" class="group-focus-back" onclick="cerrarGrupoPrimerPlano()" aria-label="Volver">←</button><div class="group-focus-titles"><div class="group-focus-title" id="group-focus-title">Grupo muscular</div><div class="group-focus-subtitle" id="group-focus-subtitle"></div></div></header><div class="group-focus-list" id="group-focus-list"></div></div></section>
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V25.2</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V26</span></h1>
 
   <!-- Perfiles -->
   <div class="profiles-section">
@@ -824,6 +827,7 @@
     <button type="button" class="advanced-tools-toggle" id="advanced-tools-toggle" aria-expanded="false" onclick="toggleHerramientasAvanzadas()"><span>⚙️ Herramientas avanzadas</span><span id="advanced-tools-arrow">▼</span></button>
     <div class="advanced-tools-panel" id="advanced-tools-panel"><div class="advanced-tools-grid">
       <section class="group-manager"><button type="button" class="group-manager-toggle" onclick="toggleGestorGrupos()">🗂️ Gestionar grupos musculares</button><div class="group-manager-panel" id="group-manager-panel"><div id="group-manager-list"></div><div class="group-add"><input id="nuevo-grupo-icono" maxlength="4" value="📦" aria-label="Icono"><input id="nuevo-grupo-nombre" placeholder="Nombre del nuevo grupo"><button type="button" onclick="anadirGrupoMuscular()">➕ Añadir</button></div></div></section>
+      <section class="archived-manager"><button type="button" class="archived-manager-toggle" onclick="toggleMaquinasOcultas()"><span>📦 Máquinas ocultas</span><span id="archived-count">0</span></button><div class="archived-manager-panel" id="archived-manager-panel"><div id="archived-manager-list"></div></div></section>
       <section class="font-settings">
         <button type="button" class="font-settings-toggle" id="font-settings-toggle" aria-expanded="false" onclick="toggleAjustesFuente()"><span>🔠 Tamaño de letra</span><span id="font-settings-arrow">▼</span></button>
         <div class="font-settings-panel" id="font-settings-panel">
@@ -954,7 +958,7 @@
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V25.1',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V26',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -972,7 +976,7 @@
     function estadoAcordeonesPrincipales(){try{return JSON.parse(localStorage.getItem(claveAcordeonesPrincipales())||'{}')}catch(e){return {}}}  
     function aplicarAcordeonesPrincipales(){const e=estadoAcordeonesPrincipales();['machines','history'].forEach(tipo=>{const sec=document.getElementById(`${tipo}-accordion`),btn=sec?.querySelector('.main-accordion-toggle'),abierto=e[tipo]===true;sec?.classList.toggle('open',abierto);btn?.setAttribute('aria-expanded',String(abierto));});}  
     function toggleAcordeonPrincipal(tipo){const e=estadoAcordeonesPrincipales();e[tipo]=!e[tipo];localStorage.setItem(claveAcordeonesPrincipales(),JSON.stringify(e));aplicarAcordeonesPrincipales();if(tipo==='history'&&e[tipo])renderizarHistorial();if(tipo==='machines'&&e[tipo])renderizarLista();}  
-    function actualizarContadoresPrincipales(){const m=document.getElementById('machines-main-count'),h=document.getElementById('history-main-count');if(m)m.textContent=maquinas.length;if(h){const dias=new Set(historialSesiones.map(x=>x.fecha?x.fecha.split(' ')[0]:'Sin fecha'));h.textContent=dias.size;}}  
+    function actualizarContadoresPrincipales(){const m=document.getElementById('machines-main-count'),h=document.getElementById('history-main-count');if(m)m.textContent=maquinas.filter(x=>!x.archivada).length;if(h){const dias=new Set(historialSesiones.map(x=>x.fecha?x.fecha.split(' ')[0]:'Sin fecha'));h.textContent=dias.size;}}  
     function toggleHerramientasAvanzadas(){const p=document.getElementById('advanced-tools-panel'),b=document.getElementById('advanced-tools-toggle'),a=document.getElementById('advanced-tools-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
     const FUENTES_PREDETERMINADAS={global:1,machines:1,achievements:1,data:1,history:1,datetime:1,buttons:1,profiles:1};
     let ajustesFuente={...FUENTES_PREDETERMINADAS};
@@ -1001,13 +1005,19 @@
     async function abrirGrupoPrimerPlano(id){
       const g=grupoPorId(id),panel=document.getElementById('group-focus'),lista=document.getElementById('group-focus-list');
       grupoPrimerPlanoId=id;document.getElementById('group-focus-title').textContent=`${g.icono} ${g.nombre}`;
-      const cantidad=maquinas.filter(m=>normalizarGrupoId(m.grupoId||m.grupoMuscular)===id).length;document.getElementById('group-focus-subtitle').textContent=`${cantidad} ${cantidad===1?'máquina asociada':'máquinas asociadas'}`;
+      const cantidad=maquinas.filter(m=>!m.archivada&&normalizarGrupoId(m.grupoId||m.grupoMuscular)===id).length;document.getElementById('group-focus-subtitle').textContent=`${cantidad} ${cantidad===1?'máquina asociada':'máquinas asociadas'}`;
       lista.innerHTML='';panel.classList.add('active');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
       await renderizarLista();
     }
     function moverTarjetasGrupoAlPrimerPlano(){if(!grupoPrimerPlanoId)return;const lista=document.getElementById('group-focus-list'),origen=document.getElementById('lista-maquinas');lista.innerHTML='';[...origen.querySelectorAll(`.card[data-group-id="${grupoPrimerPlanoId}"]`)].forEach(c=>{c.classList.remove('muscle-hidden');lista.appendChild(c)});if(!lista.children.length)lista.innerHTML='<div class="group-focus-empty">No hay máquinas asociadas a este grupo.</div>';}
     function cerrarGrupoPrimerPlano(){const panel=document.getElementById('group-focus');panel.classList.remove('active');panel.setAttribute('aria-hidden','true');grupoPrimerPlanoId=null;document.body.style.overflow=grupoPrimerPlanoId?'hidden':'';renderizarLista();}
     window.addEventListener('popstate',()=>{if(grupoPrimerPlanoId)cerrarGrupoPrimerPlano()});
+    function maquinasOcultas(){return maquinas.filter(m=>m.archivada===true);}
+    function toggleMaquinasOcultas(){const p=document.getElementById('archived-manager-panel'),v=p.classList.toggle('visible');if(v)renderizarMaquinasOcultas();}
+    function renderizarMaquinasOcultas(){const c=document.getElementById('archived-manager-list'),contador=document.getElementById('archived-count'),lista=maquinasOcultas();if(contador)contador.textContent=String(lista.length);if(!c)return;if(!lista.length){c.innerHTML='<div class="archived-empty">No hay máquinas ocultas.</div>';return;}c.innerHTML=lista.map(m=>{const g=grupoPorId(normalizarGrupoId(m.grupoId||m.grupoMuscular)),n=historialSesiones.filter(x=>x.maquinaId===m.id||(!x.maquinaId&&normalizarNombre(x.maquina)===normalizarNombre(m.nombre))).length;return `<div class="archived-row"><div><div class="archived-name">${g.icono} ${escaparHTML(m.nombre)}</div><div class="archived-meta">${n} ${n===1?'registro conservado':'registros conservados'}</div></div><div class="archived-actions"><button class="btn-restore" onclick="restaurarMaquina(${JSON.stringify(m.id)})">↩ Restaurar</button><button class="btn-delete-forever" onclick="eliminarMaquinaDefinitivamente(${JSON.stringify(m.id)})">❌ Eliminar</button></div></div>`}).join('');}
+    function ocultarMaquina(id){const m=maquinas.find(x=>x.id===id);if(!m)return;if(!confirm(`¿Ocultar "${m.nombre}" de la lista activa?\n\nSe conservarán el historial, las calorías, la evolución y la fotografía.`))return;m.archivada=true;maquinaEditandoId=null;guardarDatos();renderizarLista();renderizarMaquinasOcultas();mostrarToast('📦 Máquina ocultada · historial conservado');}
+    function restaurarMaquina(id){const m=maquinas.find(x=>x.id===id);if(!m)return;m.archivada=false;guardarDatos();renderizarLista();renderizarMaquinasOcultas();mostrarToast('↩ Máquina restaurada');}
+    async function eliminarMaquinaDefinitivamente(id){const m=maquinas.find(x=>x.id===id);if(!m)return;const vinculados=historialSesiones.filter(x=>x.maquinaId===id||(!x.maquinaId&&normalizarNombre(x.maquina)===normalizarNombre(m.nombre))).length;const aviso=`¿Eliminar definitivamente "${m.nombre}"?\n\nTambién se eliminarán ${vinculados} registro(s) del historial, su evolución y su fotografía.\n\nEsta acción no se puede deshacer.`;if(!confirm(aviso))return;historialSesiones=historialSesiones.filter(x=>!(x.maquinaId===id||(!x.maquinaId&&normalizarNombre(x.maquina)===normalizarNombre(m.nombre))));maquinas=maquinas.filter(x=>x.id!==id);guardarDatos();guardarHistorial();await eliminarFotoDB(id);maquinaEditandoId=null;renderizarLista();renderizarMaquinasOcultas();mostrarToast('❌ Máquina y datos eliminados definitivamente');}
     function toggleGestorGrupos(){const p=document.getElementById('group-manager-panel');p.classList.toggle('visible');renderizarGestorGrupos();}
     function renderizarGestorGrupos(){const c=document.getElementById('group-manager-list');if(!c)return;c.innerHTML=gruposMusculares.map(g=>`<div class="group-row"><input class="group-icon" id="gi-${g.id}" value="${escaparHTML(g.icono)}" maxlength="4"><input id="gn-${g.id}" value="${escaparHTML(g.nombre)}"><div class="group-actions"><button class="btn-group-save" onclick="renombrarGrupo('${g.id}')">Guardar</button>${g.id!=='otro'?`<button class="btn-group-delete" onclick="eliminarGrupo('${g.id}')">Eliminar</button>`:''}</div></div>`).join('');}
     function renombrarGrupo(id){const nombre=document.getElementById(`gn-${id}`).value.trim(),icono=document.getElementById(`gi-${id}`).value.trim()||'📦';if(!nombre)return alert('El nombre no puede estar vacío.');if(gruposMusculares.some(g=>g.id!==id&&normalizarNombre(g.nombre)===normalizarNombre(nombre)))return alert('Ya existe un grupo con ese nombre.');const g=grupoPorId(id);g.nombre=nombre;g.icono=icono;guardarCatalogoGrupos();poblarGrupos();renderizarGestorGrupos();renderizarLista();renderizarHistorial();mostrarToast('✓ Grupo actualizado');}
@@ -1150,6 +1160,7 @@
       renderizarPerfiles();
       renderizarLista();
       renderizarHistorial();
+      renderizarMaquinasOcultas();
     }
 
     function mostrarPanelNuevoPerfil() {
@@ -1371,12 +1382,12 @@ behavior: 'smooth'
       const contenedor = document.getElementById('lista-maquinas');
       contenedor.innerHTML = '';
 
-      if (maquinas.length === 0) {
+      if (maquinas.filter(m=>!m.archivada).length === 0) {
         contenedor.innerHTML = `<p style="text-align:center; color: var(--text-muted); font-size: 1rem; margin: 16px 0;">No hay máquinas para ${escaparHTML(perfilActual)}. ¡Añade una!</p>`;
         return;
       }
 
-      const visibles=maquinas.filter(m=>filtroGrupo==='todos'||normalizarGrupoId(m.grupoId||m.grupoMuscular)===filtroGrupo).slice().sort((a,b)=>gruposMusculares.findIndex(g=>g.id===normalizarGrupoId(a.grupoId||a.grupoMuscular))-gruposMusculares.findIndex(g=>g.id===normalizarGrupoId(b.grupoId||b.grupoMuscular)));
+      const visibles=maquinas.filter(m=>!m.archivada&&(filtroGrupo==='todos'||normalizarGrupoId(m.grupoId||m.grupoMuscular)===filtroGrupo)).slice().sort((a,b)=>gruposMusculares.findIndex(g=>g.id===normalizarGrupoId(a.grupoId||a.grupoMuscular))-gruposMusculares.findIndex(g=>g.id===normalizarGrupoId(b.grupoId||b.grupoMuscular)));
       const conteos={};visibles.forEach(m=>{const id=normalizarGrupoId(m.grupoId||m.grupoMuscular);conteos[id]=(conteos[id]||0)+1});let anterior=null;
       for (const m of visibles) {const grupoId=normalizarGrupoId(m.grupoId||m.grupoMuscular);if(grupoId!==anterior){contenedor.appendChild(crearCabeceraGrupo(grupoId,conteos[grupoId]));anterior=grupoId;}
         const card = document.createElement('div');
@@ -1588,7 +1599,7 @@ behavior: 'smooth'
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V25.1_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V26_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
@@ -1926,14 +1937,6 @@ behavior: 'smooth'
       mostrarToast('✅ Máquina agregada');
     });
 
-    async function eliminarMaquina(id) {
-      if (confirm('¿Eliminar esta máquina por completo?')) {
-        maquinas = maquinas.filter(m => m.id !== id);
-        guardarDatos();
-        await eliminarFotoDB(id);
-        renderizarLista();
-      }
-    }
 
     const TIMER_KEY='gym_interval_timer_v193',TIMER_SETTINGS_KEY='gym_interval_timer_settings_v193';let timerInterval=null,wakeLockSentinel=null,avisosCuentaAtras=new Set(),avisosIntervalo=new Set(),wakeAudioContext=null,timerState={running:false,paused:false,phase:'idle',seriesCurrent:0,seriesTotal:3,remaining:0,endAt:0};
     function toggleAjustesTemporizador(){const p=document.getElementById('timer-settings-panel'),b=document.getElementById('timer-settings-toggle'),a=document.getElementById('timer-settings-arrow'),v=p.classList.toggle('visible');b.setAttribute('aria-expanded',String(v));a.textContent=v?'▲':'▼';}
@@ -1980,10 +1983,10 @@ behavior: 'smooth'
       cargarCatalogoGrupos();
       perfiles=cargarPerfiles();perfilActual=localStorage.getItem('perfil_activo')||perfiles[0];maquinas=cargarDatos();historialSesiones=cargarHistorial();
       cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();
-      cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();
+      cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();renderizarMaquinasOcultas();
       await crearCopiaAutomatica();
     }
-    arrancarAplicacion().catch(err=>{console.error(err);cargarCatalogoGrupos();cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();});
+    arrancarAplicacion().catch(err=>{console.error(err);cargarCatalogoGrupos();cargarMaquinaExpandida();cargarGruposEstado();poblarGrupos();aplicarAcordeonesPrincipales();cargarAjustesFuente();renderizarPerfiles();renderizarLista();renderizarHistorial();renderizarMaquinasOcultas();});
   </script>
 
   <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
