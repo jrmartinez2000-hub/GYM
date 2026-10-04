@@ -1,6 +1,6 @@
-## Registro Gimnasio V26.6
-- Añade un botón de temporizador dentro del registro de cada ejercicio.
-- El temporizador contextual muestra el nombre del ejercicio.
-- Al finalizar la última serie, vuelve automáticamente al formulario del ejercicio conservando los datos introducidos.
-- Al cancelar un temporizador contextual, también vuelve al formulario.
-- El temporizador general mantiene su comportamiento anterior.
+## Registro Gimnasio V26.6.2
+- Mantiene la corrección del temporizador contextual de la V26.6.1.
+- Inicio de serie: la voz comienza después de terminar los tres tonos.
+- Descanso: la voz comienza después de terminar los cuatro pitidos de cambio.
+- Fin del ejercicio: la voz comienza después de terminar el aviso continuo de cinco segundos.
+- Al cancelar se eliminan avisos de voz pendientes para evitar superposiciones.
