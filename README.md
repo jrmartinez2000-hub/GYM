@@ -1,7 +1,9 @@
-## Registro Gimnasio V26.6.3
-- Mantiene la pantalla del temporizador bloqueada cuando termina.
-- Para continuar es obligatorio mantener pulsado el botón durante dos segundos.
-- Se aplica tanto al temporizador iniciado desde una máquina como al iniciado desde la pantalla principal.
-- Si procede de una máquina, después de mantener pulsado vuelve al formulario conservando los datos.
-- Si procede de la pantalla principal, después de mantener pulsado vuelve a la pantalla principal.
-- Mantiene los avisos de voz secuenciales de la V26.6.2.
+### Registro Gimnasio V26.7
+- Parte de la versión estable V26.6.3 y conserva su lógica de datos y temporizador.
+- Cambia los iconos de Espalda a 🪽 y Hombros a 🎯.
+- Mejora visualmente la pantalla del temporizador con tarjeta de serie y colores por fase.
+- Destaca el nombre del ejercicio durante el temporizador.
+- Resalta temporalmente el botón Registrar ejercicio al volver del temporizador contextual.
+- Homogeneiza los indicadores de récord, series y repeticiones.
+- Muestra el número de máquinas ocultas entre paréntesis.
+- Aumenta el tamaño del logotipo principal.
