@@ -1,9 +1,6 @@
-### Registro Gimnasio V26.7
-- Parte de la versión estable V26.6.3 y conserva su lógica de datos y temporizador.
-- Cambia los iconos de Espalda a 🪽 y Hombros a 🎯.
-- Mejora visualmente la pantalla del temporizador con tarjeta de serie y colores por fase.
-- Destaca el nombre del ejercicio durante el temporizador.
-- Resalta temporalmente el botón Registrar ejercicio al volver del temporizador contextual.
-- Homogeneiza los indicadores de récord, series y repeticiones.
-- Muestra el número de máquinas ocultas entre paréntesis.
-- Aumenta el tamaño del logotipo principal.
+### Registro Gimnasio V26.8
+- El temporizador contextual usa el número de series introducido en el formulario de la máquina.
+- El temporizador principal sigue usando el número de series de Ajustes.
+- Los tiempos de preparación, ejercicio y descanso siguen siendo los configurados en Ajustes.
+- Se valida que las series contextuales estén entre 1 y 30.
+- Conserva las mejoras visuales previstas para V26.7.
