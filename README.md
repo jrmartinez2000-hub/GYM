@@ -1,7 +1,9 @@
-### Registro Gimnasio V26.9
-- Calcula el volumen de fuerza como series × repeticiones × peso.
-- Presenta el volumen total de cada registro en el historial.
-- En la gráfica de cada máquina de fuerza permite elegir entre Peso y Volumen.
-- Para Peso toma el mayor peso del día; para Volumen suma el volumen de los registros del día.
-- Las máquinas de cardio mantienen su gráfica de tiempo.
-- Conserva el temporizador contextual por número de series de la V26.8.
+### Registro Gimnasio V27.0
+- Calcula el volumen estimado desde los datos de la última serie.
+- Fórmula: repeticiones medias = repeticiones última serie + (series - 1) × 0,5.
+- Volumen estimado = peso × series × repeticiones medias.
+- No requiere introducir ningún dato adicional.
+- La gráfica permite elegir entre Peso y Volumen estimado.
+- Para varias anotaciones de la misma máquina en un día, suma sus volúmenes estimados.
+- Cardio mantiene la gráfica de tiempo.
+- Conserva el temporizador contextual que usa las series introducidas en el registro.
