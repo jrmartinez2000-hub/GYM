@@ -1,6 +1,7 @@
-### Registro Gimnasio V26.8
-- El temporizador contextual usa el número de series introducido en el formulario de la máquina.
-- El temporizador principal sigue usando el número de series de Ajustes.
-- Los tiempos de preparación, ejercicio y descanso siguen siendo los configurados en Ajustes.
-- Se valida que las series contextuales estén entre 1 y 30.
-- Conserva las mejoras visuales previstas para V26.7.
+### Registro Gimnasio V26.9
+- Calcula el volumen de fuerza como series × repeticiones × peso.
+- Presenta el volumen total de cada registro en el historial.
+- En la gráfica de cada máquina de fuerza permite elegir entre Peso y Volumen.
+- Para Peso toma el mayor peso del día; para Volumen suma el volumen de los registros del día.
+- Las máquinas de cardio mantienen su gráfica de tiempo.
+- Conserva el temporizador contextual por número de series de la V26.8.
