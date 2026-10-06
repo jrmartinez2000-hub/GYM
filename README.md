@@ -1,9 +1,10 @@
-# Registro Gimnasio V28.1
+# Registro Gimnasio V28.2
 
-- Mantiene todas las funciones de la V28.0.
-- Añade selector Peso / Volumen estimado en las gráficas de ejercicios de fuerza.
-- Cardio conserva exclusivamente la gráfica de tiempo.
-- Repeticiones estimadas por serie: R_i = R_última + (S-i) × 1.
-- Repeticiones medias: R_última + (S-1) × 0,5.
-- Volumen estimado: peso × series × repeticiones medias.
-- Si hay varios registros de la misma máquina el mismo día, suma su volumen estimado.
+- Conserva las funciones de V28.1.
+- Solo en la gráfica de volumen, el eje Y termina exactamente en el 110% del volumen máximo histórico diario de esa máquina.
+- El límite se mantiene al cambiar entre 30 días, 90 días, 1 año y Total.
+- El historial diario muestra calorías y duración estimada de la sesión.
+- La sesión termina en la hora del último registro del día.
+- Si el primer ejercicio es cardio, el inicio se estima restando su tiempo registrado.
+- Si el primer ejercicio es de fuerza, el inicio se estima restando espera inicial, ejercicios y descansos del temporizador según el número de series.
+- Los nuevos registros guardan además el inicio estimado para mantener el cálculo estable aunque cambien después los ajustes del temporizador.
