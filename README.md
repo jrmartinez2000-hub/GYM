@@ -1,16 +1,9 @@
-# Registro Gimnasio V28.0
+# Registro Gimnasio V28.1
 
-## Escaneo OCR de máquinas
-- Nueva opción «📷 Escanear máquina» en el menú Añadir Nueva Máquina.
-- Utiliza Tesseract.js v5 en el navegador para reconocer texto en español e inglés.
-- Selecciona la línea más probable como nombre, normaliza nombres habituales y sugiere el grupo muscular.
-- El nombre detectado queda editable antes de crear la máquina.
-- La fotografía se guarda automáticamente como foto principal al confirmar.
-- Muestra el progreso y permite quitar la foto.
-
-## Conservado
-- Visor con zoom de V27.4.
-- Degradados automáticos por grupo.
-- Historial, perfiles, importación, temporizadores y almacenamiento existentes.
-
-La primera ejecución del OCR requiere conexión para descargar Tesseract.js y los datos de idioma.
+- Mantiene todas las funciones de la V28.0.
+- Añade selector Peso / Volumen estimado en las gráficas de ejercicios de fuerza.
+- Cardio conserva exclusivamente la gráfica de tiempo.
+- Repeticiones estimadas por serie: R_i = R_última + (S-i) × 1.
+- Repeticiones medias: R_última + (S-1) × 0,5.
+- Volumen estimado: peso × series × repeticiones medias.
+- Si hay varios registros de la misma máquina el mismo día, suma su volumen estimado.
