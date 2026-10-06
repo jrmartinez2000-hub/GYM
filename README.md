@@ -1,9 +1,9 @@
-# Registro Gimnasio V27.3
+# Registro Gimnasio V27.4
 
-- Integra directamente el parche de degradados dentro de `index.html`.
-- Cada recuadro de grupo muscular de la pantalla principal recibe un degradado propio.
-- Los grupos predeterminados conservan colores diferenciados.
-- Cualquier grupo nuevo obtiene automáticamente una paleta estable derivada de su identificador.
-- Un observador aplica los colores cuando la lista se vuelve a renderizar, al cambiar de perfil o al añadir grupos.
-- No requiere cargar un archivo JavaScript adicional.
-- Mantiene los datos de la instalación anterior porque no modifica las claves de almacenamiento.
+- Corrige el visor de fotografías abierto desde una pantalla de grupo muscular.
+- El visor aparece por encima del grupo y, al cerrarlo, se mantiene el grupo abierto.
+- Zoom con pellizco entre 1x y 5x.
+- Doble toque o doble clic para alternar entre tamaño normal y 2,5x.
+- Arrastre de la fotografía cuando está ampliada.
+- Zoom con rueda en escritorio.
+- Mantiene los degradados y el resto de funciones de la V27.3.

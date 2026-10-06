@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V27.3</title>
+  <title>Registro Gimnasio V27.4</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -755,13 +755,22 @@
 /* V26.6.1: el temporizador contextual siempre queda por encima del grupo y del registro */
 .timer-touch-lock{z-index:8000!important}.timer-finish-flash{z-index:8100!important}.timer-touch-lock.active{display:flex!important}.timer-touch-lock .timer-exercise-name{display:block}.timer-touch-lock .timer-exercise-name:empty{display:none}
 
-/* V27.3: pantalla final protegida hasta mantener pulsado 2 segundos */
+/* V27.4: pantalla final protegida hasta mantener pulsado 2 segundos */
 .timer-touch-lock.finished{display:flex!important}.timer-touch-lock.finished .timer-lock-hold{display:block!important}.timer-touch-lock.finished .timer-lock-controls{display:none!important}.timer-touch-lock.finished .timer-lock-phase{color:#22c55e}.timer-touch-lock.finished .timer-lock-time{color:#22c55e}.timer-touch-lock.finished .timer-lock-hold{border-color:#22c55e}.timer-touch-lock.finished .timer-lock-progress{background:#22c55e55}
 
-/* V27.3 PREMIUM + GRADIENTES POR GRUPO */
+/* V27.4 PREMIUM + GRADIENTES POR GRUPO */
 :root{--bg:#060914;--card-bg:rgba(18,27,48,.94);--accent:#51d5ff;--text:#f5f8ff;--text-muted:#9ba9c3;--danger:#ff5d73;--success:#2ee69d;--input-bg:rgba(36,49,78,.9)}html{background:radial-gradient(circle at 15% -10%,#18365f,transparent 38%),radial-gradient(circle at 95% 10%,#311b58,transparent 32%),var(--bg);background-attachment:fixed}body{background:transparent;min-height:100vh}.app-title,.profiles-section,.panel,.main-accordion,.advanced-tools,.card{background:linear-gradient(145deg,rgba(24,36,62,.97),rgba(13,21,39,.96));border-color:rgba(137,164,211,.22);box-shadow:0 12px 30px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.05)}.app-title{padding:14px 10px;border-radius:20px}.app-title-logo{width:68px;height:68px;border-radius:17px;box-shadow:0 0 24px rgba(81,213,255,.3)}.btn-profile.active{background:linear-gradient(135deg,#46d8ff,#8b5cf6);color:#fff}.btn-main{background:linear-gradient(135deg,rgba(81,213,255,.16),rgba(139,92,246,.18))}.machine-summary{background:linear-gradient(100deg,rgba(25,39,66,.97),rgba(16,25,46,.97))}.register-box{background:linear-gradient(145deg,rgba(34,49,78,.96),rgba(25,35,59,.97))}input:focus,select:focus{outline:0;border-color:#51d5ff;box-shadow:0 0 0 3px rgba(81,213,255,.14)}.btn-register,.btn-submit{background:linear-gradient(135deg,#40dca2,#25bde8)}
 .group-focus{--ga:#51d5ff;--gb:#8b5cf6;--gr:81,213,255;background:radial-gradient(circle at 50% -5%,rgba(var(--gr),.28),transparent 40%),#020617}.group-focus[data-group-theme="piernas"]{--ga:#2563eb;--gb:#06b6d4;--gr:37,99,235}.group-focus[data-group-theme="pecho"]{--ga:#ef4444;--gb:#f97316;--gr:239,68,68}.group-focus[data-group-theme="espalda"]{--ga:#10b981;--gb:#06b6d4;--gr:16,185,129}.group-focus[data-group-theme="hombros"]{--ga:#f59e0b;--gb:#f97316;--gr:245,158,11}.group-focus[data-group-theme="biceps"]{--ga:#8b5cf6;--gb:#6366f1;--gr:139,92,246}.group-focus[data-group-theme="triceps"]{--ga:#ec4899;--gb:#a855f7;--gr:236,72,153}.group-focus[data-group-theme="core"]{--ga:#facc15;--gb:#f97316;--gr:250,204,21}.group-focus[data-group-theme="cardio"]{--ga:#06b6d4;--gb:#22d3ee;--gr:6,182,212}.group-focus[data-group-theme="otro"]{--ga:#64748b;--gb:#475569;--gr:100,116,139}.group-focus .group-focus-card{position:relative;overflow:hidden;border-color:var(--ga);background:linear-gradient(150deg,rgba(var(--gr),.22),rgba(8,14,29,.98) 32%,rgba(9,15,31,.98) 72%,rgba(var(--gr),.13));box-shadow:0 22px 55px rgba(0,0,0,.5),0 0 36px rgba(var(--gr),.17)}.group-focus .group-focus-card:before{content:'';position:absolute;inset:0 0 auto;height:190px;pointer-events:none;background:radial-gradient(circle at 18% 0,rgba(var(--gr),.36),transparent 50%)}.group-focus .group-focus-head{background:linear-gradient(100deg,rgba(var(--gr),.28),rgba(8,14,29,.95) 50%,rgba(var(--gr),.13));border-bottom:1px solid rgba(var(--gr),.32);box-shadow:0 10px 28px rgba(0,0,0,.25)}.group-focus .group-focus-title{position:relative;color:#fff;text-transform:uppercase;letter-spacing:.055em;text-shadow:0 0 22px rgba(var(--gr),.5)}.group-focus .group-focus-subtitle{position:relative;color:#dcecff}.group-focus .group-focus-back{position:relative;border-color:var(--ga);color:#fff;background:linear-gradient(135deg,var(--ga),var(--gb));box-shadow:0 7px 20px rgba(var(--gr),.3)}.group-focus .group-focus-list{position:relative;padding:4px 2px 12px}.group-focus .group-focus-list .card{border-color:rgba(var(--gr),.28);background:linear-gradient(105deg,rgba(var(--gr),.16),rgba(18,27,48,.97) 38%,rgba(11,18,35,.98));box-shadow:0 10px 25px rgba(0,0,0,.25),inset 3px 0 0 rgba(var(--gr),.72)}.group-focus .group-focus-list .machine-summary{background:linear-gradient(100deg,rgba(var(--gr),.18),rgba(18,28,50,.95) 50%,rgba(var(--gr),.09))}.group-focus .group-focus-list .machine-summary-name{color:#fff;text-shadow:0 0 16px rgba(var(--gr),.34)}.group-focus .group-focus-list .machine-arrow{color:var(--ga)}.group-focus .group-focus-list .machine-summary-photo-button{border-color:var(--ga);box-shadow:0 6px 18px rgba(var(--gr),.22)}@media(prefers-reduced-motion:no-preference){.group-focus.active .group-focus-head{animation:gfIn .28s ease both}.group-focus.active .group-focus-list .card{animation:gcIn .25s ease both}@keyframes gfIn{from{opacity:.5;transform:translateY(-5px)}to{opacity:1;transform:none}}@keyframes gcIn{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}}
 
+
+/* V27.4: visor de fotos por encima de grupos y con zoom tactil */
+.modal-overlay{z-index:9500!important;overflow:hidden;touch-action:none}
+.modal-close-btn{z-index:9503!important}
+.modal-photo-content{position:relative;z-index:9501!important;width:100%!important;height:100%!important;max-height:none!important;overflow:hidden;touch-action:none;justify-content:center!important}
+.modal-img{max-width:95%;max-height:78vh;transform-origin:center center;will-change:transform;touch-action:none;user-select:none;-webkit-user-drag:none;cursor:zoom-in}
+.modal-img.zoomed{cursor:grab}.modal-img.dragging{cursor:grabbing}
+.photo-zoom-hint{position:absolute;left:50%;bottom:76px;transform:translateX(-50%);z-index:9502;background:rgba(15,23,42,.82);color:#e2e8f0;border:1px solid #64748b;border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:800;pointer-events:none;white-space:nowrap}
+.modal-photo-actions{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:9502;width:min(94vw,520px)}
 </style>
 </head>
 <body>
@@ -769,7 +778,7 @@
 
 <section class="evolution-focus" id="evolution-focus"><div class="evolution-focus-card"><div class="evolution-focus-head"><div class="evolution-focus-titles"><div class="evolution-focus-title" id="evolution-focus-title">📈 Evolución</div><div class="evolution-focus-subtitle" id="evolution-focus-subtitle"></div></div><button class="evolution-focus-close" onclick="cerrarEvolucionPrimerPlano()">✕</button></div><div class="evolution-rotate-note">↻ Gira el teléfono si no cambia automáticamente.</div><div class="evolution-focus-toolbar"><div class="evolution-range-buttons"><button class="evolution-range-btn" data-range="30" onclick="cambiarIntervaloEvolucion(30)">30 días</button><button class="evolution-range-btn" data-range="90" onclick="cambiarIntervaloEvolucion(90)">90 días</button><button class="evolution-range-btn" data-range="365" onclick="cambiarIntervaloEvolucion(365)">1 año</button><button class="evolution-range-btn" data-range="total" onclick="cambiarIntervaloEvolucion('total')">Total</button></div><div class="evolution-font-controls"><span>Texto</span><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(-.1)">A−</button><output class="evolution-font-output" id="evolution-font-output">130%</output><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(.1)">A+</button></div></div><div class="evolution-focus-chart" id="evolution-focus-chart"></div><div class="evolution-point-detail" id="evolution-point-detail">Toca un punto para ver sus detalles.</div><div class="evolution-summary" id="evolution-summary"></div></div></section>
   <section class="group-focus" id="group-focus" aria-hidden="true"><div class="group-focus-card"><header class="group-focus-head"><button type="button" class="group-focus-back" onclick="cerrarGrupoPrimerPlano()" aria-label="Volver">←</button><div class="group-focus-titles"><div class="group-focus-title" id="group-focus-title">Grupo muscular</div><div class="group-focus-subtitle" id="group-focus-subtitle"></div></div></header><div class="group-focus-list" id="group-focus-list"></div></div></section>
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V27.3</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V27.4</span></h1>
   <div class="profile-access-row" id="profile-access-row">
     <button class="profile-side-button profile-timer-button" id="timer-main-btn-top" onclick="iniciarTemporizadorPrincipal()" title="Iniciar temporizador" aria-label="Iniciar temporizador">⏱️</button>
   <div class="profiles-section">
@@ -908,6 +917,7 @@
     <button class="modal-close-btn" type="button" onclick="cerrarFotoModal()">✕</button>
     <div class="modal-photo-content" onclick="event.stopPropagation()">
       <img id="img-modal-fullscreen" class="modal-img" src="" alt="Vista ampliada">
+      <div class="photo-zoom-hint" id="photo-zoom-hint">Pellizca o toca dos veces para ampliar</div>
       <div class="modal-photo-actions">
         <button type="button" class="modal-change-photo" onclick="cambiarFotoDesdeModal()">📷 Cambiar foto</button>
         <button type="button" class="modal-delete-photo" onclick="eliminarFotoDesdeModal()">🗑️ Eliminar foto</button>
@@ -1002,7 +1012,7 @@
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V27.3',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V27.4',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -1662,7 +1672,7 @@ behavior: 'smooth'
         return;
       }
       const fechaHoy = new Date().toISOString().slice(0, 10);
-      XLSX.writeFile(libro, `Informe_Gimnasio_V27.3_${fechaHoy}.xlsx`);
+      XLSX.writeFile(libro, `Informe_Gimnasio_V27.4_${fechaHoy}.xlsx`);
     }
     /* LECTURA Y FUSIÓN DE ARCHIVOS EXCEL (.XLSX) ACTUALIZANDO HISTORIAL Y UI EN VIVO */
     document.getElementById('input-excel-file').addEventListener('change', function(e) {
@@ -1930,8 +1940,20 @@ behavior: 'smooth'
     }
 
     let maquinaFotoModalId=null;
-    function abrirFotoModal(src,id) { maquinaFotoModalId=id; document.getElementById('img-modal-fullscreen').src=src; document.getElementById('modal-foto').classList.add('active'); }
-    function cerrarFotoModal() { document.getElementById('modal-foto').classList.remove('active'); document.getElementById('img-modal-fullscreen').src=''; maquinaFotoModalId=null; }
+    let fotoZoom={escala:1,x:0,y:0,pointers:new Map(),distancia:0,escalaInicio:1,xInicio:0,yInicio:0,arrastrando:false,ultimoToque:0};
+    function limitarFotoZoom(){const img=document.getElementById('img-modal-fullscreen'),rect=img.getBoundingClientRect();const maxX=Math.max(0,(rect.width*(fotoZoom.escala-1))/2),maxY=Math.max(0,(rect.height*(fotoZoom.escala-1))/2);fotoZoom.x=Math.max(-maxX,Math.min(maxX,fotoZoom.x));fotoZoom.y=Math.max(-maxY,Math.min(maxY,fotoZoom.y));}
+    function aplicarFotoZoom(){const img=document.getElementById('img-modal-fullscreen');limitarFotoZoom();img.style.transform=`translate3d(${fotoZoom.x}px,${fotoZoom.y}px,0) scale(${fotoZoom.escala})`;img.classList.toggle('zoomed',fotoZoom.escala>1.01);const h=document.getElementById('photo-zoom-hint');if(h)h.style.display=fotoZoom.escala>1.01?'none':'';}
+    function reiniciarFotoZoom(){fotoZoom.escala=1;fotoZoom.x=0;fotoZoom.y=0;fotoZoom.pointers.clear();fotoZoom.distancia=0;fotoZoom.arrastrando=false;const img=document.getElementById('img-modal-fullscreen');img?.classList.remove('zoomed','dragging');if(img)img.style.transform='translate3d(0,0,0) scale(1)';const h=document.getElementById('photo-zoom-hint');if(h)h.style.display='';}
+    function abrirFotoModal(src,id) { maquinaFotoModalId=id;reiniciarFotoZoom();document.getElementById('img-modal-fullscreen').src=src;document.getElementById('modal-foto').classList.add('active');document.body.style.overflow='hidden'; }
+    function cerrarFotoModal() { document.getElementById('modal-foto').classList.remove('active');document.getElementById('img-modal-fullscreen').src='';reiniciarFotoZoom();maquinaFotoModalId=null;document.body.style.overflow=grupoPrimerPlanoId?'hidden':''; }
+    function distanciaPuntos(a,b){return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}
+    (()=>{const visor=document.getElementById('modal-foto'),img=document.getElementById('img-modal-fullscreen'),contenido=visor?.querySelector('.modal-photo-content');if(!visor||!img||!contenido)return;
+      contenido.addEventListener('pointerdown',e=>{if(e.target.closest('.modal-photo-actions,.modal-close-btn'))return;e.preventDefault();contenido.setPointerCapture?.(e.pointerId);fotoZoom.pointers.set(e.pointerId,e);fotoZoom.xInicio=fotoZoom.x;fotoZoom.yInicio=fotoZoom.y;if(fotoZoom.pointers.size===1){fotoZoom.arrastrando=true;fotoZoom.inicioX=e.clientX;fotoZoom.inicioY=e.clientY;img.classList.add('dragging')}else if(fotoZoom.pointers.size===2){const p=[...fotoZoom.pointers.values()];fotoZoom.distancia=distanciaPuntos(p[0],p[1]);fotoZoom.escalaInicio=fotoZoom.escala;fotoZoom.arrastrando=false;img.classList.remove('dragging')}});
+      contenido.addEventListener('pointermove',e=>{if(!fotoZoom.pointers.has(e.pointerId))return;e.preventDefault();fotoZoom.pointers.set(e.pointerId,e);if(fotoZoom.pointers.size===2){const p=[...fotoZoom.pointers.values()],d=distanciaPuntos(p[0],p[1]);if(fotoZoom.distancia>0)fotoZoom.escala=Math.max(1,Math.min(5,fotoZoom.escalaInicio*d/fotoZoom.distancia));aplicarFotoZoom()}else if(fotoZoom.pointers.size===1&&fotoZoom.arrastrando&&fotoZoom.escala>1){fotoZoom.x=fotoZoom.xInicio+e.clientX-fotoZoom.inicioX;fotoZoom.y=fotoZoom.yInicio+e.clientY-fotoZoom.inicioY;aplicarFotoZoom()}});
+      const terminar=e=>{fotoZoom.pointers.delete(e.pointerId);img.classList.remove('dragging');if(fotoZoom.pointers.size===0){fotoZoom.arrastrando=false;if(fotoZoom.escala<1.05)reiniciarFotoZoom()}else{const p=[...fotoZoom.pointers.values()][0];fotoZoom.inicioX=p.clientX;fotoZoom.inicioY=p.clientY;fotoZoom.xInicio=fotoZoom.x;fotoZoom.yInicio=fotoZoom.y;fotoZoom.arrastrando=true}};['pointerup','pointercancel','pointerleave'].forEach(t=>contenido.addEventListener(t,terminar));
+      img.addEventListener('dblclick',e=>{e.preventDefault();if(fotoZoom.escala>1.01)reiniciarFotoZoom();else{fotoZoom.escala=2.5;fotoZoom.x=0;fotoZoom.y=0;aplicarFotoZoom()}});
+      contenido.addEventListener('wheel',e=>{if(!visor.classList.contains('active'))return;e.preventDefault();fotoZoom.escala=Math.max(1,Math.min(5,fotoZoom.escala+(e.deltaY<0?.25:-.25)));if(fotoZoom.escala===1){fotoZoom.x=0;fotoZoom.y=0}aplicarFotoZoom()},{passive:false});
+    })();
     function cambiarFotoDesdeModal(){ if(!maquinaFotoModalId)return; const id=maquinaFotoModalId; cerrarFotoModal(); tomarFoto(id); }
     async function eliminarFotoDesdeModal(){ if(!maquinaFotoModalId)return; const id=maquinaFotoModalId; if(!confirm('¿Eliminar la foto de esta máquina?'))return; await eliminarFotoDB(id); cerrarFotoModal(); renderizarLista(); mostrarToast('🗑️ Foto eliminada'); }
 
@@ -2060,7 +2082,7 @@ behavior: 'smooth'
   </script>
 
   <script>
-/* Registro Gimnasio V27.3 - degradados automáticos en grupos */
+/* Registro Gimnasio V27.4 - degradados automáticos en grupos */
 (() => {
   const PALETAS = {
     piernas:[215,190], pecho:[2,28], espalda:[150,185], hombros:[38,18],
