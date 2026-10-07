@@ -1,39 +1,29 @@
-REGISTRO GIMNASIO - V28.6.1
-===========================
+# REGISTRO GIMNASIO - V28.6.2
 
-CORRECCION PRINCIPAL
---------------------
-- Corrige el estado residual del teclado Android en «Comenzar ejercicio».
-- Al abrir el panel se muestran siempre inicialmente «Introducir nombre» y «Hacer foto».
-- El estado keyboard-open se reinicia tanto al abrir como al cerrar el panel.
-- La ocultación de los botones solo puede activarse cuando el buscador está visible, el campo de nombre tiene el foco y visualViewport confirma la reducción de altura por teclado.
-- Al cerrar el panel se elimina el foco del buscador y se restaura la altura de la lista.
+## Audio del temporizador
+La V28.6.2 incorpora una capa **audio primero + TTS de respaldo**. La aplicación intenta reproducir archivos de voz multimedia desde `audio/`. Si el archivo no existe, no carga o `play()` falla, usa automáticamente `SpeechSynthesis` con el texto equivalente.
 
-FUNCIONES CONSERVADAS DE V28.6
-------------------------------
-- Máquinas recientes.
-- Botón «Siguiente ejercicio» tras registrar.
-- Teclado bajo demanda.
-- OCR y alta de máquinas mediante fotografía.
-- Fotografías y zoom táctil.
-- Temporizador y temporizador contextual.
-- Historial, calorías y duración estimada de sesión.
-- Evolución por peso, tiempo y volumen estimado.
-- Perfiles, grupos musculares y degradados.
-- Importación/exportación Excel y copias JSON.
+### Archivos de voz admitidos
+- `audio/descanso.wav`
+- `audio/fin-ejercicio.wav`
+- `audio/prueba.wav`
+- `audio/serie-01.wav` ... `audio/serie-30.wav`
 
-ARCHIVOS DEL PAQUETE
---------------------
-- index.html
-- Registro_Gimnasio_V28.6.1.html
-- manifest.json
-- sw.js
-- icon-192.png
-- icon-512.png
-- README_V28.6.1.txt
+> Este paquete incluye 33 locuciones WAV sintéticas en español, generadas con eSpeak NG. La aplicación usa TTS como respaldo si un WAV no puede reproducirse.
 
-ACTUALIZACION
--------------
-Publicar juntos todos los archivos. El service worker usa una nueva caché «registro-gimnasio-v28.6.1» para evitar reutilizar recursos de versiones anteriores.
+## Prueba de salida
+En Ajustes del temporizador se añade **🔊 Probar voz**, que intenta el archivo `prueba.wav` y usa TTS si no está disponible.
 
-Antes de una actualización importante sigue siendo recomendable guardar una copia JSON desde Herramientas avanzadas.ualización importante es recomendable guardar una copia JSON desde Herramientas avanzadas.
+## Se conserva
+Todas las funciones de V28.6.1, incluidos Comenzar ejercicio, máquinas recientes, siguiente ejercicio, OCR, fotos, zoom, gráficos, volumen, historial, perfiles, temporizador y copias de seguridad.
+
+## Archivos
+- `index.html`
+- `Registro_Gimnasio_V28.6.2.html`
+- `manifest.json`
+- `sw.js`
+- `icon-192.png`
+- `icon-512.png`
+- `README.md`
+- `README_V28.6.2.txt`
+- `audio/README.txt`
