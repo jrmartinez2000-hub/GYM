@@ -1,25 +1,16 @@
-REGISTRO DE GIMNASIO V29+
+# Registro de Gimnasio V29+ corregida
 
-NOVEDAD PRINCIPAL
-- Reconocimiento híbrido local de máquinas mediante OCR y comparación fotográfica.
-- Corrige errores OCR frecuentes como 5/S, 0/O, 1/I y 8/B cuando aparecen dentro de palabras.
-- Compara la imagen nueva con las fotografías ya guardadas de las máquinas activas.
-- Fusiona la coincidencia textual y visual con pesos adaptativos según la calidad del OCR.
-- Abre automáticamente solo cuando la coincidencia es muy alta y claramente superior a la segunda.
-- En casos dudosos muestra las tres mejores opciones con sus puntuaciones.
-- Si falla OCR, continúa con fotografía; si no hay fotos, continúa con OCR y búsqueda manual.
+## Corrección aplicada
+- Eliminado el botón antiguo duplicado «Comenzar ejercicio».
+- Se conserva un único botón que abre `abrirReconocimientoHibrido()`.
+- Se mantiene el código antiguo interno porque la función «Siguiente ejercicio» todavía lo utiliza.
+- Actualizado el nombre de caché del Service Worker para forzar la carga del HTML corregido.
 
-PRIVACIDAD
-- La comparación visual se ejecuta localmente en el navegador.
-- No se envían fotografías a servicios externos.
-- Tesseract.js sigue necesitando sus recursos web cuando no estén almacenados en caché.
+## Instalación en GitHub Pages
+1. Sustituye todos los archivos del repositorio por los incluidos en este ZIP.
+2. Conserva la carpeta `audio` con su estructura.
+3. Espera a que GitHub Pages publique el cambio y recarga la página.
+4. Si la aplicación estaba instalada como PWA, ciérrala por completo y vuelve a abrirla.
 
-RECOMENDACIONES
-- Para mejorar la comparación, usa como foto guardada una imagen similar a la que tomarás al comenzar el ejercicio.
-- Procura incluir la placa y parte de la estructura de la máquina.
-- Si una máquina no tiene fotografía guardada, solo podrá puntuar por OCR/nombre.
-
-INSTALACION
-- Sustituir el index.html actual por index_V29_plus.html o renombrarlo a index.html.
-- Mantener icon-192.png, manifest.json, sw.js y la carpeta audio existentes.
-- No borra perfiles, historial, fotos ni datos guardados en el navegador.
+## Comprobación
+En la pantalla principal debe aparecer un solo botón «Comenzar ejercicio» y debe abrir el reconocimiento híbrido OCR + fotografía.
