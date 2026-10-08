@@ -8,3 +8,7 @@
 - Comparación híbrida OCR + fotografía conservada.
 
 Sube todos los archivos a GitHub Pages manteniendo la carpeta `audio`.
+
+## Corrección visual
+- Eliminado completamente el aviso inferior «Ejercicio registrado / Siguiente ejercicio» señalado en rojo.
+- Tras registrar un ejercicio se mantiene únicamente la notificación verde temporal existente.
