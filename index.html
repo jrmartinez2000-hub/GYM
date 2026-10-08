@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Registro Gimnasio V28.6.2</title>
+  <title>Registro Gimnasio V29+</title>
   
   <!-- Librería externa para leer y generar archivos Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -799,8 +799,12 @@
 /* V28.6: flujo agil - recientes, siguiente ejercicio y teclado bajo demanda */
 .exercise-recent{margin-top:8px;padding:8px;border:1px solid #334155;border-radius:10px;background:#0b1120}.exercise-recent-title{color:#7dd3fc;font-size:.8rem;font-weight:900;margin-bottom:6px}.exercise-recent-list{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.exercise-recent-list::-webkit-scrollbar{display:none}.exercise-recent-btn{flex:0 0 auto;max-width:190px;min-height:38px;padding:6px 9px;border:1px solid #475569;border-radius:8px;background:#152038;color:#fff;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.next-exercise-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(120px);z-index:9800;width:min(94vw,520px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 10px;border:1.5px solid #2ee69d;border-radius:12px;background:#0f1b2f;box-shadow:0 14px 34px rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:.22s}.next-exercise-toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}.next-exercise-text{font-weight:900;color:#dffcf1}.next-exercise-btn{min-height:42px;padding:7px 11px;border:0;border-radius:8px;background:linear-gradient(135deg,#2ee69d,#51d5ff);color:#052e25;font-weight:950}@media(max-width:430px){.next-exercise-toast{grid-template-columns:1fr}.next-exercise-btn{width:100%}}
 
-/* V28.6.2: evita estados residuales del teclado Android */
+/* V29+: evita estados residuales del teclado Android */
 .exercise-finder-options:not(.keyboard-open){display:grid!important}
+
+  /* V29+: reconocimiento hibrido OCR + fotografia */
+  .start-exercise-btn{border-color:#2ee69d!important;color:#052e25!important;background:linear-gradient(135deg,#2ee69d,#51d5ff)!important}
+  .hybrid-finder{display:none;position:fixed;inset:0;z-index:9900;background:#020617f4;padding:8px;align-items:flex-start;justify-content:center;overflow:auto}.hybrid-finder.active{display:flex}.hybrid-card{width:min(100%,660px);max-height:calc(100dvh - 16px);overflow:auto;background:#111b31;border:2px solid #2ee69d;border-radius:16px;padding:12px}.hybrid-head{display:flex;gap:8px;align-items:center}.hybrid-head h2{flex:1;color:#2ee69d}.hybrid-close{width:42px;height:42px;border:1px solid #ff5d73;border-radius:50%;background:transparent;color:#ff9aaa;font-size:1.2rem}.hybrid-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.hybrid-options button,.hybrid-result button{min-height:46px;border-radius:9px;font-weight:900}.hybrid-options button{border:1px solid #51d5ff;background:#20304d;color:#dff7ff}.hybrid-search{display:none;grid-template-columns:1fr auto;gap:7px;margin-top:9px}.hybrid-search.visible{display:grid}.hybrid-status{display:none;margin-top:9px;padding:9px;border:1px solid #475569;border-radius:9px;color:#dbeafe}.hybrid-status.visible{display:block}.hybrid-progress{height:7px;background:#07111d;border-radius:99px;overflow:hidden;margin-top:7px}.hybrid-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#2ee69d,#51d5ff)}.hybrid-results{display:flex;flex-direction:column;gap:7px;margin-top:9px}.hybrid-result{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px;border:1px solid #475569;border-radius:10px;background:#0b1120}.hybrid-result img{width:58px;height:58px;object-fit:cover;border-radius:8px}.hybrid-result-name{font-weight:900;color:#fff}.hybrid-score{font-size:.78rem;color:#9ba9c3}.hybrid-result button{padding:7px 10px;border:0;background:#2ee69d;color:#052e25}.hybrid-warning{padding:10px;border:1px solid #fbbf24;border-radius:9px;background:#fbbf2412;color:#fde68a}@media(max-width:520px){.hybrid-options,.hybrid-search{grid-template-columns:1fr}.hybrid-result{grid-template-columns:48px 1fr}.hybrid-result img{width:48px;height:48px}.hybrid-result button{grid-column:1/-1;width:100%}}
 </style>
 </head>
 <body>
@@ -808,7 +812,7 @@
 
 <section class="evolution-focus" id="evolution-focus"><div class="evolution-focus-card"><div class="evolution-focus-head"><div class="evolution-focus-titles"><div class="evolution-focus-title" id="evolution-focus-title">📈 Evolución</div><div class="evolution-focus-subtitle" id="evolution-focus-subtitle"></div></div><button class="evolution-focus-close" onclick="cerrarEvolucionPrimerPlano()">✕</button></div><div class="evolution-rotate-note">↻ Gira el teléfono si no cambia automáticamente.</div><div class="evolution-focus-toolbar"><div class="evolution-metric-buttons" id="evolution-metric-buttons"><button class="evolution-metric-btn" data-metric="peso" onclick="cambiarMetricaEvolucion('peso')">⚖️ Peso</button><button class="evolution-metric-btn" data-metric="volumen" onclick="cambiarMetricaEvolucion('volumen')">🏋️ Volumen estimado</button></div><div class="evolution-range-buttons"><button class="evolution-range-btn" data-range="30" onclick="cambiarIntervaloEvolucion(30)">30 días</button><button class="evolution-range-btn" data-range="90" onclick="cambiarIntervaloEvolucion(90)">90 días</button><button class="evolution-range-btn" data-range="365" onclick="cambiarIntervaloEvolucion(365)">1 año</button><button class="evolution-range-btn" data-range="total" onclick="cambiarIntervaloEvolucion('total')">Total</button></div><div class="evolution-font-controls"><span>Texto</span><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(-.1)">A−</button><output class="evolution-font-output" id="evolution-font-output">130%</output><button class="evolution-font-btn" onclick="ajustarTextoEvolucion(.1)">A+</button></div></div><div class="evolution-focus-chart" id="evolution-focus-chart"></div><div class="evolution-point-detail" id="evolution-point-detail">Toca un punto para ver sus detalles.</div><div class="evolution-summary" id="evolution-summary"></div></div></section>
   <section class="group-focus" id="group-focus" aria-hidden="true"><div class="group-focus-card"><header class="group-focus-head"><button type="button" class="group-focus-back" onclick="cerrarGrupoPrimerPlano()" aria-label="Volver">←</button><div class="group-focus-titles"><div class="group-focus-title" id="group-focus-title">Grupo muscular</div><div class="group-focus-subtitle" id="group-focus-subtitle"></div></div></header><div class="group-focus-list" id="group-focus-list"></div></div></section>
-  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V28.6.2</span></h1>
+  <h1 class="app-title"><img class="app-title-logo" src="./icon-192.png" alt="Logo Fitness"><span>Registro de Gimnasio</span><span class="version-badge">V29+</span></h1>
   <div class="profile-access-row" id="profile-access-row">
     <button class="profile-side-button profile-timer-button" id="timer-main-btn-top" onclick="iniciarTemporizadorPrincipal()" title="Iniciar temporizador" aria-label="Iniciar temporizador">⏱️</button>
   <div class="profiles-section">
@@ -860,6 +864,7 @@
 
   <!-- Botones de Acción -->
   <div class="action-buttons">
+      <button class="btn-main start-exercise-btn" onclick="abrirReconocimientoHibrido()">▶️ Comenzar ejercicio</button>
     <button class="btn-main start-exercise-btn" onclick="abrirBuscadorEjercicio()">▶️ Comenzar ejercicio</button>
     <button class="btn-main" onclick="toggleMenuAnadirMaquina()">➕ Añadir Nueva Máquina</button>
   </div>
@@ -940,12 +945,15 @@
   </section>
   <section class="exercise-finder" id="exercise-finder" aria-hidden="true"><div class="exercise-finder-card"><div class="exercise-finder-head"><div class="exercise-finder-title">▶️ Comenzar ejercicio</div><button type="button" class="exercise-finder-close" onclick="cerrarBuscadorEjercicio()">✕</button></div><p>Identifica la máquina por su nombre o fotografiando su placa.</p><div class="exercise-finder-options"><button type="button" onclick="mostrarBusquedaNombreEjercicio()">⌨️ Introducir nombre</button><button type="button" onclick="iniciarFotoBusquedaEjercicio()">📷 Hacer foto</button></div><section class="exercise-recent" id="exercise-recent"><div class="exercise-recent-title">🕘 Máquinas recientes</div><div class="exercise-recent-list" id="exercise-recent-list"></div></section><div class="exercise-search-row" id="exercise-search-row"><input id="exercise-search-name" type="text" placeholder="Escribe parte del nombre" autocomplete="off"><button type="button" onclick="buscarMaquinaParaEjercicio()">Buscar</button></div><section class="exercise-machine-accordion" id="exercise-machine-accordion"><button type="button" class="exercise-machine-accordion-head" onclick="toggleAcordeonMaquinasEjercicio()"><span class="exercise-machine-accordion-arrow">▶</span><span class="exercise-machine-accordion-title">🏋️ Máquinas disponibles</span><span class="exercise-machine-accordion-count" id="exercise-machine-count">0</span></button><div class="exercise-machine-list" id="exercise-machine-list"></div></section><div class="exercise-finder-status" id="exercise-finder-status"><div id="exercise-finder-status-text"></div><div class="exercise-finder-progress"><span id="exercise-finder-progress-bar"></span></div></div><div class="exercise-results" id="exercise-results"></div></div></section>
   <div class="next-exercise-toast" id="next-exercise-toast"><div class="next-exercise-text">✅ Ejercicio registrado</div><button type="button" class="next-exercise-btn" onclick="abrirSiguienteEjercicio()">▶ Siguiente ejercicio</button></div>
-  <!-- Toast Notification -->
+  
+  <section class="hybrid-finder" id="hybrid-finder" aria-hidden="true"><div class="hybrid-card"><div class="hybrid-head"><h2>🔎 Reconocimiento híbrido V29+</h2><button class="hybrid-close" onclick="cerrarReconocimientoHibrido()">✕</button></div><p>Busca por nombre o combina OCR y similitud visual con las fotos guardadas.</p><div class="hybrid-options"><button onclick="mostrarBusquedaHibridaNombre()">⌨️ Introducir nombre</button><button onclick="document.getElementById('input-hybrid-photo').click()">📷 Comparar fotografía</button></div><div class="hybrid-search" id="hybrid-search"><input id="hybrid-name" placeholder="Escribe parte del nombre" autocomplete="off"><button onclick="buscarHibridoPorNombre()">Buscar</button></div><div class="hybrid-status" id="hybrid-status"><div id="hybrid-status-text"></div><div class="hybrid-progress"><span id="hybrid-progress-bar"></span></div></div><div class="hybrid-results" id="hybrid-results"></div></div></section>
+    <!-- Toast Notification -->
   <div id="toast" class="toast">✅ Ejercicio registrado con éxito</div>
 
   <!-- Inputs Ocultos -->
   <input type="file" id="input-camara" class="file-input-hidden" accept="image/*" capture="user">
-  <input type="file" id="input-ocr-maquina" class="file-input-hidden" accept="image/*" capture="environment">
+  <input type="file" id="input-hybrid-photo" class="file-input-hidden" accept="image/*" capture="environment">
+    <input type="file" id="input-ocr-maquina" class="file-input-hidden" accept="image/*" capture="environment">
   <input type="file" id="input-buscar-maquina-foto" class="file-input-hidden" accept="image/*" capture="environment">
   <input type="file" id="input-excel-file" class="file-input-hidden" accept=".xlsx, .xls">
   <input type="file" id="input-json-file" class="file-input-hidden" accept=".json">
@@ -968,7 +976,7 @@
        SISTEMA INDEXEDDB PARA GUARDAR FOTOS DE FORMA EFICIENTE
        ======================================================== */
     const DB_NAME = 'GymAppDB';
-    const DB_VERSION = 2;
+    const DB_VERSION = 3;
     let db = null;
 
     function abrirDB() {
@@ -981,6 +989,9 @@
           }
           if (!dbInstance.objectStoreNames.contains('copiasAutomaticas')) {
             dbInstance.createObjectStore('copiasAutomaticas');
+          }
+          if (!dbInstance.objectStoreNames.contains('huellasVisuales')) {
+            dbInstance.createObjectStore('huellasVisuales');
           }
         };
         req.onsuccess = (e) => {
@@ -1050,7 +1061,7 @@
     let autoBackupTimer=null,autoBackupSuspendido=false;
     const localStorageSetOriginal=Storage.prototype.setItem,localStorageRemoveOriginal=Storage.prototype.removeItem,localStorageClearOriginal=Storage.prototype.clear;
     function capturarLocalStorage(){const datos={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);datos[k]=localStorage.getItem(k);}return datos;}
-    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V28.6.2',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
+    async function crearCopiaAutomatica(){if(!db||autoBackupSuspendido)return;const fotos=await obtenerTodasFotosDB();const copia={schema:1,appVersion:'V29+',guardadoEn:new Date().toISOString(),localStorage:capturarLocalStorage(),fotos};return new Promise((resolve,reject)=>{const tx=db.transaction('copiasAutomaticas','readwrite');tx.objectStore('copiasAutomaticas').put(copia,AUTO_BACKUP_KEY);tx.oncomplete=()=>resolve(copia);tx.onerror=()=>reject(tx.error);});}
     function programarCopiaAutomatica(){if(autoBackupSuspendido)return;clearTimeout(autoBackupTimer);autoBackupTimer=setTimeout(()=>crearCopiaAutomatica().catch(console.error),350);}
     function obtenerCopiaAutomatica(){return new Promise(resolve=>{if(!db)return resolve(null);const tx=db.transaction('copiasAutomaticas','readonly'),req=tx.objectStore('copiasAutomaticas').get(AUTO_BACKUP_KEY);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);});}
     async function restaurarCopiaAutomaticaAlArrancar(){const copia=await obtenerCopiaAutomatica();if(!copia||!copia.localStorage)return false;autoBackupSuspendido=true;localStorageClearOriginal.call(localStorage);Object.entries(copia.localStorage).forEach(([k,v])=>localStorageSetOriginal.call(localStorage,k,v));if(copia.fotos){for(const [id,foto] of Object.entries(copia.fotos))await guardarFotoDB(id,foto,false);}autoBackupSuspendido=false;return true;}
@@ -2213,6 +2224,31 @@ behavior: 'smooth'
 })();
 
   </script>
-  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
+  
+<script>
+/* V29+: OCR + comparacion visual local, sin enviar fotografias a servicios externos */
+let hybridFotoActual=null;
+function abrirReconocimientoHibrido(){const p=document.getElementById('hybrid-finder');p.classList.add('active');p.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';document.getElementById('hybrid-results').innerHTML='';document.getElementById('hybrid-status').classList.remove('visible')}
+function cerrarReconocimientoHibrido(){const p=document.getElementById('hybrid-finder');p.classList.remove('active');p.setAttribute('aria-hidden','true');document.body.style.overflow='';document.getElementById('hybrid-name').value='';document.getElementById('hybrid-search').classList.remove('visible');hybridFotoActual=null}
+function mostrarBusquedaHibridaNombre(){document.getElementById('hybrid-search').classList.add('visible');setTimeout(()=>document.getElementById('hybrid-name').focus(),50)}
+function estadoHibrido(t,p=0){document.getElementById('hybrid-status').classList.add('visible');document.getElementById('hybrid-status-text').textContent=t;document.getElementById('hybrid-progress-bar').style.width=Math.max(0,Math.min(100,p))+'%'}
+function corregirOCR29(t){return String(t||'').toUpperCase().replace(/(?<=[A-ZÁÉÍÓÚÜÑ])0(?=[A-ZÁÉÍÓÚÜÑ])/g,'O').replace(/(?<=[A-ZÁÉÍÓÚÜÑ])1(?=[A-ZÁÉÍÓÚÜÑ])/g,'I').replace(/(?<=[A-ZÁÉÍÓÚÜÑ])5(?=[A-ZÁÉÍÓÚÜÑ])/g,'S').replace(/(?<=[A-ZÁÉÍÓÚÜÑ])8(?=[A-ZÁÉÍÓÚÜÑ])/g,'B').replace(/\|/g,'I').replace(/\s+/g,' ').trim()}
+function distanciaLevenshtein(a,b){a=normalizarNombre(a);b=normalizarNombre(b);const d=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let prev=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const tmp=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,prev+(a[i-1]===b[j-1]?0:1));prev=tmp}}return d[b.length]}
+function similitudTexto29(a,b){a=normalizarNombre(a);b=normalizarNombre(b);if(!a||!b)return 0;if(a===b)return 1;if(a.includes(b)||b.includes(a))return .9;const lev=1-distanciaLevenshtein(a,b)/Math.max(a.length,b.length);const A=new Set(a.split(/\s+/).filter(x=>x.length>1)),B=new Set(b.split(/\s+/).filter(x=>x.length>1)),inter=[...A].filter(x=>B.has(x)).length,uni=new Set([...A,...B]).size,j=uni?inter/uni:0;return Math.max(0,Math.min(1,.62*lev+.38*j))}
+function cargarImagen29(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src})}
+async function descriptorVisual29(src){const img=await cargarImagen29(src),c=document.createElement('canvas'),w=17,h=16;c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0,w,h);const d=x.getImageData(0,0,w,h).data,gris=[];for(let i=0;i<d.length;i+=4)gris.push(.299*d[i]+.587*d[i+1]+.114*d[i+2]);const hash=[];for(let y=0;y<h;y++)for(let xx=0;xx<w-1;xx++)hash.push(gris[y*w+xx]>gris[y*w+xx+1]?1:0);const hist=new Array(48).fill(0);for(let i=0;i<d.length;i+=4){hist[Math.min(15,d[i]>>4)]++;hist[16+Math.min(15,d[i+1]>>4)]++;hist[32+Math.min(15,d[i+2]>>4)]++}const total=w*h;return{hash,hist:hist.map(v=>v/total)}}
+function similitudVisual29(a,b){if(!a||!b)return 0;let iguales=0;for(let i=0;i<a.hash.length;i++)if(a.hash[i]===b.hash[i])iguales++;const sh=iguales/a.hash.length;let inter=0;for(let i=0;i<a.hist.length;i++)inter+=Math.min(a.hist[i],b.hist[i]);return Math.max(0,Math.min(1,.68*sh+.32*(inter/3)))}
+function calidadOCR29(texto,conf){const limpio=limpiarTextoOCR(texto),c=Math.max(0,Math.min(1,Number(conf||0)/100));return Math.max(0,Math.min(1,c*(limpio.length>=4?1:.45)))}
+function pesoFusion29(q){if(q>=.78)return[.7,.3];if(q>=.45)return[.5,.5];if(q>0)return[.3,.7];return[0,1]}
+async function reconocerOCR29(src){if(typeof Tesseract==='undefined')return{texto:'',confianza:0,lineas:[]};let worker;try{worker=await Tesseract.createWorker('spa+eng',1,{logger:m=>{if(m.status==='recognizing text')estadoHibrido('Leyendo texto y placa…',10+Math.round((m.progress||0)*42))}});const r=await worker.recognize(src),raw=r.data.text||'',lineas=raw.split(/\r?\n/).map(l=>corregirOCR29(limpiarTextoOCR(l))).filter(l=>l.length>=3&&l.length<=60);return{texto:corregirOCR29(elegirNombreOCR(raw)||lineas[0]||''),confianza:r.data.confidence||0,lineas}}finally{try{await worker?.terminate()}catch(e){}}}
+async function resultadosVisuales29(src){const q=await descriptorVisual29(src),out=[];let n=0,activas=maquinas.filter(m=>!m.archivada);for(const m of activas){const foto=await obtenerFotoDB(m.id);if(!foto)continue;try{const ref=await descriptorVisual29(foto);out.push({id:m.id,visual:similitudVisual29(q,ref),foto});}catch(e){}n++;estadoHibrido('Comparando con fotografías guardadas…',55+Math.round(30*n/Math.max(1,activas.length)))}return out}
+async function fusionarHibrido29(src){const [o,v]=await Promise.allSettled([reconocerOCR29(src),resultadosVisuales29(src)]),ocr=o.status==='fulfilled'?o.value:{texto:'',confianza:0,lineas:[]},vis=v.status==='fulfilled'?v.value:[],q=calidadOCR29(ocr.texto,ocr.confianza),[wt,wv]=pesoFusion29(q),vm=new Map(vis.map(x=>[String(x.id),x]));const textos=[ocr.texto,...ocr.lineas].filter(Boolean);const r=maquinas.filter(m=>!m.archivada).map(m=>{const st=textos.length?Math.max(...textos.map(t=>similitudTexto29(t,m.nombre))):0,vr=vm.get(String(m.id)),sv=vr?.visual||0;return{m,texto:st,visual:sv,total:wt*st+wv*sv,foto:vr?.foto||null,ocr:ocr.texto}}).sort((a,b)=>b.total-a.total);return{resultados:r,ocr,q,visualDisponible:vis.length>0}}
+async function mostrarResultadosHibridos29(pack){estadoHibrido(pack.visualDisponible?'Análisis OCR + fotografía finalizado.':'Análisis OCR finalizado; no hay fotos de referencia.',100);const c=document.getElementById('hybrid-results'),r=pack.resultados,top=r[0],seg=r[1];if(top&&top.total>=.9&&(!seg||top.total-seg.total>=.13)){abrirRegistroHibrido29(top.m.id);return}if(!top||top.total<.38){c.innerHTML='<div class="hybrid-warning"><strong>No se ha identificado con seguridad.</strong><br>Repite la foto más cerca de la placa o busca por nombre.</div>';return}c.innerHTML=r.slice(0,3).map(x=>`<div class="hybrid-result">${x.foto?`<img src="${x.foto}" alt="">`:'<div>🏋️</div>'}<div><div class="hybrid-result-name">${escaparHTML(x.m.nombre)}</div><div class="hybrid-score">Coincidencia ${Math.round(x.total*100)}% · texto ${Math.round(x.texto*100)}% · foto ${Math.round(x.visual*100)}%${pack.ocr.texto?' · OCR: '+escaparHTML(pack.ocr.texto):''}</div></div><button onclick="abrirRegistroHibrido29(${JSON.stringify(x.m.id)})">Abrir</button></div>`).join('')}
+async function abrirRegistroHibrido29(id){cerrarReconocimientoHibrido();grupoPrimerPlanoId=null;await renderizarLista();setTimeout(()=>abrirModoRegistro(id),80)}
+function buscarHibridoPorNombre(){const q=document.getElementById('hybrid-name').value.trim();if(!q)return;const r=maquinas.filter(m=>!m.archivada).map(m=>({m,total:similitudTexto29(q,m.nombre)})).filter(x=>x.total>.2).sort((a,b)=>b.total-a.total);document.getElementById('hybrid-results').innerHTML=r.slice(0,8).map(x=>`<div class="hybrid-result"><div>🏋️</div><div><div class="hybrid-result-name">${escaparHTML(x.m.nombre)}</div><div class="hybrid-score">Coincidencia ${Math.round(x.total*100)}%</div></div><button onclick="abrirRegistroHibrido29(${JSON.stringify(x.m.id)})">Abrir</button></div>`).join('')||'<div class="hybrid-warning">No hay coincidencias.</div>'}
+document.getElementById('hybrid-name')?.addEventListener('input',buscarHibridoPorNombre);document.getElementById('input-hybrid-photo')?.addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{estadoHibrido('Preparando fotografía…',5);hybridFotoActual=await comprimirFotoOCR(f);const pack=await fusionarHibrido29(hybridFotoActual);await mostrarResultadosHibridos29(pack)}catch(err){console.error(err);estadoHibrido('No se pudo completar el análisis. Usa la búsqueda por nombre.',100)}finally{e.target.value=''}});
+</script>
+
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}</script>
 </body>
 </html>
