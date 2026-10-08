@@ -1,8 +1,10 @@
-# Registro de Gimnasio V29.1 limpia
+# Registro de Gimnasio V29.2 compacta
 
-- Único botón «Comenzar ejercicio», conectado al reconocimiento híbrido.
-- Eliminado el panel, estilos, funciones, eventos e input fotográfico del buscador antiguo.
-- «Siguiente ejercicio» abre ahora el reconocimiento híbrido.
-- Caché PWA actualizada a V29.1.
+- Pantalla «Ejercicio» más compacta y situada arriba.
+- Ajuste dinámico al teclado Android mediante Visual Viewport.
+- «Introducir nombre» muestra únicamente el campo de búsqueda.
+- Filtrado instantáneo mientras se escribe, sin botón Buscar.
+- Resultados mostrados como listado pulsable, sin botón Abrir.
+- Comparación híbrida OCR + fotografía conservada.
 
 Sube todos los archivos a GitHub Pages manteniendo la carpeta `audio`.
