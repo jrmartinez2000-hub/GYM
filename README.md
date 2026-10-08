@@ -1,29 +1,25 @@
-# REGISTRO GIMNASIO - V28.6.2
+REGISTRO DE GIMNASIO V29+
 
-## Audio del temporizador
-La V28.6.2 incorpora una capa **audio primero + TTS de respaldo**. La aplicación intenta reproducir archivos de voz multimedia desde `audio/`. Si el archivo no existe, no carga o `play()` falla, usa automáticamente `SpeechSynthesis` con el texto equivalente.
+NOVEDAD PRINCIPAL
+- Reconocimiento híbrido local de máquinas mediante OCR y comparación fotográfica.
+- Corrige errores OCR frecuentes como 5/S, 0/O, 1/I y 8/B cuando aparecen dentro de palabras.
+- Compara la imagen nueva con las fotografías ya guardadas de las máquinas activas.
+- Fusiona la coincidencia textual y visual con pesos adaptativos según la calidad del OCR.
+- Abre automáticamente solo cuando la coincidencia es muy alta y claramente superior a la segunda.
+- En casos dudosos muestra las tres mejores opciones con sus puntuaciones.
+- Si falla OCR, continúa con fotografía; si no hay fotos, continúa con OCR y búsqueda manual.
 
-### Archivos de voz admitidos
-- `audio/descanso.wav`
-- `audio/fin-ejercicio.wav`
-- `audio/prueba.wav`
-- `audio/serie-01.wav` ... `audio/serie-30.wav`
+PRIVACIDAD
+- La comparación visual se ejecuta localmente en el navegador.
+- No se envían fotografías a servicios externos.
+- Tesseract.js sigue necesitando sus recursos web cuando no estén almacenados en caché.
 
-> Este paquete incluye 33 locuciones WAV sintéticas en español, generadas con eSpeak NG. La aplicación usa TTS como respaldo si un WAV no puede reproducirse.
+RECOMENDACIONES
+- Para mejorar la comparación, usa como foto guardada una imagen similar a la que tomarás al comenzar el ejercicio.
+- Procura incluir la placa y parte de la estructura de la máquina.
+- Si una máquina no tiene fotografía guardada, solo podrá puntuar por OCR/nombre.
 
-## Prueba de salida
-En Ajustes del temporizador se añade **🔊 Probar voz**, que intenta el archivo `prueba.wav` y usa TTS si no está disponible.
-
-## Se conserva
-Todas las funciones de V28.6.1, incluidos Comenzar ejercicio, máquinas recientes, siguiente ejercicio, OCR, fotos, zoom, gráficos, volumen, historial, perfiles, temporizador y copias de seguridad.
-
-## Archivos
-- `index.html`
-- `Registro_Gimnasio_V28.6.2.html`
-- `manifest.json`
-- `sw.js`
-- `icon-192.png`
-- `icon-512.png`
-- `README.md`
-- `README_V28.6.2.txt`
-- `audio/README.txt`
+INSTALACION
+- Sustituir el index.html actual por index_V29_plus.html o renombrarlo a index.html.
+- Mantener icon-192.png, manifest.json, sw.js y la carpeta audio existentes.
+- No borra perfiles, historial, fotos ni datos guardados en el navegador.
