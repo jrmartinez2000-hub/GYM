@@ -1,14 +1,14 @@
-# Registro de Gimnasio V29.4
+# Registro de Gimnasio V29.5
 
-## Temporizador por máquina
-- El reloj abre una pantalla de configuración y no inicia directamente.
-- Precarga series y repeticiones de la última serie.
-- Cada serie anterior puede sumar un incremento configurable de repeticiones.
-- Duración de cada serie = repeticiones de esa serie × segundos por repetición.
-- Valores iniciales por máquina: incremento 1, 3 s/repetición, preparación 5 s y descanso 90 s.
-- Los valores usados se guardan dentro de la máquina y se recuperan la próxima vez.
-- La pantalla muestra el plan completo antes de comenzar.
-- Botón «Comenzar temporización».
-- Solicitud de pantalla completa en Android al comenzar y salida al cancelar/finalizar.
-- Eliminados de ajustes generales: series, preparación, ejercicio y descanso.
-- Se mantienen volumen, voz, sonido, vibración, pantalla encendida y bloqueo táctil.
+- Corregido el uso real del número de series y repeticiones durante la temporización.
+- Cada serie utiliza su propio número de repeticiones y duración.
+- Valores iniciales únicamente para máquinas sin configuración previa:
+  - 3 segundos por repetición.
+  - 90 segundos de descanso.
+  - 15 segundos de preparación inicial.
+- Incremento automático según las repeticiones de la última serie:
+  - hasta 8: +1 por serie anterior;
+  - de 9 a 12: +2;
+  - más de 12: +3.
+- El incremento ya no es editable y se recalcula al cambiar las repeticiones.
+- La configuración utilizada queda guardada en cada máquina.
